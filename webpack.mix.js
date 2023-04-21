@@ -15,7 +15,7 @@ mix.js('resources/js/app.js', 'public/js')
     .postCss('resources/css/app.css', 'public/css', [
         //
     ]);
-
+mix.copyDirectory('resources/fonts', 'public/fonts');
 mix.sass('resources/scss/app.scss', 'public/css')
 	.options({
 	   postCss: [ tailwindcss('./tailwind.config.js') ],
