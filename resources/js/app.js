@@ -1,1 +1,2 @@
+require('./alpine');
 require('./bootstrap');

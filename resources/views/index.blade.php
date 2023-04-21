@@ -8,6 +8,9 @@
   <title>
     Analytics Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template
   </title>
+  <link rel="stylesheet" href="{{ URL::asset('css/app.css') }}">
+  <link rel="stylesheet" href="{{ URL::asset('css/font.css') }}">
+  <link rel="stylesheet" href="{{ URL::asset('css/style.css') }}">
 </head>
 
 <body
@@ -17,19 +20,19 @@
          $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
   :class="{'dark text-bodydark bg-boxdark-2': darkMode === true}">
   <!-- ===== Preloader Start ===== -->
-  <include src="./partials/preloader.html"></include>
+  @include('partials.preloader')
   <!-- ===== Preloader End ===== -->
 
   <!-- ===== Page Wrapper Start ===== -->
   <div class="flex h-screen overflow-hidden">
     <!-- ===== Sidebar Start ===== -->
-    <include src="./partials/sidebar.html"></include>
+    @include('partials.sidebar')
     <!-- ===== Sidebar End ===== -->
 
     <!-- ===== Content Area Start ===== -->
     <div class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
       <!-- ===== Header Start ===== -->
-      <include src="./partials/header.html" />
+	  @include('partials.header')
       <!-- ===== Header End ===== -->
 
       <!-- ===== Main Content Start ===== -->
@@ -188,28 +191,7 @@
           </div>
 
           <div class="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
-            <!-- ====== Chart One Start -->
-            <include src="./partials/chart-01.html" />
-            <!-- ====== Chart One End -->
-
-            <!-- ====== Chart Two Start -->
-            <include src="./partials/chart-02.html" />
-            <!-- ====== Chart Two End -->
-
-            <!-- ====== Chart Three Start -->
-            <include src="./partials/chart-03.html" />
-            <!-- ====== Chart Three End -->
-
-            <!-- ====== Map One Start -->
-            <include src="./partials/map-01.html" />
-            <!-- ====== Map One End -->
-
-            <!-- ====== Table One Start -->
-            <div class="col-span-12 xl:col-span-8">
-              <include src="./partials/table-01.html" />
-            </div>
-            <!-- ====== Table One End -->
-
+            
             <!-- ====== Chat Card Start -->
             <div
               class="col-span-12 rounded-sm border border-stroke bg-white py-6 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">
@@ -221,7 +203,7 @@
                 <a href="messages.html"
                   class="flex items-center gap-5 py-3 px-7.5 hover:bg-gray-3 dark:hover:bg-meta-4">
                   <div class="relative h-14 w-14 rounded-full">
-                    <img src="./images/user/user-03.png" alt="User" />
+                    <img src="/img/user/user-03.png" alt="User" />
                     <span
                       class="absolute right-0 bottom-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-meta-3"></span>
                   </div>
@@ -244,7 +226,7 @@
                 <a href="messages.html"
                   class="flex items-center gap-5 py-3 px-7.5 hover:bg-gray-3 dark:hover:bg-meta-4">
                   <div class="relative h-14 w-14 rounded-full">
-                    <img src="./images/user/user-04.png" alt="User" />
+                    <img src="/img/user/user-04.png" alt="User" />
                     <span
                       class="absolute right-0 bottom-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-meta-3"></span>
                   </div>
@@ -262,7 +244,7 @@
                 <a href="messages.html"
                   class="flex items-center gap-5 py-3 px-7.5 hover:bg-gray-3 dark:hover:bg-meta-4">
                   <div class="relative h-14 w-14 rounded-full">
-                    <img src="./images/user/user-05.png" alt="User" />
+                    <img src="/img/user/user-05.png" alt="User" />
                     <span
                       class="absolute right-0 bottom-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-meta-6"></span>
                   </div>
@@ -280,7 +262,7 @@
                 <a href="messages.html"
                   class="flex items-center gap-5 py-3 px-7.5 hover:bg-gray-3 dark:hover:bg-meta-4">
                   <div class="relative h-14 w-14 rounded-full">
-                    <img src="./images/user/user-01.png" alt="User" />
+                    <img src="/img/user/user-01.png" alt="User" />
                     <span
                       class="absolute right-0 bottom-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-meta-3"></span>
                   </div>
@@ -303,7 +285,7 @@
                 <a href="messages.html"
                   class="flex items-center gap-5 py-3 px-7.5 hover:bg-gray-3 dark:hover:bg-meta-4">
                   <div class="relative h-14 w-14 rounded-full">
-                    <img src="./images/user/user-02.png" alt="User" />
+                    <img src="/img/user/user-02.png" alt="User" />
                     <span
                       class="absolute right-0 bottom-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-meta-7"></span>
                   </div>
@@ -321,7 +303,7 @@
                 <a href="messages.html"
                   class="flex items-center gap-5 py-3 px-7.5 hover:bg-gray-3 dark:hover:bg-meta-4">
                   <div class="relative h-14 w-14 rounded-full">
-                    <img src="./images/user/user-05.png" alt="User" />
+                    <img src="/img/user/user-05.png" alt="User" />
                     <span
                       class="absolute right-0 bottom-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-meta-6"></span>
                   </div>
@@ -348,5 +330,5 @@
   </div>
   <!-- ===== Page Wrapper End ===== -->
 </body>
-
+<script type="text/javascript" src="{{ URL::asset('js/app.js') }}"></script>
 </html>
