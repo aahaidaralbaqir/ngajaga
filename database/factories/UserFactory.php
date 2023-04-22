@@ -1,7 +1,7 @@
 <?php
 
 namespace Database\Factories;
-
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -12,6 +12,8 @@ class UserFactory extends Factory
      *
      * @return array
      */
+	protected $model = User::class;
+	
     public function definition()
     {
         return [
@@ -36,4 +38,22 @@ class UserFactory extends Factory
             ];
         });
     }
+
+	public function hokage()
+	{
+		return $this->state(function (array $attributes) {
+			return [
+				'role' => 1
+			];
+		});
+	}
+
+	public function raikage()
+	{
+		return $this->state(function (array $attributes) {
+			return [
+				'role' => 2
+			];
+		});
+	}
 }
