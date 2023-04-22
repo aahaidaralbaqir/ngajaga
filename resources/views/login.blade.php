@@ -118,12 +118,12 @@
 						<h2 class="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
 							Masuk ke halaman <span class="text-primary">Administrator</span>
 						</h2>
-		
-						<form>
+						{{ Form::open(['url' => '/admin/login', 'method' => 'POST']) }}
 						<div class="mb-4">
 							<label class="mb-2.5 block font-medium text-black dark:text-white">Email</label>
 							<div class="relative">
 							<input type="text" placeholder="Masukan email kamu"
+								name="email"
 								class="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
 		
 							<span class="absolute right-4 top-4">
@@ -136,6 +136,9 @@
 								</g>
 								</svg>
 							</span>
+							@error('email')
+								<span class="text-sm text-danger">{{ $message }}</span>
+							@enderror
 							</div>
 						</div>
 		
@@ -143,6 +146,7 @@
 							<label class="mb-2.5 block font-medium text-black dark:text-white">Password</label>
 							<div class="relative">
 							<input type="password" placeholder="Masukan password kamu"
+								name="password"
 								class="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
 		
 							<span class="absolute right-4 top-4">
@@ -158,6 +162,9 @@
 								</g>
 								</svg>
 							</span>
+							@error('password')
+								<span class="text-sm text-danger">{{ $message }}</span>
+							@enderror
 							</div>
 						</div>
 		
@@ -165,6 +172,7 @@
 							<input type="submit" value="Masuk"
 							class="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-opacity-90" />
 						</div>
+						{{ Form::close(); }}
 						
 						<div class="mt-6 text-center">
 							<p class="font-medium">
