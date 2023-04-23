@@ -27,7 +27,6 @@ class SettingController extends Controller
 			'email' => 'required|email|unique:users',
 			'name'	=> 'required|max:50'
 		];
-
 		
 		$user_input = [
 			'name' => $request->name,
@@ -57,12 +56,13 @@ class SettingController extends Controller
 			$hashed_password = Hash::make($request->new_password);
 			$updated_data['password'] = $hashed_password;
 		}
-			
 
 		User::where('id', $current_user->id)
 			->where('email', $current_user->email)
 			->update($updated_data);
 		
-		return redirect()->route('setting')->with(['success' => 'Berhasil mengupdate profile kamu']);
+		return redirect()
+					->route('setting')
+					->with(['success' => 'Berhasil mengupdate profile kamu']);
 	}
 }
