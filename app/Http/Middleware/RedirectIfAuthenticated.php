@@ -17,14 +17,15 @@ class RedirectIfAuthenticated
      * @param  string|null  ...$guards
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
+	protected const LOGIN = '/login';
+
     public function handle(Request $request, Closure $next, ...$guards)
     {
         $guards = empty($guards) ? [null] : $guards;
 
         foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
-            }
+			if(Auth::guard($guard)->check() && $request->route()->named('login') )
+				return redirect()->route('admin');
         }
 
         return $next($request);
