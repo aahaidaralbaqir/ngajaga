@@ -10,9 +10,8 @@ class DashboardController extends Controller
 {
 	public function index(Request $request)
 	{
-		$user = Auth::user();
-		$data = ['name' => $user->name, 
-				'role_name' => ucfirst(CommonUtil::getRoleNameById($user->role))];
+		$user_profile = $this->initProfile();
+		$data = array_merge(array(), $user_profile);
 		return view('admin.index', $data);
 	}
 }

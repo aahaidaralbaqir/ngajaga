@@ -14,13 +14,8 @@ class SettingController extends Controller
 {
     public function index(Request $request)
 	{
-		$user = Auth::user();
-		$data = ['name' => $user->name, 
-				'email' => $user->email, 
-				'avatar' => CommonUtil::getDefaultAvatar(),
-				'role_name' => ucfirst(CommonUtil::getRoleNameById($user->role))];
-		if (!empty($user->avatar))
-			$data['avatar'] = CommonUtil::getAvatar($user->avatar);
+		$user_profile = $this->initProfile();
+		$data = array_merge(array(), $user_profile);
 		return view('admin.setting', $data);
 	}
 
