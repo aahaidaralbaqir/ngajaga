@@ -8,6 +8,7 @@ use App\Util\Common as CommonUtil;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class SettingController extends Controller
 {
@@ -16,7 +17,10 @@ class SettingController extends Controller
 		$user = Auth::user();
 		$data = ['name' => $user->name, 
 				'email' => $user->email, 
+				'avatar' => CommonUtil::getDefaultAvatar(),
 				'role_name' => ucfirst(CommonUtil::getRoleNameById($user->role))];
+		if (!empty($user->avatar))
+			$data['avatar'] = CommonUtil::getAvatar($user->avatar);
 		return view('admin.setting', $data);
 	}
 
@@ -36,7 +40,7 @@ class SettingController extends Controller
 			unset($user_input_field_rule['email']);
 		$validator = Validator::make($user_input, $user_input_field_rule);
 		if ($validator->fails())
-			return redirect()->route('setting')
+			return redirect()->route('setting.index')
 						->withErrors($validator)
 						->withInput();
 
@@ -62,7 +66,51 @@ class SettingController extends Controller
 			->update($updated_data);
 		
 		return redirect()
-					->route('setting')
+					->route('setting.index')
 					->with(['success' => 'Berhasil mengupdate profile kamu']);
+	}
+
+	public function removeAvatar(Request $request) 
+	{
+		$current_user = Auth::user();
+		if (empty($current_user->avatar))
+			return back()->withErrors(['avatar' => 'Tidak menghapus, karena avatar mu kosong.'])
+				->withInput();
+
+		$file_location = 'public/avatars/' . $current_user->avatar;
+		Storage::delete($file_location);
+
+		$updated_data = [
+			'avatar' => NULL
+		];
+		User::where('id', $current_user->id)
+			->update($updated_data);
+		
+		return redirect()
+			->route('setting.index')
+			->with(['success' => 'Berhasil menghapus avatar kamu']);
+	}
+
+	public function updateAvatar(Request $request)
+	{
+		$current_user = Auth::user();
+		if (!$request->hasFile('image'))
+			return back()->withErrors(['avatar' => 'Gagal mengubah avatar kamu'])
+					->withInput();
+		
+		$filename = time() . '.' . $request->file('image')->getClientOriginalExtension();
+		$path = $request->file('image')->storeAs('public/avatars', $filename);
+		if (empty($path))
+			return back()->withErrors(['avatar' => 'Gagal mengubah avatar kamu'])
+						->withInput();
+
+		$updated_data = [
+			'avatar' => $filename
+		];
+		User::where('id', $current_user->id)
+					->update($updated_data);
+		return redirect()
+					->route('setting.index')
+					->with(['success' => 'Berhasil mengupdate avatar kamu']);	
 	}
 }

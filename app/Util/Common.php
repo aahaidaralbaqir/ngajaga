@@ -18,4 +18,14 @@ class Common {
 			return 'Unknow role';
 		return $available_role[$id];
 	}
+
+	public static function getDefaultAvatar() 
+	{
+		return '/img/user/user-01.png';
+	}
+
+	public static function getAvatar($filename) 
+	{
+		return '/storage/avatars/' . $filename;
+	}
 }

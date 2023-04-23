@@ -51,7 +51,7 @@
                     </h3>
                   </div> 
                   <div class="p-7">
-					{{ Form::open(['url' => '/admin/setting', 'method' => 'POST']) }}
+					{{ Form::open(['route' => 'setting.update', 'method' => 'POST']) }}
                       <div class="mb-5.5">
                         <label class="mb-3 block text-sm font-medium text-black dark:text-white"
                           for="emailAddress">Email Address</label>
@@ -166,21 +166,20 @@
                       Your Photo
                     </h3>
                   </div>
-                  <div class="p-7">
-                    <form action="#">
+                  <div class="p-7" 
+				  	x-data="avatar"
+					x-init="url = '@php echo $avatar @endphp'">
+                    {{ Form::open(['route' => 'setting.avatar.update', 'method' => 'POST', 'enctype' => 'multipart/form-data']) }}
                       <div class="mb-4 flex items-center gap-3">
                         <div class="h-14 w-14 rounded-full">
-                          <img src="./images/user/user-03.png" alt="User" />
+                          <img :src="url" alt="User" />
                         </div>
                         <div>
                           <span class="mb-1.5 font-medium text-black dark:text-white">Edit your photo</span>
                           <span class="flex gap-2.5">
-                            <button class="font-medium text-sm hover:text-primary">
+                            <a href="{{ route('setting.avatar.remove') }}" class="font-medium text-sm hover:text-primary">
                               Delete
-                            </button>
-                            <button class="font-medium text-sm hover:text-primary">
-                              Update
-                            </button>
+							</a>
                           </span>
                         </div>
                       </div>
@@ -188,7 +187,9 @@
                       <div id="FileUpload"
                         class="relative mb-5.5 block w-full cursor-pointer appearance-none rounded border-2 border-dashed border-primary bg-gray py-4 px-4 dark:bg-meta-4 sm:py-7.5">
                         <input type="file" accept="image/*"
-                          class="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none" />
+					  		name="image"
+					  		@change.debounce="handleChangeAvatar"
+                        	class="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none" />
                         <div class="flex flex-col items-center justify-center space-y-3">
                           <span
                             class="flex h-10 w-10 items-center justify-center rounded-full border border-stroke bg-white dark:border-strokedark dark:bg-boxdark">
@@ -213,20 +214,17 @@
                           <p class="font-medium text-sm">(max, 800 X 800px)</p>
                         </div>
                       </div>
-
+						@error('avatar')
+						  <span class="text-sm text-danger">{{ $message }}</span>
+						@enderror
                       <div class="flex justify-end gap-4.5">
-                        <button
-                          class="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                          type="submit">
-                          Cancel
-                        </button>
                         <button
                           class="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
                           type="submit">
                           Save
                         </button>
                       </div>
-                    </form>
+					{{ Form::close() }}
                   </div>
                 </div>
               </div>

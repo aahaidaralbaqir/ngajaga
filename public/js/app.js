@@ -5286,6 +5286,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _alpinejs_intersect__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @alpinejs/intersect */ "./node_modules/@alpinejs/intersect/dist/module.esm.js");
 
 
+alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].data('avatar', function () {
+  return {
+    url: '',
+    handleChangeAvatar: function handleChangeAvatar(e) {
+      var file = e.target.files[0];
+      if (file) this.url = URL.createObjectURL(file);
+    }
+  };
+});
 alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].plugin(_alpinejs_intersect__WEBPACK_IMPORTED_MODULE_1__["default"]);
 window.Alpine = alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"];
 alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].start();
