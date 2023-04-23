@@ -5,7 +5,7 @@
 >
   <!-- SIDEBAR HEADER -->
   <div class="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-    <a href="index.html">
+    <a href="{{ route('admin') }}">
       <img src="/img/logo/logo.svg" alt="Logo" />
     </a>
 
