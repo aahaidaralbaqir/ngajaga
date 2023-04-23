@@ -74,8 +74,7 @@ class SettingController extends Controller
 	{
 		$current_user = Auth::user();
 		if (empty($current_user->avatar))
-			return back()->withErrors(['avatar' => 'Tidak menghapus, karena avatar mu kosong.'])
-				->withInput();
+			return back()->with(['error' => 'Tidak bisa menghapus, karena avatar mu kosong.']);
 
 		$file_location = 'public/avatars/' . $current_user->avatar;
 		Storage::delete($file_location);
