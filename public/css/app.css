@@ -1306,6 +1306,14 @@ video {
   --tw-text-opacity: 1;
   color: rgb(180 84 84 / var(--tw-text-opacity));
 }
+.text-boxdark {
+  --tw-text-opacity: 1;
+  color: rgb(36 48 63 / var(--tw-text-opacity));
+}
+.text-graydark {
+  --tw-text-opacity: 1;
+  color: rgb(51 58 72 / var(--tw-text-opacity));
+}
 .underline {
   text-decoration-line: underline;
 }
