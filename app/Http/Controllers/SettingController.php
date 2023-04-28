@@ -16,7 +16,7 @@ class SettingController extends Controller
 	{
 		$user_profile = $this->initProfile();
 		$data = array_merge(array(), $user_profile);
-		return view('admin.setting', $data);
+		return view('admin.setting.form', $data);
 	}
 
 	public function updateProfile(Request $request)

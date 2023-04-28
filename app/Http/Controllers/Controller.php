@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Util\Common as CommonUtil;
+use App\Constant\Constant;
 
 class Controller extends BaseController
 {
@@ -23,7 +24,7 @@ class Controller extends BaseController
 				'avatar' => CommonUtil::getDefaultAvatar(),
 				'role_name' => ucfirst(CommonUtil::getRoleNameById($user->role))];
 		if (!empty($user->avatar))
-			$data['avatar'] = CommonUtil::getAvatar($user->avatar);
+			$data['avatar'] = CommonUtil::getStorage(Constant::STORAGE_AVATAR, $user->avatar);
 		return $data;
 	}
 }

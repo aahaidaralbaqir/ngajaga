@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HeroesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,12 @@ Route::prefix('admin')->group(function () {
 		Route::post('/', [SettingController::class, 'updateProfile'])->name('setting.update')->middleware('auth');
 		Route::post('/update-avatar', [SettingController::class, 'updateAvatar'])->name('setting.avatar.update')->middleware('auth');
 		Route::get('/remove-avatar', [SettingController::class, 'removeAvatar'])->name('setting.avatar.remove')->middleware('auth');
+	});
+
+	Route::prefix('heroes')->group(function() {
+		Route::get('/', [HeroesController::class, 'index'])->name('heroes.index')->middleware('auth');
+		Route::get('/create', [HeroesController::class, 'showCreateForm'])->name('heroes.create.form')->middleware('auth');
+		Route::post('/create', [HeroesController::class, 'createHeroes'])->name('heroes.create')->middleware('auth');
 	});
 	Route::get('/', [DashboardController::class, 'index'])->name('admin')->middleware('auth');
 });

@@ -24,8 +24,8 @@ class Common {
 		return '/img/user/user-01.png';
 	}
 
-	public static function getAvatar($filename) 
+	public static function getStorage($storage_name, $filename) 
 	{
-		return '/storage/avatars/' . $filename;
+		return '/storage/' .$storage_name. '/' . $filename;
 	}
 }

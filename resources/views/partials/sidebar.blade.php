@@ -49,10 +49,8 @@
           <!-- Menu Item Dashboard -->
           <li>
             <a
-              class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-              href="#"
-              @click.prevent="selected = (selected === 'Dashboard' ? '':'Dashboard')"
-              :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Dashboard') || (page === 'analytics' || page === 'ecommerce') }"
+              class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 @php echo route_is('admin') ? 'bg-graydark dark:bg-meta-4' : '' @endphp"
+              href="{{ route('admin') }}"
             >
               <svg
                 class="fill-current"
@@ -87,10 +85,8 @@
           <!-- Menu Item Calendar -->
           <li>
             <a
-              class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-              href="calendar.html"
-              @click="selected = (selected === 'Calendar' ? '':'Calendar')"
-              :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Calendar') && (page === 'calendar') }"
+              class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 @php echo in_array(route_name(), ['heroes.index', 'heroes.create.form', 'heroes.update.form']) ? 'bg-graydark dark:bg-meta-4' : '' @endphp"
+              href="{{ route('heroes.index') }}"
             >
               <svg
                 class="fill-current"
