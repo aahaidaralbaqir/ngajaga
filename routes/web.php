@@ -32,7 +32,9 @@ Route::prefix('admin')->group(function () {
 	Route::prefix('heroes')->group(function() {
 		Route::get('/', [HeroesController::class, 'index'])->name('heroes.index')->middleware('auth');
 		Route::get('/create', [HeroesController::class, 'showCreateForm'])->name('heroes.create.form')->middleware('auth');
+		Route::get('/update/{heroesId}', [HeroesController::class, 'showEditForm'])->name('heroes.update.form')->middleware('auth');
 		Route::post('/create', [HeroesController::class, 'createHeroes'])->name('heroes.create')->middleware('auth');
+		Route::post('/update', [HeroesController::class, 'updateHeroes'])->name('heroes.update')->middleware('auth');
 	});
 	Route::get('/', [DashboardController::class, 'index'])->name('admin')->middleware('auth');
 });

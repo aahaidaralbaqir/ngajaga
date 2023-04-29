@@ -1,6 +1,10 @@
 @extends('layout.dashboard')
 @section('content')
-<main x-data="heroes">
+<main x-data="heroes"
+	  x-init="
+	 	image_url = '@php echo empty($item) ? '' : get_banner($item->image) @endphp' 
+	  "
+	>
     <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
         <div class="mx-auto max-w-270">
         @include('partials.alert')
@@ -9,17 +13,29 @@
                 class="w-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div class="border-b border-stroke py-4 px-7 dark:border-strokedark">
                 <h3 class="font-medium text-black dark:text-white">
-                    Menambahkan banner baru
+					@if (empty($item))
+						Menambahkan banner baru
+					@else
+						Mengupdate banner
+					@endif
                 </h3>
                 </div> 
                 <div class="p-7">
-                {{ Form::open(['route' => 'heroes.create', 'method' => 'POST', 'enctype' => 'multipart/form-data']) }}
+				@php
+					$form = Form::open(['route' => 'heroes.update', 'method' => 'POST', 'enctype' => 'multipart/form-data']);
+					if (empty($item))
+						$form = Form::open(['route' => 'heroes.create', 'method' => 'POST', 'enctype' => 'multipart/form-data']);	
+				@endphp 
+                {{ $form }}
                     <div class="mb-5.5">
                         <label class="mb-3 block font-medium text-sm text-black dark:text-white">
                             Judul
                           </label>
+						@if (!empty($item))
+						  <input type="hidden" name="id" value="{{ $item->id }}">
+						@endif
                         <input type="text" placeholder="Isi judul kamu di sini" name="title"
-                            value="{{ old('title') }}"
+                            value="{{ old('title', !empty($item->title) ? $item->title : '') }}"
                             class="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
                         @error('title')
                             <span class="text-sm text-danger">{{ $message }}</span>
@@ -31,7 +47,7 @@
                             Sub judul
                           </label>
                         <input type="text" placeholder="Isi sub judul kamu di sini" name="subtitle"
-                            value="{{ old('subtitle') }}"
+                            value="{{ old('subtitle', !empty($item->subtitle) ? $item->subtitle : '') }}"
                             class="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
                         @error('subtitle')
                             <span class="text-sm text-danger">{{ $message }}</span>
@@ -43,7 +59,7 @@
                             Tautan
                           </label>
                         <input type="text" placeholder="Isi tautan kamu di sini" name="link"
-                            value="{{ old('link') }}"
+                            value="{{ old('link', !empty($item->link) ? $item->link : '') }}"
                             class="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
                         @error('link')
                             <span class="text-sm text-danger">{{ $message }}</span>
@@ -55,7 +71,7 @@
                             Deskripsi
                           </label>
                         <textarea rows="6" placeholder="Isi deskripsi kamu" name="description"
-                          class="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">{{ old('description') }}</textarea>
+                          class="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">{{ old('description', !empty($item->description) ? $item->description : '') }}</textarea>
                         @error('description')
                             <span class="text-sm text-danger">{{ $message }}</span>
                         @enderror
@@ -100,14 +116,14 @@
                                 <span class="text-sm text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div class="flex-1" x-show="show_preview">
-                            <label class="mb-3 block font-medium text-sm text-black dark:text-white">
-                                Preview Gambar
-                            </label>
-                            <div class="h-24 w-24">
-                                <img src="/img/user/user-01.png" :src="image_url" alt="User" />
-                            </div>
-                        </div>
+							<div class="flex-1" x-show="image_url != ''">
+								<label class="mb-3 block font-medium text-sm text-black dark:text-white">
+									Preview Gambar
+								</label>
+								<div class="h-24 w-24">
+									<img src="/img/user/user-01.png" :src="image_url" alt="User" />
+								</div>
+							</div>
                     </div>
 
                     <div class="flex justify-end gap-4.5">

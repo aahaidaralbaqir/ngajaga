@@ -1,6 +1,7 @@
 @extends('layout.dashboard')
 @section('content')
 <div class="max-w-screen-2xl mx-auto p-4 md:p-6 2xl:p-10">
+@include('partials.alert')
 <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
     <div class="py-6 px-4 md:px-6 xl:px-7.5 flex justify-between items-center">
         <h4 class="text-xl font-bold text-black dark:text-white">
@@ -51,7 +52,9 @@
             </p>
             </div>
             <div class="flex items-center space-x-3.5">
-                <button class="hover:text-primary">
+                <a
+					href="{{ route('heroes.update.form', ['heroesId' => $item['id']]) }}"
+					class="hover:text-primary">
                     <svg class="fill-current" width="20" height="20" viewBox="0 0 20 20" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <g opacity="0.8" clip-path="url(#clip0_88_10224)">
@@ -68,7 +71,7 @@
                         </clipPath>
                         </defs>
                     </svg>
-                </button>
+                </a>
                 <button class="hover:text-primary">
                     <svg
                         width="20"
@@ -86,7 +89,7 @@
                         />
                     </svg>
                 </button>
-                <button class="hover:text-primary">
+                <a class="hover:text-primary">
                     <svg
                         width="20"
                         height="20"
@@ -102,7 +105,7 @@
                         fill=""
                         />
                     </svg>
-                </button>
+                </a>
                 </div>
         </div>
     @endforeach
