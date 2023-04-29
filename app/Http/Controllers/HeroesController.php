@@ -171,8 +171,8 @@ class HeroesController extends Controller
 				->with(['error' => 'Gagal mengupdate order, record tidak ditemukan']);	
 
 		$current_order = (int) $record->order;
-		$records = array(Constant::ORDER_UP => Heroes::where('order', '<', $current_order)->first(),
-						 Constant::ORDER_DOWN => Heroes::where('order', '>', $current_order)->first());
+		$records = array(Constant::ORDER_UP => Heroes::where('order', '<', $current_order)->orderBy('order', 'DESC')->first(),
+						 Constant::ORDER_DOWN => Heroes::where('order', '>', $current_order)->orderBy('order', 'ASC')->first());
 		$updated_record = $records[$order_type];
 		
 		if (!empty($updated_record))
