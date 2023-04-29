@@ -16,7 +16,7 @@ class HeroesController extends Controller
     {
         $user_profile = $this->initProfile();
         $data = array_merge(array(), $user_profile);
-        $heroes =  Heroes::all();
+        $heroes =  Heroes::orderBy('order', 'ASC')->get();
         $results = $heroes->toArray();
         $data['heroes'] = $results;
         return view('admin.heroes.index', $data);
@@ -148,5 +148,53 @@ class HeroesController extends Controller
 		
 		$data['item'] = $record;
 		return view('admin.heroes.form', $data);
+	}
+
+	public function updateOrder(Request $request, string $heroesId)
+	{
+		if (!$request->has('order_type'))
+			return back()
+				->with(['error' => 'Gagal mengupdate order, type order tidak dicantumkan']);	
+
+		$order_type = $request->input('order_type');
+		if (!in_array($order_type, [Constant::ORDER_UP, Constant::ORDER_DOWN]))
+			return back()
+				->with(['error' => 'Gagal mengupdate order, type order tidak tersedia']);	
+
+		if (empty($heroesId))
+		{
+			return back()
+				->with(['error' => 'Gagal mengupdate order, id heroes di perlukan']);	
+		}
+
+		$record = Heroes::find($heroesId);
+		if (empty($record))
+			return back()
+				->with(['error' => 'Gagal mengupdate order, record tidak ditemukan']);	
+
+		$current_order = (int) $record->order;
+		$records = array(Constant::ORDER_UP => Heroes::where('order', '<', $current_order)->first(),
+						 Constant::ORDER_DOWN => Heroes::where('order', '>', $current_order)->first());
+		$updated_record = $records[$order_type];
+		
+		if (!empty($updated_record))
+		{
+			$tobe_updated_record = array(Constant::ORDER_UP => $updated_record->order + 1,
+						 			 	 Constant::ORDER_DOWN => $updated_record->order - 1);	
+			Heroes::where('id', $updated_record->id)
+				->update(['order' => $tobe_updated_record[$order_type]]);
+		}
+			
+		$current_order = (int) $record->order - 1;
+		if ($order_type == Constant::ORDER_DOWN)
+			$current_order = (int) $record->order + 1;
+		
+		if (!empty($updated_record)) 
+			Heroes::where('id', $record->id)
+				->update(['order' => $current_order]);
+
+		return redirect()
+					->route('heroes.index')
+					->with(['success' => 'Berhasil mengupdate urutan banner']);	
 	}
 }

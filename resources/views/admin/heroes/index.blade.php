@@ -72,7 +72,10 @@
                         </defs>
                     </svg>
                 </a>
-                <button class="hover:text-primary">
+                <a 
+					class="hover:text-primary"
+					href="{{ route('heroes.order', [$item['id'], 'order_type' => 'down']) }}"
+				>
                     <svg
                         width="20"
                         height="20"
@@ -88,8 +91,11 @@
                         fill=""
                         />
                     </svg>
-                </button>
-                <a class="hover:text-primary">
+                </a>
+                <a 
+					class="hover:text-primary"
+					href="{{ route('heroes.order', [$item['id'], 'order_type' => 'up']) }}"
+				>
                     <svg
                         width="20"
                         height="20"
