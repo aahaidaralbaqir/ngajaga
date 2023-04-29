@@ -107,10 +107,8 @@ class HeroesController extends Controller
         
 		if ($request->hasFile('image'))
         {
-            // remove existing image
 			$file_location = 'public/banners/' . $record->image;
 			Storage::delete($file_location);
-			// upload new image
 			$filename = time() . '.' . $request->file('image')->getClientOriginalExtension();
 			$path = $request->file('image')->storeAs('public/banners', $filename);
 			if (empty($path))
