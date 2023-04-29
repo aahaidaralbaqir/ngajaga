@@ -20,3 +20,11 @@ mix.sass('resources/scss/app.scss', 'public/css')
 	.options({
 	   postCss: [ tailwindcss('./tailwind.config.js') ],
 	});
+mix.copyDirectory('node_modules/tinymce/icons', 'public/tinymce/icons');
+mix.copyDirectory('node_modules/tinymce/models', 'public/tinymce/models');
+mix.copyDirectory('node_modules/tinymce/plugins', 'public/tinymce/plugins');
+mix.copyDirectory('node_modules/tinymce/skins', 'public/tinymce/skins');
+mix.copyDirectory('node_modules/tinymce/themes', 'public/tinymce/themes');
+mix.copy('node_modules/tinymce/tinymce.js', 'public/tinymce/tinymce.js');
+mix.copy('node_modules/tinymce/tinymce.min.js', 'public/tinymce/tinymce.min.js');
+    

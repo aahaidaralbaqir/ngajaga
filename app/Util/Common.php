@@ -11,6 +11,21 @@ class Common {
 				Constant::ROLE_RAIKAGE => 'raikage'];
 	}
 
+	public static function getCategories()
+	{
+		return [Constant::CATEGORY_KAJIAN => Constant::CATEGORY_KAJIAN_NAME,
+				Constant::CATEGORY_KHUTBAH => Constant::CATEGORY_KHUTBAH_NAME,
+				Constant::CATEGORY_BULETIN => Constant::CATEGORY_BULETIN_NAME];
+	}
+
+	public static function getCategoriesById(int $id)
+	{
+		$available_categories = self::getCategories();
+		if (!array_key_exists($id, $available_categories))
+			return 'Unknow categories';
+		return $available_categories[$id];	
+	}
+
 	public static function getRoleNameById(int $id)
 	{
 		$available_role = self::getRole();
