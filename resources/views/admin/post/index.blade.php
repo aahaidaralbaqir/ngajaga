@@ -61,7 +61,7 @@
             </div>
             <div class="col-span-1 flex items-center">
                 <p class="font-medium text-sm text-black dark:text-white">
-                    {{  $item['category_name'] }}
+                    {{  $item['category'] }}
                 </p>
             </div>
             <div class="flex items-center space-x-3.5">
@@ -91,7 +91,8 @@
     {{-- End table body --}}
     {{-- Footer --}}
     <div class="border-t border-stroke py-4.5 px-4 flex dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
-        @include('partials.pagination')
+        {{-- @include('partials.pagination') --}}
+        {{ $posts->links() }}
     </div>
     {{-- End footer --}}
 </div> 

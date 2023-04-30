@@ -20,13 +20,13 @@ class Post extends Model
         'user_id'
     ];
 
-    public static function serializeResponse($item)
+    public function getBannerAttribute($value) 
     {
-        foreach ($item as $index => $each_item)
-        {
-            $item[$index]['banner'] = CommonUtil::getStorage(Constant::STORAGE_POST, $each_item['banner']);
-            $item[$index]['category_name'] = CommonUtil::getCategoriesById($each_item['category']);
-        }
-        return $item;
+        return CommonUtil::getStorage(Constant::STORAGE_POST, $value);
+    }
+
+    public function getCategoryAttribute($value)
+    {
+        return CommonUtil::getCategoriesById($value);
     }
 }

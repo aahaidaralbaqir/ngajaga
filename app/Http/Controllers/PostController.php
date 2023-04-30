@@ -16,9 +16,8 @@ class PostController extends Controller
 	{
 		$user_profile = $this->initProfile();
         $data = array_merge(array(), $user_profile);
-        $posts =  Post::all();
-        $results = Post::serializeResponse($posts->toArray());
-        $data['posts'] = $results;
+        $posts =  Post::paginate(Constant::MAX_PAGINATION);
+		$data['posts'] = $posts;
         return view('admin.post.index', $data);
 	}
 
