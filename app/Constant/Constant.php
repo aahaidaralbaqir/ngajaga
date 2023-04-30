@@ -8,6 +8,7 @@ class Constant {
 
 	const STORAGE_AVATAR = 'avatars';
 	const STORAGE_BANNER = 'banners';
+	const STORAGE_POST = 'posts';
 
 	const ORDER_UP = 'up';
 	const ORDER_DOWN = 'down';

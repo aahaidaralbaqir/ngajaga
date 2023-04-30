@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HeroesController;
+use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,14 @@ Route::prefix('admin')->group(function () {
 		Route::post('/create', [HeroesController::class, 'createHeroes'])->name('heroes.create')->middleware('auth');
 		Route::post('/update', [HeroesController::class, 'updateHeroes'])->name('heroes.update')->middleware('auth');
 		Route::get('/order/{heroesId}', [HeroesController::class, 'updateOrder'])->name('heroes.order')->middleware('auth');
+	});
+
+	Route::prefix('post')->group(function () {
+		Route::get('/',  [PostController::class, 'index'])->name('post.index')->middleware('auth');
+		Route::get('/create', [PostController::class, 'showCreateForm'])->name('post.create.form')->middleware('auth');
+		Route::post('/create', [PostController::class, 'createPost'])->name('post.create')->middleware('auth');
+		Route::get('/update', [PostController::class, 'showUpdateForm'])->name('post.update.form')->middleware('auth');
+		Route::post('/update', [PostController::class, 'updatePost'])->name('post.update')->middleware('auth');
 	});
 	Route::get('/', [DashboardController::class, 'index'])->name('admin')->middleware('auth');
 });

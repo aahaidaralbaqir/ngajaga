@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="{{ URL::asset('css/app.css') }}">
   <link rel="stylesheet" href="{{ URL::asset('css/font.css') }}">
   <link rel="stylesheet" href="{{ URL::asset('css/style.css') }}">
+  @stack('styles')
 </head>
 
 <body
@@ -38,7 +39,7 @@
 
       <!-- ===== Main Content Start ===== -->
       <main>
-		@yield('content')
+		    @yield('content')
       </main>
       <!-- ===== Main Content End ===== -->
     </div>
@@ -47,4 +48,5 @@
   <!-- ===== Page Wrapper End ===== -->
 </body>
 <script type="text/javascript" src="{{ URL::asset('js/app.js') }}"></script>
+@stack('scripts')
 </html>
