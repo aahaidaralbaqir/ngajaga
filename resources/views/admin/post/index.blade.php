@@ -5,7 +5,7 @@
 @include('partials.breadcumb', ['title' => 'Post'])
 <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
     <div class="py-6 px-4 md:px-6 xl:px-7.5 flex justify-between items-center">
-        <form action="https://formbold.com/s/unique_form_id" method="POST">
+        <form action="{{ route('post.index') }}" method="GET">
             <div class="relative">
                 <button class="absolute top-1/2 left-0 -translate-y-1/2">
                 <svg class="fill-body hover:fill-primary dark:fill-bodydark dark:hover:fill-primary" width="20" height="20"
@@ -19,11 +19,10 @@
                 </svg>
                 </button>
 
-                <input type="text" placeholder="Type to search..."
-                class="w-full bg-transparent pr-4 pl-9 focus:outline-none" />
+                <input type="text" name="query" placeholder="Enter untuk mencari.."class="w-full bg-transparent pr-4 pl-9 focus:outline-none" value="{{ request('query') }}" />
             </div>
         </form>
-        <a href="{{ route('post.create') }}" class="flex items-center justify-center rounded-md bg-primary p-2 text-white hover:bg-opacity-95">Add post</a>
+        <a href="{{ route('post.create') }}" class="flex items-center justify-center rounded-md bg-primary py-2 px-10 text-white hover:bg-opacity-95">Add post</a>
     </div>
     
     {{-- Table header --}}
@@ -41,13 +40,13 @@
     </div>
     {{-- End table header --}}
     {{-- Table body --}}
-    @empty($posts)
+    @if (count($posts) == 0)
         <div class="grid grid-cols-6 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
-            <div class="col-span-5 text-center">
+            <div class="col-span-7 text-center">
                 Tidak ada data
             </div> 
         </div>
-    @endempty
+    @endif
     @foreach($posts as $item)
         <div
             class="grid grid-cols-6 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">

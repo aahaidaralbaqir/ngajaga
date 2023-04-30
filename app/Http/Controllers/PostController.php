@@ -14,11 +14,19 @@ class PostController extends Controller
 
 	public function index(Request $request)
 	{
+		$search_query = $request->input('query');
 		$user_profile = $this->initProfile();
         $data = array_merge(array(), $user_profile);
-        $posts =  Post::paginate(Constant::MAX_PAGINATION);
+		if ($request->has('query'))
+		{
+			$posts =  Post::where('title', 'LIKE', '%' . $search_query . '%')
+						 ->paginate(Constant::MAX_PAGINATION);
+			$data['posts'] = $posts;
+        	return view('admin.post.index', $data);
+		}
+		$posts =  Post::paginate(Constant::MAX_PAGINATION);
 		$data['posts'] = $posts;
-        return view('admin.post.index', $data);
+		return view('admin.post.index', $data);
 	}
 
     public function showCreateForm(Request $request) 
