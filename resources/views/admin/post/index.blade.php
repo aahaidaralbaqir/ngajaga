@@ -34,6 +34,9 @@
         <div class="col-span-1 flex items-center">
         <p class="font-medium">Category</p>
         </div>
+		<div class="col-span-1 flex items-center">
+			<p class="font-medium">Status</p>
+		</div>
         <div class="col-span-1 flex items-center">
         <p class="font-medium">Action</p>
         </div>
@@ -42,7 +45,7 @@
     {{-- Table body --}}
     @if (count($posts) == 0)
         <div class="grid grid-cols-6 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
-            <div class="col-span-7 text-center">
+            <div class="col-span-8 text-center">
                 Tidak ada data
             </div> 
         </div>
@@ -62,6 +65,16 @@
                 <p class="font-medium text-sm text-black dark:text-white">
                     {{  $item['category'] }}
                 </p>
+            </div>
+			<div class="col-span-1 flex items-center">
+				@php
+					$classes = 'inline-flex rounded border border-[#13C296] py-1 px-2 text-sm font-medium text-[#13C296] hover:opacity-80';
+					if ($item['status'] == App\Constant\Constant::STATUS_DRAFT_NAME)
+						$classes = 'inline-flex rounded border border-[#212B36] py-1 px-2 text-sm font-medium text-[#212B36] hover:opacity-80 dark:text-white dark:border-white';
+				@endphp
+				<button class="{{ $classes }}">
+					{{  $item['status'] }}
+				</button>
             </div>
             <div class="flex items-center space-x-3.5">
                 <a

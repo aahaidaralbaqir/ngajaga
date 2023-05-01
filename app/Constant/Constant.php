@@ -26,6 +26,6 @@ class Constant {
 
 	const STATUS_PUBLISHED = 1;
 	const STATUS_DRAFT = 2;
-	const STATUS_PUBLISHED_NAME = 'published';
-	const STATUS_DRAFT_NAME = 'draft';
+	const STATUS_PUBLISHED_NAME = 'Published';
+	const STATUS_DRAFT_NAME = 'Draft';
 }

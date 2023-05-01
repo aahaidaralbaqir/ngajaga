@@ -52,6 +52,7 @@ class PostController extends Controller
 		$record = Post::find($postId);
 		$data['item'] = $record;
         $data['categories'] = CommonUtil::getCategories(); 
+        $data['status'] = CommonUtil::getStatus(); 
         return view('admin.post.form', $data);	
 	}
 
@@ -71,10 +72,11 @@ class PostController extends Controller
         $user_input_field_rules = [
 			'title' => 'required|min:10|max:200',
 			'category'	=> 'required|in:'.implode(',', array_keys(CommonUtil::getCategories())),
+			'status'	=> 'required|in:'.implode(',', array_keys(CommonUtil::getStatus())),
 			'content' => 'required'
 		];
 		
-		$user_input =  $request->only('title', 'category', 'content');
+		$user_input =  $request->only('title', 'category', 'content', 'status');
 		$validator = Validator::make($user_input, $user_input_field_rules);
 		if ($validator->fails())
 			return back()

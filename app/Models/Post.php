@@ -29,4 +29,9 @@ class Post extends Model
     {
         return CommonUtil::getCategoriesById($value);
     }
+
+	public function getStatusAttribute($value)
+    {
+        return CommonUtil::getStatusById($value);
+    }
 }
