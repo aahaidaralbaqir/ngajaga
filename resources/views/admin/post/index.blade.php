@@ -2,7 +2,7 @@
 @section('content')
 <div class="max-w-screen-2xl mx-auto p-4 md:p-6 2xl:p-10">
 @include('partials.alert')
-@include('partials.breadcumb', ['title' => 'Post'])
+@include('partials.breadcumb', ['title' => 'Tulisan'])
 <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
     <div class="py-6 px-4 md:px-6 xl:px-7.5 flex justify-between items-center">
         <form action="{{ route('post.index') }}" method="GET">
@@ -22,23 +22,23 @@
                 <input type="text" name="query" placeholder="Enter untuk mencari.."class="w-full bg-transparent pr-4 pl-9 focus:outline-none" value="{{ request('query') }}" />
             </div>
         </form>
-        <a href="{{ route('post.create') }}" class="flex items-center justify-center rounded-md bg-primary py-2 px-10 text-white hover:bg-opacity-95">Add post</a>
+        <a href="{{ route('post.create') }}" class="flex items-center justify-center rounded-md bg-primary py-2 px-10 text-white hover:bg-opacity-95">Buat Tulisan Baru</a>
     </div>
     
     {{-- Table header --}}
     <div
         class="grid grid-cols-6 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
         <div class="col-span-3 flex items-center">
-        <p class="font-medium">Title</p>
+        <p class="font-medium">Judul</p>
         </div>
         <div class="col-span-1 flex items-center">
-        <p class="font-medium">Category</p>
+        <p class="font-medium">Kategori</p>
         </div>
 		<div class="col-span-1 flex items-center">
 			<p class="font-medium">Status</p>
 		</div>
         <div class="col-span-1 flex items-center">
-        <p class="font-medium">Action</p>
+        <p class="font-medium">Aksi</p>
         </div>
     </div>
     {{-- End table header --}}
