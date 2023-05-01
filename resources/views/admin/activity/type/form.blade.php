@@ -2,8 +2,8 @@
 @section('content')
 <main x-data="activity"
 	  x-init="
-	  	image_icon_url = '@php echo empty($item) ? '' : get_banner($item->icon) @endphp' 
-	  	image_banner_url = '@php echo empty($item) ? '' : get_banner($item->banner) @endphp' 
+	  	image_icon_url = '@php echo empty($item) ? '' : $item->icon @endphp' 
+	  	image_banner_url = '@php echo empty($item) ? '' : $item->banner @endphp' 
 	  "
 	>
     <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
@@ -23,7 +23,7 @@
                 </div> 
                 <div class="p-7">
 				@php
-					$form = Form::open(['route' => 'heroes.update', 'method' => 'POST', 'enctype' => 'multipart/form-data']);
+					$form = Form::open(['route' => 'activity.type.update', 'method' => 'POST', 'enctype' => 'multipart/form-data']);
 					if (empty($item)) $form = Form::open(['route' => 'activity.type.create', 'method' => 'POST', 'enctype' => 'multipart/form-data']);	
 				@endphp 
                 {{ $form }}
@@ -35,7 +35,7 @@
 						  <input type="hidden" name="id" value="{{ $item->id }}">
 						@endif
                         <input type="text" placeholder="Isi nama jenis kegiatan" name="name"
-                            value="{{ old('name', !empty($item->title) ? $item->title : '') }}"
+                            value="{{ old('name', !empty($item->name) ? $item->name : '') }}"
                             class="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
                         @error('name')
                             <span class="text-sm text-danger">{{ $message }}</span>

@@ -211,7 +211,7 @@
                 <li>
                   <a
                     class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white
-							@php echo in_array(route_name(), ['activity.type.index', 'activity.type.create.form']) ? 'text-white' : '' @endphp"
+							@php echo in_array(route_name(), ['activity.type.index', 'activity.type.create.form', 'activity.type.update.form']) ? 'text-white' : '' @endphp"
                     href="{{ route('activity.type.index') }}"
                     :class="page === 'formElements' && '!text-white'"
                     >Jenis Kegiatan</a
