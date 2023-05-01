@@ -43,7 +43,7 @@ Route::prefix('admin')->group(function () {
 		Route::get('/',  [PostController::class, 'index'])->name('post.index')->middleware('auth');
 		Route::get('/create', [PostController::class, 'showCreateForm'])->name('post.create.form')->middleware('auth');
 		Route::post('/create', [PostController::class, 'createPost'])->name('post.create')->middleware('auth');
-		Route::get('/update', [PostController::class, 'showUpdateForm'])->name('post.update.form')->middleware('auth');
+		Route::get('/update/{postId}', [PostController::class, 'showUpdateForm'])->name('post.update.form')->middleware('auth');
 		Route::post('/update', [PostController::class, 'updatePost'])->name('post.update')->middleware('auth');
 	});
 	Route::get('/', [DashboardController::class, 'index'])->name('admin')->middleware('auth');

@@ -2,7 +2,7 @@
 @section('content')
 <main x-data="heroes"
 	  x-init="
-	 	image_url = '@php echo empty($item) ? '' : get_banner($item->image) @endphp' 
+	 	image_url = '@php echo empty($item) ? '' : $item->banner @endphp' 
 	  "
 	>
     <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
@@ -50,7 +50,12 @@
                         <select name="category" class="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
                             <option value="0">Pilih kategori tulisan</option>
                             @foreach ($categories as $key => $value)
-                                <option value="{{ $key }}">{{ $value }}</option>
+								@php
+									$selected = FALSE;
+									if (!empty($item) && $item->category == $value)
+										$selected = TRUE;
+								@endphp 
+                                <option {{ $selected ? 'selected' : '' }} value="{{ $key }}">{{ $value }}</option>
                             @endforeach
                         </select>
                         <span class="absolute top-1/2 right-4 z-30 -translate-y-1/2">
@@ -71,7 +76,7 @@
                             Konten
                           </label>
                         <textarea rows="6" placeholder="Isi konten kamu" name="content"
-                          class="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">{{ old('description', !empty($item->description) ? $item->description : '') }}</textarea>
+                          class="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">{!! old('content', !empty($item) ? $item->content : '') !!}</textarea>
                         @error('content')
                             <span class="text-sm text-danger">{{ $message }}</span>
                         @enderror

@@ -43,4 +43,12 @@ class Common {
 	{
 		return '/storage/' .$storage_name. '/' . $filename;
 	}
+
+	public static function getFileName($fullpath) 
+	{
+		$path = explode('/', $fullpath);
+		if (empty($path))
+			return $fullpath;
+		return $path[count($path) - 1];
+	}
 }
