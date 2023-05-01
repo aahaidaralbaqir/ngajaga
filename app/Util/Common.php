@@ -11,6 +11,20 @@ class Common {
 				Constant::ROLE_RAIKAGE => 'raikage'];
 	}
 
+	public static function getStatus()
+	{
+		return [Constant::STATUS_DRAFT => Constant::STATUS_DRAFT_NAME,
+				Constant::STATUS_PUBLISHED => Constant::STATUS_PUBLISHED_NAME];
+	}
+
+	public static function getStatusById($id)
+	{
+		$available_status = self::getStatus();
+		if (!array_key_exists($id, $available_status))
+			return 'Unknow status';
+		return $available_status[$id];	
+	}
+
 	public static function getCategories()
 	{
 		return [Constant::CATEGORY_KAJIAN => Constant::CATEGORY_KAJIAN_NAME,

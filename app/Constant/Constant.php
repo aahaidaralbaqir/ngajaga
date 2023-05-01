@@ -23,4 +23,9 @@ class Constant {
 	const CATEGORY_KAJIAN = 1;
 	const CATEGORY_KHUTBAH = 2;
 	const CATEGORY_BULETIN = 3;
+
+	const STATUS_PUBLISHED = 1;
+	const STATUS_DRAFT = 2;
+	const STATUS_PUBLISHED_NAME = 'published';
+	const STATUS_DRAFT_NAME = 'draft';
 }
