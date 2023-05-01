@@ -2,27 +2,25 @@
 @section('content')
 <div class="max-w-screen-2xl mx-auto p-4 md:p-6 2xl:p-10">
 @include('partials.alert')
+@include('partials.breadcumb', ['title' => 'Banner'])
 <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-    <div class="py-6 px-4 md:px-6 xl:px-7.5 flex justify-between items-center">
-        <h4 class="text-xl font-bold text-black dark:text-white">
-        List Heroes
-        </h4>
-        <a href="{{ route('heroes.create') }}" class="flex items-center justify-center bg-primary p-2 text-white hover:bg-opacity-95">Add banner</a>
+    <div class="py-6 px-4 md:px-6 xl:px-7.5 flex justify-end items-center">
+    	<a href="{{ route('heroes.create') }}" class="flex items-center justify-center rounded-md bg-primary py-2 px-10 text-white hover:bg-opacity-95">Buat Banner Baru</a>
     </div>
     
     <div
         class="grid grid-cols-6 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
         <div class="col-span-3 flex items-center">
-        <p class="font-medium">Title</p>
+        <p class="font-medium">Judul Utama</p>
         </div>
         <div class="col-span-2 hidden items-center sm:flex">
-        <p class="font-medium">Subtitle</p>
+        <p class="font-medium">Judul Lanjutan</p>
         </div>
         <div class="col-span-1 flex items-center">
-        <p class="font-medium">Link</p>
+        <p class="font-medium">Tautan</p>
         </div>
         <div class="col-span-1 flex items-center">
-        <p class="font-medium">Action</p>
+        <p class="font-medium">Aksi</p>
         </div>
     </div>
     @empty($heroes)
@@ -48,7 +46,7 @@
             </div>
             <div class="col-span-1 flex items-center">
             <p class="font-medium text-sm text-black dark:text-white">
-                <a href="{{ $item['link'] }}" class="text-primary" target="__blank">Tautan</a>
+                <a href="{{ $item['link'] }}" class="text-primary" target="__blank">Klik di sini</a>
             </p>
             </div>
             <div class="flex items-center space-x-3.5">
