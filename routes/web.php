@@ -6,6 +6,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HeroesController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ActivityController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,15 @@ Route::prefix('admin')->group(function () {
 		Route::post('/create', [PostController::class, 'createPost'])->name('post.create')->middleware('auth');
 		Route::get('/update/{postId}', [PostController::class, 'showUpdateForm'])->name('post.update.form')->middleware('auth');
 		Route::post('/update', [PostController::class, 'updatePost'])->name('post.update')->middleware('auth');
+	});
+
+	Route::prefix('activity')->group(function () {
+		Route::prefix('type')->group(function () {
+			Route::get('/', [ActivityController::class, 'getActivityType'])->name('activity.type.index')->middleware('auth');
+			Route::get('/create', [ActivityController::class, 'showCreateActivityTypeForm'])->name('activity.type.create.form')->middleware('auth');
+			Route::post('/create', [ActivityController::class, 'createActivityType'])->name('activity.type.create')->middleware('auth');
+			Route::post('/update', [ActivityController::class, 'updateActivityType'])->name('activity.type.update.form')->middleware('auth');
+		});
 	});
 	Route::get('/', [DashboardController::class, 'index'])->name('admin')->middleware('auth');
 });

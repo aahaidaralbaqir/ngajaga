@@ -5308,6 +5308,24 @@ alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].data('heroes', function () {
     }
   };
 });
+alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].data('activity', function () {
+  return {
+    image_icon_url: '',
+    image_banner_url: '',
+    handleChangeImageIcon: function handleChangeImageIcon(e) {
+      var file = e.target.files[0];
+      if (file) {
+        this.image_icon_url = URL.createObjectURL(file);
+      }
+    },
+    handleChangeImageBanner: function handleChangeImageBanner(e) {
+      var file = e.target.files[0];
+      if (file) {
+        this.image_banner_url = URL.createObjectURL(file);
+      }
+    }
+  };
+});
 alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].plugin(_alpinejs_intersect__WEBPACK_IMPORTED_MODULE_1__["default"]);
 window.Alpine = alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"];
 alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].start();

@@ -185,8 +185,8 @@
 			  Kegiatan
 
               <svg
-                class="absolute right-4 top-1/2 -translate-y-1/2 fill-current"
-                :class="{ 'rotate-180': (selected === 'Forms') }"
+                class="absolute right-4 top-1/2 -translate-y-1/2 fill-current
+						@php echo in_array(route_name(), ['activity.type.index']) ? 'rotate-180' : '' @endphp"
                 width="20"
                 height="20"
                 viewBox="0 0 20 20"
@@ -210,15 +210,17 @@
               <ul class="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
                 <li>
                   <a
-                    class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
-                    href="form-elements.html"
+                    class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white
+							@php echo in_array(route_name(), ['activity.type.index', 'activity.type.create.form']) ? 'text-white' : '' @endphp"
+                    href="{{ route('activity.type.index') }}"
                     :class="page === 'formElements' && '!text-white'"
                     >Jenis Kegiatan</a
                   >
                 </li>
                 <li>
                   <a
-                    class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
+                    class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white
+							@php echo in_array(route_name(), ['activity.schedule.index']) ? 'rotate-180' : '' @endphp"
                     href="form-layout.html"
                     :class="page === 'formLayout' && '!text-white'"
                     >Jadwal Kegiatan</a

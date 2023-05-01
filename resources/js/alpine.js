@@ -20,6 +20,24 @@ alphine.data('heroes', () => ({
 		}
 	}
 }))
+alphine.data('activity', () => ({
+	image_icon_url: '',
+	image_banner_url: '',
+	handleChangeImageIcon(e) {
+		let file = e.target.files[0]
+		if (file) 
+		{
+			this.image_icon_url = URL.createObjectURL(file)
+		}
+	},
+	handleChangeImageBanner(e) {
+		let file = e.target.files[0]
+		if (file) 
+		{
+			this.image_banner_url = URL.createObjectURL(file)
+		}
+	}
+}))
 alphine.plugin(intersect)
 window.Alpine = alphine
 alphine.start()
