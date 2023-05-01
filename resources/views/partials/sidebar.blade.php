@@ -102,7 +102,7 @@
                 />
               </svg>
 
-             Heroes 
+             Banner 
             </a>
           </li>
           <!-- Menu Item Calendar -->
@@ -139,7 +139,7 @@
 				</defs>
 			</svg>
 
-              Posts
+             Tulisan 
             </a>
           </li>
           <!-- Menu Item Profile -->
@@ -182,7 +182,7 @@
                 />
               </svg>
 
-              Activity
+			  Kegiatan
 
               <svg
                 class="absolute right-4 top-1/2 -translate-y-1/2 fill-current"
@@ -213,7 +213,7 @@
                     class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
                     href="form-elements.html"
                     :class="page === 'formElements' && '!text-white'"
-                    >Activity Type</a
+                    >Jenis Kegiatan</a
                   >
                 </li>
                 <li>
@@ -221,7 +221,7 @@
                     class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
                     href="form-layout.html"
                     :class="page === 'formLayout' && '!text-white'"
-                    >Activity List</a
+                    >Jadwal Kegiatan</a
                   >
                 </li>
               </ul>
@@ -256,7 +256,7 @@
                 />
               </svg>
 
-              Structure
+             Struktur Organisasi 
             </a>
           </li>
           <!-- Menu Item Tables -->
@@ -300,7 +300,7 @@
                 </defs>
               </svg>
 
-            User 
+            Manajemen Akun 
             </a>
           </li>
           <!-- Menu Item Settings -->
@@ -350,7 +350,7 @@
                 </defs>
               </svg>
 
-			  Report
+			 Laporan 
             </a>
           </li>
           <!-- Menu Item Chart -->
@@ -397,7 +397,7 @@
                 </defs>
               </svg>
 
-			  Transaction
+			 Transaksi 
 
               <svg
                 class="absolute right-4 top-1/2 -translate-y-1/2 fill-current"
@@ -428,7 +428,7 @@
                     class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
                     href="alerts.html"
                     :class="page === 'alerts' && '!text-white'"
-                    >Transaction Type</a
+                    >Jenis Transaksi</a
                   >
                 </li>
                 <li>
@@ -436,7 +436,7 @@
                     class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
                     href="buttons.html"
                     :class="page === 'buttons' && '!text-white'"
-                    >Transaction List</a
+                    >Daftar Transaksi</a
                   >
                 </li>
               </ul>
