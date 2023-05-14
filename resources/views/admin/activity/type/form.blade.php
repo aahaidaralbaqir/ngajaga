@@ -166,3 +166,12 @@
     </div>
 </main>
 @endsection
+@push('scripts')
+    <script src="{{ asset('tinymce/tinymce.js') }}"></script>
+    <script>
+        tinymce.init({
+            selector:'textarea',
+            height: 700
+        });
+    </script>
+@endpush
