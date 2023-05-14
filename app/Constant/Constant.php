@@ -13,6 +13,7 @@ class Constant {
 	const STORAGE_BANNER = 'banners';
 	const STORAGE_POST = 'posts';
 	const STORAGE_ACTIVITY = 'activity';
+	const STORAGE_TRANSACTION = 'transaction';
 
 	const ORDER_UP = 'up';
 	const ORDER_DOWN = 'down';

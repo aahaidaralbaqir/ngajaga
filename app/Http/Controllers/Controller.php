@@ -21,6 +21,7 @@ class Controller extends BaseController
 		$user = Auth::user();
 		$data = ['name' => $user->name, 
 				'email' => $user->email, 
+				'role'  => $user->role,
 				'avatar' => CommonUtil::getDefaultAvatar(),
 				'role_name' => ucfirst(CommonUtil::getRoleNameById($user->role))];
 		if (!empty($user->avatar))

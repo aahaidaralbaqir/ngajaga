@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HeroesController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\TransactionTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,6 +58,17 @@ Route::prefix('admin')->group(function () {
 			Route::post('/update', [ActivityController::class, 'updateActivityType'])->name('activity.type.update')->middleware('auth');
 		});
 	});
+
+
+	Route::prefix('transaction')->group(function () {
+		Route::prefix('type')->group(function () {
+			Route::get('/', [TransactionTypeController::class, 'index'])->name('transaction.type.index')->middleware('auth');
+			Route::get('/create', [TransactionTypeController::class, 'showCreateTransactionTypeForm'])->name('transaction.type.create.form')->middleware('auth');
+			Route::get('/update/{id}', [TransactionTypeController::class, 'showEditTransactionTypeForm'])->name('transaction.type.update.form')->middleware('auth');
+			Route::post('/create', [TransactionTypeController::class, 'createTransactionType'])->name('transaction.type.create')->middleware('auth');
+			Route::post('/update', [TransactionTypeController::class, 'updateTransactionType'])->name('transaction.type.update')->middleware('auth');
+		});
+	});
 	Route::get('/', [DashboardController::class, 'index'])->name('admin')->middleware('auth');
 });
 
@@ -65,3 +77,7 @@ Route::prefix('admin')->group(function () {
 Route::get('/login', function () {
 	return view('login');
 })->name('login')->middleware('guest');
+
+Route::get('/', function() {
+	return view('home');
+});
