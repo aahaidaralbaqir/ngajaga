@@ -13,7 +13,10 @@ class AlterTableTransactionTypeAddFieldStatus extends Migration
      */
     public function up()
     {
-        //
+		Schema::table('transaction_type', function(Blueprint $table) {
+			$table->boolean('status')->default(FALSE)->after('banner');
+			$table->renameColumn('banner', 'icon');
+		});
     }
 
     /**
@@ -23,6 +26,9 @@ class AlterTableTransactionTypeAddFieldStatus extends Migration
      */
     public function down()
     {
-        //
-    }
+		Schema::table('transaction_type', function(Blueprint $table) {
+			$table->renameColumn('icon', 'banner');
+			$table->dropColumn('status');
+		});
+	}
 }

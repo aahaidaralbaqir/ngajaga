@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Util\Common as CommonUtil;
+use App\Constant\Constant;
 use Illuminate\Support\Facades\Validator;
 use App\Models\TransactionType;
 use Illuminate\Support\Facades\Hash;
@@ -27,6 +28,7 @@ class TransactionTypeController extends Controller
         $user_profile = $this->initProfile();
         $data = array_merge(array(), $user_profile);
         $data['item'] = NULL;
+		$data['status'] = CommonUtil::getStatusExcept([Constant::STATUS_DRAFT, Constant::STATUS_PUBLISHED]);
         return view('admin.transaction.type.form', $data);
     }
 
@@ -39,9 +41,11 @@ class TransactionTypeController extends Controller
     {
         $user_input_field_rules = [
 			'name' => 'required',
-			'description' => 'required'
+			'description' => 'required',
+			'status' => 'required|in:' . implode(',', [Constant::STATUS_ACTIVE, Constant::STATUS_INACTIVE])
 		];
-		$user_input = $request->only('name', 'description');
+
+		$user_input = $request->only('name', 'description', 'status');
 
 		$validator = Validator::make($user_input, $user_input_field_rules);
 		if ($validator->fails())
@@ -49,19 +53,19 @@ class TransactionTypeController extends Controller
 						->withErrors($validator)
 						->withInput();
 		
-		if (!$request->hasFile('banner'))
-			return back()->withErrors(['banner' => 'Banner wajib di isi'])
+		if (!$request->hasFile('icon'))
+			return back()->withErrors(['icon' => 'Banner wajib di isi'])
 							->withInput();
 		
 		$filename = time() . '.' . $request->file('banner')->getClientOriginalExtension();
-		$path = $request->file('banner')->storeAs('public/transaction', $filename);
+		$path = $request->file('icon')->storeAs('public/transaction', $filename);
 		if (empty($path))
 		{
 			return back()->withErrors(['banner' => 'Gagal mengupload banner'])
 						->withInput();
 		}
 		
-		$user_input['banner'] = $filename;
+		$user_input['icon'] = $filename;
 
 		TransactionType::create($user_input);
 		return redirect()

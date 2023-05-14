@@ -28,6 +28,10 @@ class Constant {
 
 	const STATUS_PUBLISHED = 1;
 	const STATUS_DRAFT = 2;
+	const STATUS_ACTIVE = 3;
+	const STATUS_INACTIVE = 4;
 	const STATUS_PUBLISHED_NAME = 'Published';
 	const STATUS_DRAFT_NAME = 'Draft';
+	const STATUS_ACTIVE_NAME = 'Active';
+	const STATUS_INACTIVE_NAME = 'Inactive';
 }

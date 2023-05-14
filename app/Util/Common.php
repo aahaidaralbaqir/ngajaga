@@ -11,10 +11,20 @@ class Common {
 				Constant::ROLE_RAIKAGE => 'raikage'];
 	}
 
+	public static function getStatusExcept($statuses = array())
+	{
+		$status = [];
+		foreach(self::getStatus() as $key => $value)
+			if (!in_array($key, $statuses)) $status[$key] = $value; 
+		return $status;
+	}
+
 	public static function getStatus()
 	{
 		return [Constant::STATUS_DRAFT => Constant::STATUS_DRAFT_NAME,
-				Constant::STATUS_PUBLISHED => Constant::STATUS_PUBLISHED_NAME];
+				Constant::STATUS_PUBLISHED => Constant::STATUS_PUBLISHED_NAME,
+				Constant::STATUS_ACTIVE => Constant::STATUS_ACTIVE_NAME,
+				Constant::STATUS_INACTIVE => Constant::STATUS_INACTIVE_NAME];
 	}
 
 	public static function getStatusById($id)
