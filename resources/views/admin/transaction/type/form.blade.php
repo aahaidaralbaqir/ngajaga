@@ -2,7 +2,7 @@
 @section('content')
 <main x-data="activity"
 	  x-init="
-	  	image_banner_url = '@php echo empty($item) ? '' : $item->banner @endphp' 
+	  	image_banner_url = '@php echo empty($item) ? '' : $item->icon @endphp' 
 	  "
 	>
     <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">

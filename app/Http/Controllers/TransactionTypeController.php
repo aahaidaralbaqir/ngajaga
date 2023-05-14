@@ -32,9 +32,17 @@ class TransactionTypeController extends Controller
         return view('admin.transaction.type.form', $data);
     }
 
-    public function showEditTransactionTypeForm(Request $request)
+    public function showEditTransactionTypeForm(Request $request, $id)
     {
-
+		$current_record = TransactionType::find($id);
+		if (empty($current_record))
+			return back()
+				->with(['error' => 'Gagal mengupdate jenis transaksi, entitas tidak ditemukan']);
+		$user_profile = $this->initProfile();
+		$data = array_merge(array(), $user_profile);
+		$data['item'] = $current_record;
+		$data['status'] = CommonUtil::getStatusExcept([Constant::STATUS_DRAFT, Constant::STATUS_PUBLISHED]);
+		return view('admin.transaction.type.form', $data);	
     }
 
     public function createTransactionType(Request $request)
@@ -75,6 +83,42 @@ class TransactionTypeController extends Controller
 
     public function updateTransactionType(Request $request)
     {
+		$current_record = TransactionType::find($request->id);
+		if (empty($current_record))
+			return back()
+					->with(['error' => 'Berhasil mengupdate jenis transaksi, entitas tidak ditemukan']);
+		
+		$user_input_field_rules = [
+			'name' => 'required',
+			'description' => 'required',
+			'status' => 'required|in:' . implode(',', [Constant::STATUS_ACTIVE, Constant::STATUS_INACTIVE]),
+		];
+		$user_input = $request->only('name', 'description', 'status');
 
+		$validator = Validator::make($user_input, $user_input_field_rules);
+		if ($validator->fails())
+			return back()
+						->withErrors($validator)
+						->withInput();
+		
+		if ($request->hasFile('icon'))
+		{
+			$filename = time() . '.' . $request->file('icon')->getClientOriginalExtension();
+			$path = $request->file('icon')->storeAs('public/transaction', $filename);
+			if (empty($path))
+			{
+				return back()->withErrors(['icon' => 'Gagal mengupload banner'])
+							->withInput();
+			}
+			$file_location = 'public/transaction/' . CommonUtil::getFileName($current_record->icon);
+			Storage::delete($file_location);
+			$user_input['icon'] = $filename;
+		}
+		
+		TransactionType::where('id', $current_record->id)
+				->update($user_input);
+		return redirect()
+					->route('transaction.type.index')
+					->with(['success' => 'Berhasil mengupdate jenis transaksi']);
     }
 }

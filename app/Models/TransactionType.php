@@ -19,9 +19,13 @@ class TransactionType extends Model
 		'status'
     ];
 
-    public function getBannerAttribute($value)
+    public function getIconAttribute($value)
 	{
 		return CommonUtil::getStorage(Constant::STORAGE_TRANSACTION, $value);
 	}
 
+	public function getStatusAttribute($value)
+    {
+        return CommonUtil::getStatusById($value);
+    }
 }
