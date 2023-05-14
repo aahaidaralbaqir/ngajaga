@@ -57,11 +57,11 @@ class TransactionTypeController extends Controller
 			return back()->withErrors(['icon' => 'Banner wajib di isi'])
 							->withInput();
 		
-		$filename = time() . '.' . $request->file('banner')->getClientOriginalExtension();
+		$filename = time() . '.' . $request->file('icon')->getClientOriginalExtension();
 		$path = $request->file('icon')->storeAs('public/transaction', $filename);
 		if (empty($path))
 		{
-			return back()->withErrors(['banner' => 'Gagal mengupload banner'])
+			return back()->withErrors(['icon' => 'Gagal mengupload banner'])
 						->withInput();
 		}
 		
