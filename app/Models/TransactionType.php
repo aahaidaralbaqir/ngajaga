@@ -15,7 +15,8 @@ class TransactionType extends Model
     protected $fillable = [
         'name',
         'description',
-        'icon'
+        'icon',
+		'status'
     ];
 
     public function getBannerAttribute($value)
