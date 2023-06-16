@@ -75,4 +75,75 @@ class Common {
 			return $fullpath;
 		return $path[count($path) - 1];
 	}
+
+	public static function getDayOptions()
+    {
+        return [
+            'monday'    => [
+				'id'	=> 'monday',
+                'name'  => 'Senin',
+                'bit'   => pow(2, 0)],
+			'tuesday'    => [
+				'id'	=> 'tuesday',
+				'name'  => 'Selasa',
+				'bit'   => pow(2, 1)],
+			'wednesday'   => [
+				'id'	=> 'wednesday',
+				'name'  => 'Rabu',
+				'bit'   => pow(2, 2)],
+			'thursday'   => [
+				'id'	=> 'thursday',
+				'name'  => 'Kamis',
+				'bit'   => pow(2, 3)],
+			'friday'   => [
+				'id'	=> 'friday',
+				'name'  => 'Jumat',
+				'bit'   => pow(2, 4)],
+			'saturday'   => [
+				'id'	=> 'saturday',
+				'name'  => 'Sabtu',
+				'bit'   => pow(2, 5)],
+			'sunday'   => [
+				'id'	=> 'sunday',
+				'name'  => 'Minggu',
+				'bit'   => pow(2, 6)]];
+    }
+
+	public static function getBitOptionsFromValue($bit_options, $value)
+    {
+        $selected_options = array();
+
+        foreach ($bit_options as $key=>$option)
+        {
+            if (($value & $option['bit']) === $option['bit'])
+                $selected_options[$key] = $option;
+        }
+
+        return $selected_options;
+    }
+
+	public static function getBitOptionValueFormIds($bit_options, $ids = [])
+    {
+        $value = 0;
+        
+        foreach ($ids as $id)
+        {
+            if (array_key_exists($id, $bit_options))
+                $value = $value | $bit_options[$id]['bit'];
+        }
+        
+        return $value;
+    }
+
+	public static function getDayOptionsFromValue($value)
+    {
+        return self::getBitOptionsFromValue(self::getDayOptions(), $value);
+    }
+    
+    public static function getDayValueFromCheckOptionIds($ids = [])
+    {
+        return self::getBitOptionValueFormIds(self::getDayOptions(), $ids);
+    }
+
+
 }

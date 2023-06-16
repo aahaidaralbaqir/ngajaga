@@ -5312,6 +5312,8 @@ alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].data('activity', function () {
   return {
     image_icon_url: '',
     image_banner_url: '',
+    recurring: false,
+    showOnLandingPage: false,
     handleChangeImageIcon: function handleChangeImageIcon(e) {
       var file = e.target.files[0];
       if (file) {
@@ -5323,6 +5325,18 @@ alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].data('activity', function () {
       if (file) {
         this.image_banner_url = URL.createObjectURL(file);
       }
+    },
+    changeRecurring: function changeRecurring(e) {
+      var checkBox = document.querySelector('input[name="recurring"]');
+      checkBox.removeAttribute('checked');
+      if (!this.recurring) checkBox.setAttribute('checked', true);
+      this.recurring = !this.recurring;
+    },
+    changeShowOnLandingPage: function changeShowOnLandingPage(e) {
+      var checkBox = document.querySelector('input[name="show_landing_page"]');
+      checkBox.removeAttribute('checked');
+      if (!this.showOnLandingPage) checkBox.setAttribute('checked', true);
+      this.showOnLandingPage = !this.showOnLandingPage;
     }
   };
 });

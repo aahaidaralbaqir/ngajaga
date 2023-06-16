@@ -2,8 +2,10 @@
 @section('content')
 <main x-data="activity"
 	  x-init="
-	  	image_icon_url = '@php echo empty($item) ? '' : $item->icon @endphp' 
-	  	image_banner_url = '@php echo empty($item) ? '' : $item->banner @endphp' 
+        showOnLandingPage = @php echo $item->show_landing_page == 1 ? true : false @endphp;
+	  	image_icon_url = '@php echo empty($item) ? '' : $item->icon @endphp';
+	  	image_banner_url = '@php echo empty($item) ? '' : $item->banner @endphp';
+        recurring = @php echo count($selected_days) > 0 ? true : false @endphp;
 	  "
 	>
     <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
@@ -41,17 +43,81 @@
                             <span class="text-sm text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+                    <div class="mb-5.5">
+                        <label class="mb-3 block font-medium text-sm text-black dark:text-white">
+                            Nama partisipan
+                          </label>
+                        <input type="text" placeholder="Isi dengan nama orang yang ikut serta atau yang memimpin kegiatan ini" name="leader"
+                            value="{{ old('leader', !empty($item->leader) ? $item->leader : '') }}"
+                            class="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
+                        @error('leader')
+                            <span class="text-sm text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="mb-5.5">
+                        <div class="flex justify-between w-full gap-4">
+                            <div class="w-1/2">
+                                <label class="mb-3 block font-medium text-sm text-black dark:text-white">
+                                    Start time
+                                  </label>
+                                <input type="datetime-local" name="start_time" value="{{ old('start_time', !empty($item->start_time) ? $item->start_time : '') }}" class="custom-input-date custom-input-date-2 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                                @error('start_time')
+                                    <span class="text-sm text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="w-1/2">
+                                <label class="mb-3 block font-medium text-sm text-black dark:text-white">
+                                    End time
+                                  </label>
+                                <input type="datetime-local" name="end_time" value="{{ old('end_time', !empty($item->end_time) ? $item->end_time : '') }}" class="custom-input-date custom-input-date-2 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                                @error('end')
+                                    <span class="text-sm text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-5.5">
+                        <label class="mb-3 block font-medium text-sm text-black dark:text-white">
+                            Berulang
+                        </label>
+                        <div class="relative">
+                          <input type="checkbox" name="recurring" id="toggle4" class="sr-only" @change="recurring = !recurring">
+                          <div :class="recurring && '!right-1 !translate-x-full' && '!bg-primary'" class="block h-8 w-14 rounded-full bg-black" @click="changeRecurring"></div>
+                            <div :class="recurring && '!right-1 !translate-x-full'" @click="changeRecurring" class="absolute left-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white transition"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-5.5" x-show="recurring">
+                        <label class="mb-3 block font-medium text-sm text-black dark:text-white">
+                            Hari Berulang
+                        </label>
+                        @foreach ($days as $each_day)
+                            @php
+                                $checked = FALSE;
+                                if (!empty($selected_days) && in_array($each_day['id'], $selected_days))
+                                    $checked = TRUE;
+                            @endphp
+                            <label for="{{ $each_day['id'] }}" class="flex cursor-pointer select-none items-center">
+                                <div class="relative">
+                                <input name="recurring_days[]" type="checkbox" id="{{ $each_day['id'] }}" value="{{ $each_day['id'] }}" {{ $checked ? 'checked' : '' }}>
+                                </div>
+                                <span class="ml-2">{{ $each_day['name'] }}</span>
+                            </label>
+                        @endforeach
+                    </div>
 
                     <div class="mb-5.5">
                         <label class="mb-3 block font-medium text-sm text-black dark:text-white">
                             Deskripsi
-                          </label>
+                        </label>
                         <textarea rows="6" placeholder="Isi deskripsi jenis kegiatan" name="description"
                           class="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">{{ old('description', !empty($item->description) ? $item->description : '') }}</textarea>
                         @error('description')
                             <span class="text-sm text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+
 
                     <div class="mb-5.5  lg:flex lg:gap-4.5">
                         <div class="flex-1">
@@ -149,6 +215,16 @@
 									<img src="/img/user/user-01.png" :src="image_icon_url" alt="User" />
 								</div>
 							</div>
+                    </div>
+                    <div class="mb-5.5">
+                        <label class="mb-3 block font-medium text-sm text-black dark:text-white">
+                            Tampilan dihalaman depan
+                        </label>
+                        <div class="relative">
+                          <input type="checkbox" x-model="showOnLandingPage" name="show_landing_page" id="toggle4" class="sr-only" @change="showOnLandingPage = !showOnLandingPage">
+                          <div :class="showOnLandingPage && '!right-1 !translate-x-full' && '!bg-primary'" class="block h-8 w-14 rounded-full bg-black" @click="changeShowOnLandingPage"></div>
+                            <div :class="showOnLandingPage && '!right-1 !translate-x-full'" @click="changeShowOnLandingPage" class="absolute left-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white transition"></div>
+                        </div>
                     </div>
                     <div class="flex justify-end gap-4.5">
                     <button

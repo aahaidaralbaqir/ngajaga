@@ -23,6 +23,7 @@ class ActivityController extends Controller
 		$user_profile = $this->initProfile();
 		$data = array_merge(array(), $user_profile);
 		$data['item'] = NULL;
+		$data['days'] = array_values(CommonUtil::getDayOptions());
 		return view('admin.activity.type.form', $data);	
 	}
 
@@ -34,7 +35,11 @@ class ActivityController extends Controller
 				->with(['error' => 'Gagal mengupdate jenis kegiatan, entitas tidak ditemukan']);
 		$user_profile = $this->initProfile();
 		$data = array_merge(array(), $user_profile);
-		$data['item'] = $current_record;
+		$data['days'] = array_values(CommonUtil::getDayOptions());
+		$current_record->start_time = date("Y-m-d\TH:i", $current_record->start_time);  
+		$current_record->end_time = date("Y-m-d\TH:i", $current_record->end_time);  
+		$data['item'] = $current_record;	
+		$data['selected_days'] =  array_keys(CommonUtil::getDayOptionsFromValue($current_record->recurring_days));
 		return view('admin.activity.type.form', $data);	
 	}
 
@@ -42,9 +47,11 @@ class ActivityController extends Controller
 	{
 		$user_input_field_rules = [
 			'name' => 'required',
-			'description' => 'required'
+			'description' => 'required',
+			'start_time' => 'required',
+			'end_time'	=> 'required'
 		];
-		$user_input = $request->only('name', 'description');
+		$user_input = $request->only('name', 'description', 'start_time', 'end_time', 'leader');
 
 		$validator = Validator::make($user_input, $user_input_field_rules);
 		if ($validator->fails())
@@ -78,6 +85,19 @@ class ActivityController extends Controller
 						->withInput();
 		}
 		$user_input['icon'] = $filename;
+
+		if ($request->has('recurring') && $request->has('recurring_days'))
+		{
+			$selected_days = $request->input('recurring_days');
+			$user_input['recurring'] = TRUE;
+			$user_input['recurring_days'] = CommonUtil::getDayValueFromCheckOptionIds($selected_days);
+		}
+		
+		if ($request->has('show_landing_page')) $user_input['show_landing_page'] = TRUE;
+		
+		$user_input['start_time'] = strtotime($request->input('start_time'));
+		$user_input['end_time'] = strtotime($request->input('end_time'));
+		
 		ActivityType::create($user_input);
 		return redirect()
 					->route('activity.type.index')
@@ -93,9 +113,11 @@ class ActivityController extends Controller
 		
 		$user_input_field_rules = [
 			'name' => 'required',
-			'description' => 'required'
+			'description' => 'required',
+			'start_time' => 'required',
+			'end_time'	=> 'required'
 		];
-		$user_input = $request->only('name', 'description');
+		$user_input = $request->only('name', 'description', 'start_time', 'end_time', 'leader');
 
 		$validator = Validator::make($user_input, $user_input_field_rules);
 		if ($validator->fails())
@@ -130,6 +152,25 @@ class ActivityController extends Controller
 			Storage::delete($file_location);
 			$user_input['icon'] = $filename;
 		}
+
+		$user_input['recurring'] = FALSE;
+		if ($request->has('recurring_days') && count($request->input('recurring_days')) > 0)
+		{
+			$selected_days = $request->input('recurring_days');
+			$user_input['recurring'] = TRUE;
+			$user_input['recurring_days'] = CommonUtil::getDayValueFromCheckOptionIds($selected_days);
+		}
+		
+		if ($request->has('recurring_days') && count($request->input('recurring_days')) == 0)
+		{
+			$user_input['recurring'] = FALSE;
+			$user_input['recurring_days'] = 0;
+		}
+		
+		if ($request->has('show_landing_page')) $user_input['show_landing_page'] = TRUE;
+		
+		$user_input['start_time'] = strtotime($request->input('start_time'));
+		$user_input['end_time'] = strtotime($request->input('end_time'));
 		
 		ActivityType::where('id', $current_record->id)
 				->update($user_input);

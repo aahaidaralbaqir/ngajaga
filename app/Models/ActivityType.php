@@ -16,7 +16,13 @@ class ActivityType extends Model
 		'name',
 		'icon',
 		'description',
-		'banner'
+		'banner',
+		'start_time',
+		'end_time',
+		'recurring',
+		'recurring_days',
+		'leader',
+		'show_landing_page'
 	];
 
 	public function getIconAttribute($value)
