@@ -57,6 +57,10 @@ Route::prefix('admin')->group(function () {
 			Route::post('/create', [ActivityController::class, 'createActivityType'])->name('activity.type.create')->middleware('auth');
 			Route::post('/update', [ActivityController::class, 'updateActivityType'])->name('activity.type.update')->middleware('auth');
 		});
+
+		Route::prefix('schedule')->group(function () {
+			Route::get('/', [ActivityController::class, 'getSchedule'])->name('activity.schedule.index')->middleware('auth');
+		});
 	});
 
 

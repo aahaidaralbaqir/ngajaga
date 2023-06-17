@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Util\Common as CommonUtil;
 use App\Constant\Constant;
 
-class ActivityType extends Model
+class Activity extends Model
 {
     use HasFactory;
 

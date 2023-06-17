@@ -186,7 +186,7 @@
 
               <svg
                 class="absolute right-4 top-1/2 -translate-y-1/2 fill-current
-						@php echo in_array(route_name(), ['activity.type.index']) ? 'rotate-180' : '' @endphp"
+						@php echo in_array(route_name(), ['activity.type.index', 'activity.schedule.index']) ? 'rotate-180' : '' @endphp"
                 width="20"
                 height="20"
                 viewBox="0 0 20 20"
@@ -211,18 +211,16 @@
                 <li>
                   <a
                     class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white
-							@php echo in_array(route_name(), ['activity.type.index', 'activity.type.create.form', 'activity.type.update.form']) ? 'text-white' : '' @endphp"
+							            @php echo in_array(route_name(), ['activity.type.index', 'activity.type.create.form', 'activity.type.update.form']) ? 'text-white' : '' @endphp"
                     href="{{ route('activity.type.index') }}"
-                    :class="page === 'formElements' && '!text-white'"
                     >Jenis Kegiatan</a
                   >
                 </li>
                 <li>
                   <a
                     class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white
-							@php echo in_array(route_name(), ['activity.schedule.index']) ? 'rotate-180' : '' @endphp"
-                    href="form-layout.html"
-                    :class="page === 'formLayout' && '!text-white'"
+							      @php echo in_array(route_name(), ['activity.schedule.index']) ? 'text-white' : '' @endphp"
+                    href="{{ route('activity.schedule.index') }}"
                     >Jadwal Kegiatan</a
                   >
                 </li>
