@@ -6,6 +6,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HeroesController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\StructureController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\TransactionTypeController;
 
@@ -47,6 +48,15 @@ Route::prefix('admin')->group(function () {
 		Route::post('/create', [PostController::class, 'createPost'])->name('post.create')->middleware('auth');
 		Route::get('/update/{postId}', [PostController::class, 'showUpdateForm'])->name('post.update.form')->middleware('auth');
 		Route::post('/update', [PostController::class, 'updatePost'])->name('post.update')->middleware('auth');
+	});
+
+	Route::prefix('structure')->group(function () {
+		Route::get('/', [StructureController::class, 'index'])->name('structure.index')->middleware('auth');
+		Route::get('/create', [StructureController::class, 'showCreateStructureForm'])->name('structure.create.form')->middleware('auth');
+		Route::post('/create', [StructureController::class, 'createStructure'])->name('structure.create')->middleware('auth');
+		Route::get('/update/{structureId}', [StructureController::class, 'showEditStructureForm'])->name('structure.update.form')->middleware('auth');
+		Route::get('/delete/{structureId}', [StructureController::class, 'deleteStructure'])->name('structure.delete')->middleware('auth');
+		Route::post('/update', [StructureController::class, 'updateStructure'])->name('structure.update')->middleware('auth');
 	});
 
 	Route::prefix('activity')->group(function () {

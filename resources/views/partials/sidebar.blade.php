@@ -233,10 +233,8 @@
           <!-- Menu Item Tables -->
           <li>
             <a
-              class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-              href="tables.html"
-              @click="selected = (selected === 'Tables' ? '':'Tables')"
-              :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Tables') && (page === 'Tables') }"
+            class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 @php echo in_array(route_name(), ['structure.index', 'structure.create.form', 'structure.update.form']) ? 'bg-graydark dark:bg-meta-4' : '' @endphp"
+            href="{{ route('structure.index') }}"
             >
 			  <svg
                 class="fill-current"
