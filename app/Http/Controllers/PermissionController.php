@@ -14,7 +14,7 @@ class PermissionController extends Controller
     {
         $user_profile = $this->initProfile();
 		$data = array_merge(array(), $user_profile);
-		$data['permission'] = Permission::all();
+		$data['permission'] = Permission::all()->toArray();
 		return view('admin.permission.index', $data);
     }
 
