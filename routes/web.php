@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HeroesController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\StructureController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\TransactionTypeController;
 
@@ -25,6 +26,18 @@ use App\Http\Controllers\TransactionTypeController;
 Route::prefix('admin')->group(function () {
     Route::post('/login', [UserController::class, 'login']);
 	Route::get('/logout', [UserController::class, 'logout'])->name('logout')->middleware('auth');
+
+
+	Route::prefix('account')->group(function () {
+		Route::prefix('permission')->group(function () {
+			Route::get('/', [PermissionController::class, 'index'])->name('permission.index')->middleware('auth');
+			Route::get('/create', [PermissionController::class, 'createForm'])->name('permission.create.form')->middleware('auth');
+			Route::post('/create', [PermissionController::class, 'createPermission'])->name('permission.create')->middleware('auth');
+			Route::get('/update/{permissionId}', [PermissionController::class, 'updateForm'])->name('permission.update.form')->middleware('auth');
+			Route::get('/delete/{permissionId}', [PermissionController::class, 'deletePermission'])->name('permission.delete')->middleware('auth');
+			Route::post('/update', [PermissionController::class, 'updatePermission'])->name('permission.update')->middleware('auth');
+		});
+	});
 	
 	Route::prefix('setting')->group(function () {
 		Route::get('/',	[SettingController::class, 'index'])->name('setting.index')->middleware('auth');
