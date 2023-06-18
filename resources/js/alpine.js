@@ -25,6 +25,7 @@ alphine.data('activity', () => ({
 	image_banner_url: '',
 	recurring: false,
 	showOnLandingPage: false,
+	status: false,
 	handleChangeImageIcon(e) {
 		let file = e.target.files[0]
 		if (file) 
@@ -45,6 +46,14 @@ alphine.data('activity', () => ({
 		checkBox.removeAttribute('checked')
 		if (!this.recurring) checkBox.setAttribute('checked', true)
 		this.recurring = !this.recurring
+	},
+
+	changeStatus(e) 
+	{
+		let checkBox = document.querySelector('input[name="status"]')
+		checkBox.removeAttribute('checked')
+		if (!this.status) checkBox.setAttribute('checked', true)
+		this.status = !this.status
 	},
 	changeShowOnLandingPage(e)
 	{

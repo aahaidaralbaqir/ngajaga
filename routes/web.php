@@ -6,6 +6,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HeroesController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\RolesController;
 use App\Http\Controllers\StructureController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ActivityController;
@@ -36,6 +37,14 @@ Route::prefix('admin')->group(function () {
 			Route::get('/update/{permissionId}', [PermissionController::class, 'updateForm'])->name('permission.update.form')->middleware('auth');
 			Route::get('/delete/{permissionId}', [PermissionController::class, 'deletePermission'])->name('permission.delete')->middleware('auth');
 			Route::post('/update', [PermissionController::class, 'updatePermission'])->name('permission.update')->middleware('auth');
+		});
+
+		Route::prefix('roles')->group(function () {
+			Route::get('/', [RolesController::class, 'index'])->name('roles.index')->middleware('auth');
+			Route::get('/create', [RolesController::class, 'createForm'])->name('roles.create.form')->middleware('auth');
+			Route::post('/create', [RolesController::class, 'createRole'])->name('roles.create')->middleware('auth');
+			Route::get('/update/{rolesId}', [RolesController::class, 'updateForm'])->name('roles.update.form')->middleware('auth');
+			Route::post('/update', [RolesController::class, 'updateRole'])->name('roles.update')->middleware('auth');
 		});
 	});
 	
