@@ -9,7 +9,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Util\Common as CommonUtil;
 use App\Constant\Constant;
-
+use App\Models\User;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -18,14 +18,12 @@ class Controller extends BaseController
 	{
 		$current_user = Auth::user();
 
-		$user = Auth::user();
+		$user = User::where('id', $current_user->id)->with('roles')->first();
 		$data = ['name' => $user->name, 
-				'email' => $user->email, 
-				'role'  => $user->role,
-				'avatar' => CommonUtil::getDefaultAvatar(),
-				'role_name' => ucfirst(CommonUtil::getRoleNameById($user->role))];
-		if (!empty($user->avatar))
-			$data['avatar'] = CommonUtil::getStorage(Constant::STORAGE_AVATAR, $user->avatar);
+				'email' => $user->email,
+				'role_name' => $user->roles->name,
+				'avatar' => $user->avatar];
+		
 		return $data;
 	}
 }

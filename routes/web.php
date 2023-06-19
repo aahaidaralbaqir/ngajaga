@@ -46,6 +46,15 @@ Route::prefix('admin')->group(function () {
 			Route::get('/update/{rolesId}', [RolesController::class, 'updateForm'])->name('roles.update.form')->middleware('auth');
 			Route::post('/update', [RolesController::class, 'updateRole'])->name('roles.update')->middleware('auth');
 		});
+
+		Route::prefix('user')->group(function () {
+			Route::get('/', [UserController::class, 'index'])->name('user.index')->middleware('auth');
+			Route::get('/create', [UserController::class, 'createForm'])->name('user.create.form')->middleware('auth');
+			Route::post('/create', [UserController::class, 'createUser'])->name('user.create')->middleware('auth');
+			Route::get('/update/{userId}', [UserController::class, 'updateForm'])->name('user.update.form')->middleware('auth');
+			Route::get('/delete/{userId}', [UserController::class, 'deleteUser'])->name('user.delete')->middleware('auth');
+			Route::post('/update', [UserController::class, 'updateUser'])->name('user.update')->middleware('auth');
+		});
 	});
 	
 	Route::prefix('setting')->group(function () {

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Util\Common as CommonUtil;
+use App\Constant\Constant;
 
 class User extends Authenticatable
 {
@@ -21,7 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-		'role'
+        'role_id',
     ];
 
     /**
@@ -42,4 +44,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function roles()
+    {
+        return $this->belongsTo(Roles::class, 'role_id', 'id');
+    }
+
+    public function getAvatarAttribute($value)
+    {
+        if ($value == "")
+        {
+            return CommonUtil::getDefaultAvatar();
+        } 
+        return CommonUtil::getStorage(Constant::STORAGE_AVATAR, $value);
+    }
 }

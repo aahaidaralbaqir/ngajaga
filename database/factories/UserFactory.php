@@ -40,21 +40,14 @@ class UserFactory extends Factory
         });
     }
 
-	public function hokage()
+	public function administrator()
 	{
 		return $this->state(function (array $attributes) {
 			return [
-				'role' => 1
+				'role_id' => 1
 			];
 		});
 	}
 
-	public function raikage()
-	{
-		return $this->state(function (array $attributes) {
-			return [
-				'role' => 2
-			];
-		});
-	}
+	
 }

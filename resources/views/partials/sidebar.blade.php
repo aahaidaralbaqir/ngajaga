@@ -92,7 +92,6 @@
                 <path d="M10.8283 9.05627H7.17207C4.16269 9.05627 1.71582 11.5313 1.71582 14.5406V16.875C1.71582 17.2125 1.99707 17.5219 2.3627 17.5219C2.72832 17.5219 3.00957 17.2407 3.00957 16.875V14.5406C3.00957 12.2344 4.89394 10.3219 7.22832 10.3219H10.8564C13.1627 10.3219 15.0752 12.2063 15.0752 14.5406V16.875C15.0752 17.2125 15.3564 17.5219 15.7221 17.5219C16.0877 17.5219 16.3689 17.2407 16.3689 16.875V14.5406C16.2846 11.5313 13.8377 9.05627 10.8283 9.05627Z" fill="" />
               </svg> Organization </a>
           </li>
-          @if ($role == App\Constant\Constant::ROLE_HOKAGE)
             <li>
               <a class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4" href="#" @click.prevent="selected = (selected === 'Users' ? '':'Users')">
                 <svg class="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -120,18 +119,16 @@
                   </li>
                   <li>
                     <a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white
-                      @php echo in_array(route_name(), ['activity.schedule.index']) ? 'text-white' : '' @endphp" href="{{ route('activity.schedule.index') }}">Users</a>
+                      @php echo in_array(route_name(), ['user.index', 'user.create.form', 'user.update.form']) ? 'text-white' : '' @endphp" href="{{ route('user.index') }}">Users</a>
                   </li>
                 </ul>
               </div>
               <!-- Dropdown Menu End -->
             </li>
-          @endif
         </ul>
       </div>
 
       <!-- Others Group --> 
-      @if ($role == App\Constant\Constant::ROLE_HOKAGE) 
         <div>
           <h3 class="mb-4 ml-4 text-sm font-medium text-bodydark2">INFAQ &amp; ZAKAT</h3>
           <ul class="mb-6 flex flex-col gap-1.5">
@@ -185,7 +182,6 @@
             <!-- Menu Item Auth Pages -->
           </ul>
         </div> 
-      @endif
     </nav>
     <!-- Sidebar Menu -->
   </div>
