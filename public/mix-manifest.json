@@ -194,5 +194,6 @@
     "/tinymce/themes/silver/theme.js": "/tinymce/themes/silver/theme.js",
     "/tinymce/themes/silver/theme.min.js": "/tinymce/themes/silver/theme.min.js",
     "/tinymce/tinymce.js": "/tinymce/tinymce.js",
-    "/tinymce/tinymce.min.js": "/tinymce/tinymce.min.js"
+    "/tinymce/tinymce.min.js": "/tinymce/tinymce.min.js",
+    "/fonts/fontawesome-webfont.woff": "/fonts/fontawesome-webfont.woff"
 }

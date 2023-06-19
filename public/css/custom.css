@@ -1,0 +1,7 @@
+.container .row .col-md-7 {
+    margin: 150px 0 100px;
+}
+
+div.dropdown-menu {
+    display: none;
+}
