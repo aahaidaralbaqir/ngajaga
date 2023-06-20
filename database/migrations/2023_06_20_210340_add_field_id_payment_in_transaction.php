@@ -15,7 +15,6 @@ class AddFieldIdPaymentInTransaction extends Migration
     {
         Schema::table('transaction', function (Blueprint $table) {
             $table->unsignedInteger('id_payment_type')->after('order_id')->notNull();
-            $table->foreign('id_payment_type')->references('id')->on('payment_type');
         });
     }
 
@@ -27,7 +26,7 @@ class AddFieldIdPaymentInTransaction extends Migration
     public function down()
     {
         Schema::table('transaction', function (Blueprint $table) {
-            $table->dropColumn('id_payment');
+            $table->dropColumn('id_payment_type');
         });
     }
 }
