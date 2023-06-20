@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Validator;
+use App\Util\Common as CommonUtil;
+use Illuminate\Support\Facades\Storage;
 
 class PaymentController extends Controller
 {
@@ -12,7 +14,7 @@ class PaymentController extends Controller
     {
         $user_profile = $this->initProfile();
 		$data = array_merge(array(), $user_profile);
-		$data['payment'] = Payment::all(); 
+		$data['payment'] = Payment::where('id_parent', '>', 0)->get(); 
 		return view('admin.payment.index', $data); 
     }
 
@@ -55,7 +57,7 @@ class PaymentController extends Controller
 						->withErrors($validator)
 						->withInput();
 
-        $user_input['status'] = FALSE;
+        $user_input['status'] = 1;
 
         if ($request->hasFile('payment_logo'))
 		{
@@ -68,7 +70,7 @@ class PaymentController extends Controller
 			}
 			$user_input['payment_logo'] = $filename;
 		}
-        if ($request->has('status')) $user_input['status'] = TRUE;
+        if ($request->has('status')) $user_input['status'] = 2;
 		Payment::create($user_input);
 		return redirect()
 					->route('payment.index')

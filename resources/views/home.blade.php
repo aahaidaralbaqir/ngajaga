@@ -519,7 +519,7 @@
 
         <!-- /.contact section -->
         <div id="contact">
-            <div class="contact fullscreen parallax" style="background-image:url('images/bg.jpg');" data-img-width="2000" data-img-height="1334" data-diff="100">
+            <div class="contact fullscreen parallax" style="background-image:url('https://images7.alphacoders.com/111/1117529.jpg');" data-img-width="2000" data-img-height="1334" data-diff="100">
                 <div class="overlay">
                     <div class="container">
                         <div class="row contact-row">

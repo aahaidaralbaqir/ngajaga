@@ -34,7 +34,7 @@
     <div class="grid grid-cols-6 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
         <div class="col-span-2 flex items-center">
             <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
-                <img src="{{ $item->payment_logo }}" alt="Product" class="h-15 w-15 rounded-md" />
+                <img src="{{ $item->payment_logo }}" alt="Product" class="w-15 rounded-md" />
                 <p class="font-medium text-sm text-black dark:text-white">{{ $item['name']; }}</p>
             </div>
         </div>

@@ -66,9 +66,57 @@
 
         <div id="main">
             <div class="container">
-                <div class="s-container form-header">
+                <div class="s-container form-header hidden">
                     <img src="https://baznas.go.id/application/views/assets/images/banner_zakat.jpg" alt="">
                     <h2>TUNAIKAN ZAKAT, INFAK, DAN SEDEKAH ANDA DENGAN <span style="color: #1f96e0">AMAN DAN MUDAH</span></h2>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <h3>Pilih Jenis Dana</h3>
+                                <select name="id_transaction_type" class="form-control">
+                                    @foreach ($transaction_type as $item)
+                                        @php
+                                            $checked = FALSE;
+                                            if ($item->id == $transaction_record->id_transaction_type)
+                                                $checked = TRUE;
+                                        @endphp
+                                        <option value="{{ $item->id }}" {{ $checked ? 'selected' : '' }}>{{ $item->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon1">Rp</span>
+                                    <input type="text" class="form-control" name="paid_amount" placeholder="Masukan Nominal" aria-describedby="basic-addon1">
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>Silahkan lengkapi data diri anda:</h3>
+                       
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="name" placeholder="Nama Lengkap" value="{{ old('name', $transaction_record->customer->name) }}" />
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="phone_number" value="{{ old('name', $transaction_record->customer->phone_number) }}" placeholder="Nomer gawai">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="email" class="form-control" name="email" placeholder="Email" value="{{ old('email', $transaction_record->customer->email) }}">
+                        </div>
+                    </div>
+                    <span>
+                        Dengan mengisi formulir ini, donatur akan menerima Bukti Setor Zakat (BSZ), laporan penyaluran, info layanan BAZNAS melalui email & whatsapp.
+                    </span>
+                    <button class="btn btn-primary btn-block">Pilih Metode Pembayaran</button>
+                </div>
+
+                <div class="s-container form-header">
+                    <img src="https://baznas.go.id/application/views/assets/images/banner_zakat.jpg" alt="">
+                    <h3 class="text-center">Metode Pembayaran</h3>
+                    <p class="text-center">Silahkan pilih salah satu metode pembayaran</p>
                     <div class="card">
                         <div class="card-body">
                             <div class="form-group">

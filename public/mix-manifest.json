@@ -49,6 +49,7 @@
     "/fonts/Satoshi-VariableItalic.ttf": "/fonts/Satoshi-VariableItalic.ttf",
     "/fonts/Satoshi-VariableItalic.woff": "/fonts/Satoshi-VariableItalic.woff",
     "/fonts/Satoshi-VariableItalic.woff2": "/fonts/Satoshi-VariableItalic.woff2",
+    "/fonts/fontawesome-webfont.woff": "/fonts/fontawesome-webfont.woff",
     "/tinymce/icons/default/icons.js": "/tinymce/icons/default/icons.js",
     "/tinymce/icons/default/icons.min.js": "/tinymce/icons/default/icons.min.js",
     "/tinymce/icons/default/index.js": "/tinymce/icons/default/index.js",
@@ -194,6 +195,5 @@
     "/tinymce/themes/silver/theme.js": "/tinymce/themes/silver/theme.js",
     "/tinymce/themes/silver/theme.min.js": "/tinymce/themes/silver/theme.min.js",
     "/tinymce/tinymce.js": "/tinymce/tinymce.js",
-    "/tinymce/tinymce.min.js": "/tinymce/tinymce.min.js",
-    "/fonts/fontawesome-webfont.woff": "/fonts/fontawesome-webfont.woff"
+    "/tinymce/tinymce.min.js": "/tinymce/tinymce.min.js"
 }

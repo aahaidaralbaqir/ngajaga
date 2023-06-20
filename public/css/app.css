@@ -871,12 +871,6 @@ video {
 .w-24 {
   width: 6rem;
 }
-.w-3\/5 {
-  width: 60%;
-}
-.w-4\/5 {
-  width: 80%;
-}
 .w-5 {
   width: 1.25rem;
 }
@@ -1064,9 +1058,6 @@ video {
 .gap-5\.5 {
   gap: 1.375rem;
 }
-.gap-7 {
-  gap: 1.75rem;
-}
 .gap-8 {
   gap: 2rem;
 }
@@ -1203,10 +1194,6 @@ video {
 .bg-\[\#13C296\] {
   --tw-bg-opacity: 1;
   background-color: rgb(19 194 150 / var(--tw-bg-opacity));
-}
-.bg-\[\#219260\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(33 146 96 / var(--tw-bg-opacity));
 }
 .bg-\[\#34D399\] {
   --tw-bg-opacity: 1;
@@ -1424,9 +1411,6 @@ video {
 }
 .pt-8 {
   padding-top: 2rem;
-}
-.pb-1 {
-  padding-bottom: 0.25rem;
 }
 .text-left {
   text-align: left;
