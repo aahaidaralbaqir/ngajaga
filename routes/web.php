@@ -8,6 +8,7 @@ use App\Http\Controllers\HeroesController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\StructureController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\HomeController;
@@ -56,6 +57,14 @@ Route::prefix('admin')->group(function () {
 			Route::get('/update/{userId}', [UserController::class, 'updateForm'])->name('user.update.form')->middleware('auth');
 			Route::get('/delete/{userId}', [UserController::class, 'deleteUser'])->name('user.delete')->middleware('auth');
 			Route::post('/update', [UserController::class, 'updateUser'])->name('user.update')->middleware('auth');
+		});
+
+		Route::prefix('payment')->group(function () {
+			Route::get('/', [PaymentController::class, 'index'])->name('payment.index')->middleware('auth');
+			Route::get('/create', [PaymentController::class, 'createForm'])->name('payment.create.form')->middleware('auth');
+			Route::post('/create', [PaymentController::class, 'createPayment'])->name('payment.create')->middleware('auth');
+			Route::get('/update/{paymentId}', [PaymentController::class, 'updateForm'])->name('payment.update.form')->middleware('auth');
+			Route::post('/update', [PaymentController::class, 'updatePayment'])->name('payment.update')->middleware('auth');
 		});
 	});
 	

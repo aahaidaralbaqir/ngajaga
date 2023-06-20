@@ -173,6 +173,9 @@
                     <a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white @php echo in_array(route_name(), ['transaction.type.index', 'transaction.type.create.form', 'transaction.type.update.form']) ? 'text-white' : '' @endphp" href="{{ route('transaction.type.index') }}">Type</a>
                   </li>
                   <li>
+                    <a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white @php echo in_array(route_name(), ['payment.index', 'payment.create.form', 'payment.update.form']) ? 'text-white' : '' @endphp" href="{{ route('payment.index') }}">Payment</a>
+                  </li>
+                  <li>
                     <a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white" href="buttons.html" :class="page === 'buttons' && '!text-white'">Transaction List</a>
                   </li>
                 </ul>
