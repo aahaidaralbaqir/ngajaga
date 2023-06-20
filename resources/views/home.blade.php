@@ -17,7 +17,7 @@
         <!-- Colors -->
         <link href="{{ URL::asset('css/css-index.css') }}" rel="stylesheet" media="screen">
         <link href="{{ URL::asset('css/custom.css') }}" rel="stylesheet">
-        <!-- <link href="css/css-index-green.css" rel="stylesheet" media="screen"> -->
+        <!-- <link href="css/css-index-#1f96e0.css" rel="stylesheet" media="screen"> -->
         <!-- <link href="css/css-index-purple.css" rel="stylesheet" media="screen"> -->
         <!-- <link href="css/css-index-red.css" rel="stylesheet" media="screen"> -->
         <!-- <link href="css/css-index-orange.css" rel="stylesheet" media="screen"> -->
@@ -60,22 +60,34 @@
 
                             <div class="signup-header wow fadeInUp">
                                 <h3 class="form-title text-center">BAYAR INFAQ ATAU ZAKAT</h3>
-                                <form class="form-header" action="http://moxdesign.us10.list-manage.com/subscribe/post" role="form" method="POST" id="#">
+                                {{ Form::open(['route' => 'transaction.create', 'method' => 'POST', 'class' => 'form-header']); }}
                                     <div class="form-group">
-                                        <select name="" id="" class="form-control input-lg">
-                                            <option value="">Pilih Kategori</option>
-                                            <option value="">Infaq</option>
-                                            <option value="">Sedekah</option>
-                                            <option value="">Zakat</option>
+                                        <select name="id_transaction_type" id="" class="form-control input-lg">
+                                            <option value="0">Pilih Kategori</option>
+                                            @foreach ($transaction_type as $transaction)
+                                                <option value="{{ $transaction->id }}">{{ $transaction->name }}</option>
+                                            @endforeach
                                         </select>
+                                        @error('id_transaction_type')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
-                                        <input class="form-control input-lg" name="MERGE0" id="email" type="name" placeholder="Nama kamu" required>
+                                        <input class="form-control input-lg" name="name" type="text" placeholder="Nama kamu" required>
+                                        @error('name')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
-                                        <input type="submit" class="btn btn-warning btn-block btn-lg" value="LANJUTKAN">
+                                        <input class="form-control input-lg" name="email" type="emai" placeholder="Email kamu" required>
+                                        @error('email')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
-                                </form>
+                                    <div class="form-group">
+                                        <input type="submit" class="btn btn-primary btn-block btn-lg" value="LANJUTKAN">
+                                    </div>
+                                {{ Form::close() }}
                             </div>				
 
                         </div>

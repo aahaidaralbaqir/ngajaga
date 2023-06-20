@@ -10,6 +10,8 @@ use App\Http\Controllers\RolesController;
 use App\Http\Controllers\StructureController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TransactionTypeController;
 
 /*
@@ -118,11 +120,17 @@ Route::prefix('admin')->group(function () {
 });
 
 
-
 Route::get('/login', function () {
 	return view('login');
 })->name('login')->middleware('guest');
 
-Route::get('/', function() {
-	return view('home');
+Route::get('/', [HomeController::class, 'index'])->name('homepage');
+Route::get('/pay', [HomeController::class, 'pay'])->name('pay');
+
+Route::prefix('transaction')->group(function () {
+    Route::post('/create', [TransactionController::class, 'create'])->name('transaction.create');
+    Route::post('/register', [TransactionController::class, 'register'])->name('transaction.register');
+    Route::post('/confirm', [TransactionController::class, 'confirm'])->name('transaction.confirm');
 });
+
+Route::get('/checkout/{transactionId}', [TransactionController::class, 'checkout'])->name('transaction.checkout');
