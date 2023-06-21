@@ -66,69 +66,12 @@
 
         <div id="main">
             <div class="container">
-                {{ Form::open(['route' => 'transaction.register', 'method' => 'POST', 'class' => 's-container form-header']); }}
-                    @csrf
+                <div class="s-container form-header">
                     <img src="https://baznas.go.id/application/views/assets/images/banner_zakat.jpg" alt="">
                     <h2>TUNAIKAN ZAKAT, INFAK, DAN SEDEKAH ANDA DENGAN <span style="color: #1f96e0">AMAN DAN MUDAH</span></h2>
-                    <div class="card">
-                        <input type="hidden" name="transaction_id" value="{{ $transaction_record->order_id }}">
-                        <div class="card-body">
-                            <div class="form-group">
-                                <h3>Pilih Jenis Dana</h3>
-                                <select name="id_transaction_type" class="form-control">
-                                    @foreach ($transaction_type as $item)
-                                        @php
-                                            $checked = FALSE;
-                                            if ($item->id == $transaction_record->id_transaction_type)
-                                                $checked = TRUE;
-                                        @endphp
-                                        <option value="{{ $item->id }}" {{ $checked ? 'selected' : '' }}>{{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('id_transaction_type')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon" id="basic-addon1">Rp</span>
-                                    <input type="text" class="form-control" name="nominal" value="{{ old('nominal', $transaction_record->paid_amount) }}" placeholder="Masukan Nominal" aria-describedby="basic-addon1">
-                                </div>
-                                @error('nominal')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h3>Silahkan lengkapi data diri anda:</h3>
-                       
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="name" placeholder="Nama Lengkap" value="{{ old('name', $transaction_record->customer->name) }}" />
-                            @error('name')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
 
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="phone_number" value="{{ old('phone_number', $transaction_record->customer->phone_number) }}" placeholder="Nomer gawai">
-                            @error('phone_number')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <input type="email" class="form-control" name="email" placeholder="Email" value="{{ old('email', $transaction_record->customer->email) }}">
-                            @error('email')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                    <span>
-                        Dengan mengisi formulir ini, donatur akan menerima Bukti Setor Zakat (BSZ), laporan penyaluran, info layanan BAZNAS melalui email & whatsapp.
-                    </span>
-                    <button class="btn btn-primary btn-block">Pilih Metode Pembayaran</button>
-                {{ Form::close() }}
+                    Pembayaran berhasil
+                </div>
             </div>
         </div>
     
@@ -204,29 +147,5 @@
         <script src="{{ URL::asset('js/jquery.sticky.js') }}"></script>
         <script src="{{ URL::asset('js/wow.min.js') }}"></script>
         <script src="{{ URL::asset('js/owl.carousel.min.js') }}"></script>
-        <script type="text/javascript">
-            window.addEventListener('DOMContentLoaded', () => {
-                let paymentList = document.querySelectorAll('.w-payment')
-                new WOW().init();
-                function unselectPayment() {
-                    paymentList.forEach(item => {
-                        let paymentId = item.getAttribute('id-payment')
-                        let radioButton = document.getElementById(`id_payment_${paymentId}`)
-                        if (radioButton.hasAttribute('checked'))
-                        {
-                            radioButton.removeAttribute('checked') 
-                        }
-                    }) 
-                }
-                paymentList.forEach(item => {
-                    item.addEventListener('click', function () {
-                        unselectPayment()
-                        let paymentId = this.getAttribute('id-payment')
-                        let radioButton = document.getElementById(`id_payment_${paymentId}`)
-                        radioButton.setAttribute('checked', true)
-                    })
-                })
-            })
-        </script>
     </body>
 </html>

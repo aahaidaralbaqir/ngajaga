@@ -145,5 +145,23 @@ class Common {
         return self::getBitOptionValueFormIds(self::getDayOptions(), $ids);
     }
 
+	public static function trimWord($text, $maxLength = 100, $suffix = '...') {
+		if (strlen($text) <= $maxLength) {
+			return $text;
+		}
+	
+		$trimmedText = substr($text, 0, $maxLength);
+		$lastSpaceIndex = strrpos($trimmedText, ' ');
+	
+		if ($lastSpaceIndex !== false) {
+			$trimmedText = substr($trimmedText, 0, $lastSpaceIndex);
+		}
+	
+		return $trimmedText . $suffix;
+	}
 
+	public static function formatRupiah($amount) {
+		$formattedAmount = number_format($amount, 0, ',', '.');
+		return 'Rp ' . $formattedAmount;
+	}
 }

@@ -99,24 +99,6 @@ a:hover {
 	background: transparent;
     color: #1f96e0;
 }
-.btn-default {
-	font-size: 17px;
-	margin: 30px 0 10px;
-	margin-right: 10px;
-	line-height: 20px;
-	padding: 15px 35px;
-	height: 50px;
-	border: 2px solid #1f96e0;
-	background: transparent;
-	transition: all 0.4s;
-	color: #1f96e0;
-	border-radius: 100px;
-}
-.btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
-	border: 2px solid #1f96e0;
-	background: #1f96e0;
-	color: white;
-}
 .btn-primary {
 	font-size: 17px;
 	margin: 30px 0 10px;

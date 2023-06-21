@@ -39,4 +39,14 @@ class Constant {
 	const TRANSACTION_PENDING = 1;
 	const TRANSACTION_FAILED = 2;
 	const TRANSACTION_SUCCESS = 3;
+	const TRANSACTION_EXPIRED = 4;
+	const TRANSACTION_PAID = 5;
+
+	const ONE_MINUTE = 60;
+
+	const PG_STATUS_FAILURE = 'failure';
+	const PG_STATUS_EXPIRED = 'expired';
+	const PG_STATUS_SETTLEMENT = 'settlement';
+	const PG_STATUS_CANCEL = 'cancel';
+	const PG_STATUS_PENDING = 'pending';
 }

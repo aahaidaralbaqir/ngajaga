@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddFieldIdPaymentInTransaction extends Migration
+class AddFieldSnapToken extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddFieldIdPaymentInTransaction extends Migration
     public function up()
     {
         Schema::table('transaction', function (Blueprint $table) {
-            $table->unsignedInteger('id_payment_type')->after('order_id')->nullable();
+            $table->string('snap_token', 100)->default('');
         });
     }
 
@@ -26,7 +26,7 @@ class AddFieldIdPaymentInTransaction extends Migration
     public function down()
     {
         Schema::table('transaction', function (Blueprint $table) {
-            $table->dropColumn('id_payment_type');
-        });
+            $table->dropColumn('snap_token');
+        }); 
     }
 }

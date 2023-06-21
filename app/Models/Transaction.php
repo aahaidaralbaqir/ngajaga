@@ -16,11 +16,22 @@ class Transaction extends Model
         'va_number',
         'transaction_status',
         'redirect_payment',
-        'user_id'
+        'user_id',
+        'id_payment_type'
     ];
 
     public function customer()
     {
         return $this->hasOne(Customer::class, 'transaction_id', 'id');
+    }
+
+    public function payment()
+    {
+        return $this->hasOne(Payment::class, 'id', 'id_payment_type');
+    }
+
+    public function type()
+    {
+        return $this->hasOne(TransactionType::class, 'id', 'id_transaction_type');
     }
 }

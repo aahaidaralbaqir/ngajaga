@@ -5,7 +5,7 @@
         <!-- /.website title -->
         <title>Bayar Zakat</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
         <!-- CSS Files -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css" rel="stylesheet">
@@ -13,7 +13,7 @@
         <link href="{{ URL::asset('css/animate.css') }}" rel="stylesheet" media="screen">
         <link href="{{ URL::asset('css/owl.theme.css') }} " rel="stylesheet">
         <link href="{{ URL::asset('css/owl.carousel.css') }}" rel="stylesheet">
-
+        <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-ztMsf3Pi7P5VyEgR"></script>
         <!-- Colors -->
         <link href="{{ URL::asset('css/css-index.css') }}" rel="stylesheet" media="screen">
         <link href="{{ URL::asset('css/custom.css') }}" rel="stylesheet">
@@ -66,69 +66,50 @@
 
         <div id="main">
             <div class="container">
-                {{ Form::open(['route' => 'transaction.register', 'method' => 'POST', 'class' => 's-container form-header']); }}
-                    @csrf
+                <div class="s-container form-header">
+                    <div class="alert alert-danger error-message hidden"></div>
                     <img src="https://baznas.go.id/application/views/assets/images/banner_zakat.jpg" alt="">
-                    <h2>TUNAIKAN ZAKAT, INFAK, DAN SEDEKAH ANDA DENGAN <span style="color: #1f96e0">AMAN DAN MUDAH</span></h2>
-                    <div class="card">
-                        <input type="hidden" name="transaction_id" value="{{ $transaction_record->order_id }}">
-                        <div class="card-body">
-                            <div class="form-group">
-                                <h3>Pilih Jenis Dana</h3>
-                                <select name="id_transaction_type" class="form-control">
-                                    @foreach ($transaction_type as $item)
-                                        @php
-                                            $checked = FALSE;
-                                            if ($item->id == $transaction_record->id_transaction_type)
-                                                $checked = TRUE;
-                                        @endphp
-                                        <option value="{{ $item->id }}" {{ $checked ? 'selected' : '' }}>{{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('id_transaction_type')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon" id="basic-addon1">Rp</span>
-                                    <input type="text" class="form-control" name="nominal" value="{{ old('nominal', $transaction_record->paid_amount) }}" placeholder="Masukan Nominal" aria-describedby="basic-addon1">
+                    <h3 class="text-center">Metode Pembayaran</h3>
+                    <p class="text-center">Silahkan pilih salah satu metode pembayaran</p>
+                    <input type="hidden" class="transaction-id" value="{{ $transaction_record->order_id }}">
+                    @foreach($payments as $parent_payment)
+                        @if (array_key_exists('childs', $parent_payment))
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <h3>{{ $parent_payment['name'] }}</h3>
+                                    </div>
+                                    <div class="form-group s-payment">
+                                        @foreach($parent_payment['childs'] as $each_child)
+                                            <div class="w-payment" id-payment="{{ $each_child['id'] }}">
+                                                <div class="w-information">
+                                                    <img src="{{ $each_child['payment_logo'] }}" alt="">
+                                                    <span>{{ $each_child['name'] }}</span>
+                                                </div>
+                                                <input type="radio" id="id_payment_{{ $each_child['id'] }}" name="id_payment_type" value="{{ $each_child['id'] }}" >
+                                            </div>
+                                        @endforeach
+                                    </div>
                                 </div>
-                                @error('nominal')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
                             </div>
+                        @endif
+                    @endforeach
+                    <div class="col-12 col-md-12 text-center">
+                        <img src="https://baznas.go.id//application/views/assets/images/niat.jpg" alt="" style="margin-top: 10px">
+                        <b>“Nawaitu an ukhrija zakata maali fardhan lillahi ta’aala.”</b>
+                        <br>
+                        <small>
+                            Aku niat mengeluarkan zakat hartaku fardhu karena Allah Ta’ala.
+                        </small>
+
+                        <div class="btn-action">
+                            <button id="btn-back" target-url="{{ route('transaction.checkout', ['transactionId' => $transaction_record->order_id]) }}" class="btn btn-default">Kembali</a>
+                            <button class="btn btn-primary" id="btn-pay">Bayar</button>
                         </div>
                     </div>
-                    <div class="card">
-                        <h3>Silahkan lengkapi data diri anda:</h3>
-                       
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="name" placeholder="Nama Lengkap" value="{{ old('name', $transaction_record->customer->name) }}" />
-                            @error('name')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="phone_number" value="{{ old('phone_number', $transaction_record->customer->phone_number) }}" placeholder="Nomer gawai">
-                            @error('phone_number')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <input type="email" class="form-control" name="email" placeholder="Email" value="{{ old('email', $transaction_record->customer->email) }}">
-                            @error('email')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                    <span>
-                        Dengan mengisi formulir ini, donatur akan menerima Bukti Setor Zakat (BSZ), laporan penyaluran, info layanan BAZNAS melalui email & whatsapp.
-                    </span>
-                    <button class="btn btn-primary btn-block">Pilih Metode Pembayaran</button>
-                {{ Form::close() }}
+                    
+                    
+                </div>
             </div>
         </div>
     
@@ -207,6 +188,8 @@
         <script type="text/javascript">
             window.addEventListener('DOMContentLoaded', () => {
                 let paymentList = document.querySelectorAll('.w-payment')
+                const btnBack = document.getElementById('btn-back')
+                const btnPay = document.getElementById('btn-pay')
                 new WOW().init();
                 function unselectPayment() {
                     paymentList.forEach(item => {
@@ -218,12 +201,86 @@
                         }
                     }) 
                 }
+                function getSelectedPayment()
+                {
+                    return 
+                }
                 paymentList.forEach(item => {
                     item.addEventListener('click', function () {
                         unselectPayment()
                         let paymentId = this.getAttribute('id-payment')
                         let radioButton = document.getElementById(`id_payment_${paymentId}`)
                         radioButton.setAttribute('checked', true)
+                    })
+                })
+                btnBack.addEventListener('click', function () {
+                  let targetUrl = this.getAttribute('target-url')
+                  window.location = targetUrl  
+                })
+                function getToken()
+                {
+                    const transactionId = $('.transaction-id').val()
+                    let paymentId = $('input[name="id_payment_type"]:checked').val();
+                    if ([undefined, ''].includes(paymentId)) paymentId = 0
+                    const requestBody = {
+                        id_payment: paymentId,
+                        transaction_id: transactionId 
+                    }
+                    return fetch('/api/transaction/token', {
+                        method: "POST",
+                        body: JSON.stringify(requestBody),
+                        headers: {
+                            "Content-type": "application/json; charset=UTF-8",
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    }).then(response => response.json())
+                    .then(result => result);
+                }
+                function notification(orderId)
+                {
+                    const requestBody = {
+                        order_id: orderId 
+                    }
+                    return fetch('/api/transaction/notification', {
+                        method: "POST",
+                        body: JSON.stringify(requestBody),
+                        headers: {
+                            "Content-type": "application/json; charset=UTF-8",
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    }).then(response => response.json())
+                    .then(result => result); 
+                }
+                btnPay.addEventListener('click', async function () {
+                    this.setAttribute('disabled', true)
+                    const response = await getToken()
+                    if (!response.success) {
+                        $('.error-message').html(response.message)
+                        $('.error-message').removeClass('hidden');
+                        $('html, body').animate({scrollTop : 0},800);
+                        this.removeAttribute('disabled')
+                        return;
+                    }
+                    this.removeAttribute('disabled')
+                    window.snap.pay(response.data, {
+                        onSuccess: async function(result){
+                            let {order_id} = result;
+                            const {success} = await notification(order_id)
+                            if (!success) return;
+                            window.location = '{{ route("transaction.complete", ["transactionId" => $transaction_record->order_id]) }}'
+                        },
+                        onPending: async function(result){
+                            let {order_id} = result;
+                            const {success} = await notification(order_id)
+                        },
+                        onError: async function(result){
+                            let {order_id} = result;
+                            const {success} = await notification(order_id)
+                        },
+                        onClose: async function(){
+                            let {order_id} = result;
+                            const {success} = await notification(order_id)
+                        }
                     })
                 })
             })
