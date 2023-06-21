@@ -29,7 +29,7 @@
                 {{ $form }}
                     <div class="mb-5.5">
                         <label class="mb-3 block font-medium text-sm text-black dark:text-white">
-                            Name
+                            Nama
                         </label>
 						@if (!empty($item))
 						  <input type="hidden" name="id" value="{{ $item->id }}">
@@ -44,12 +44,13 @@
                     
                     <div class="mb-5.5">
                         <label class="mb-3 block font-medium text-sm text-black dark:text-white">
-                            Permission
+                            Hak Akses
                         </label>
                         @foreach ($permissions as $each_permission)
                             @php
                                 $checked = FALSE;
-                                $selected_permission = explode(',', $item->permission);
+
+                                $selected_permission = empty($item) ? [] : explode(',', $item->permission);
                                 if (!empty($item) && in_array($each_permission['id'], $selected_permission)) $checked = TRUE;
                             @endphp
                             <label for="{{ $each_permission['id'] }}" class="flex cursor-pointer select-none items-center">

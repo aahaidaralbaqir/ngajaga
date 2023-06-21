@@ -51,11 +51,11 @@
                     @if (count($roles) > 0)
                         <div class="mb-5.5">
                             <label class="mb-3 block font-medium text-sm text-black dark:text-white">
-                                Roles
+                                Jenis Peran
                             </label>
                             <div class="relative z-20 bg-transparent dark:bg-form-input">
                                 <select name="role_id" class="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
-                                    <option value="0">Select Role</option>
+                                    <option value="0">Pilih Peran</option>
                                     @foreach ($roles as $role)
                                         @php
                                             $selected = FALSE;

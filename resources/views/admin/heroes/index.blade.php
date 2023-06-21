@@ -5,7 +5,7 @@
 @include('partials.breadcumb', ['title' => 'Banner'])
 <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
     <div class="py-6 px-4 md:px-6 xl:px-7.5 flex justify-end items-center">
-    	<a href="{{ route('heroes.create') }}" class="flex items-center justify-center rounded-md bg-primary py-2 px-10 text-white hover:bg-opacity-95">Buat Banner Baru</a>
+    	<a href="{{ route('heroes.create') }}" class="flex items-center justify-center rounded-md bg-primary py-2 px-10 text-white hover:bg-opacity-95">Buat banner baru</a>
     </div>
     
     <div

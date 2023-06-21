@@ -1,3 +1,4 @@
+@if ($paginator->total() > 0)
 <nav>
     <ul class="flex flex-wrap items-center">
         
@@ -60,3 +61,4 @@
         @endif
     </ul>
 </nav>
+@endif

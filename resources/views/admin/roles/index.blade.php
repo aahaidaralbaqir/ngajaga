@@ -2,19 +2,19 @@
 @section('content')
 <div class="max-w-screen-2xl mx-auto p-4 md:p-6 2xl:p-10">
 @include('partials.alert')
-@include('partials.breadcumb', ['title' => 'Permission'])
+@include('partials.breadcumb', ['title' => 'Jenis Peran'])
 <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
     <div class="py-6 px-4 md:px-6 xl:px-7.5 flex justify-end items-center">
-    	<a href="{{ route('roles.create.form') }}" class="flex items-center justify-center rounded-md bg-primary py-2 px-10 text-white hover:bg-opacity-95">Buat baru</a>
+    	<a href="{{ route('roles.create.form') }}" class="flex items-center justify-center rounded-md bg-primary py-2 px-10 text-white hover:bg-opacity-95">Buat jenis peran</a>
     </div>
     
     <div
         class="grid grid-cols-6 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
         <div class="col-span-2 flex items-center">
-            <p class="font-medium">Name</p>
+            <p class="font-medium">Nama</p>
         </div>
         <div class="col-span-2 flex items-center">
-            <p class="font-medium">Permission</p>
+            <p class="font-medium">Hak Akses</p>
         </div>
         <div class="col-span-2 flex items-center">
             <p class="font-medium">Status</p>

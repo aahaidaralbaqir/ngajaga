@@ -24,7 +24,7 @@
                 {{ $form }}
                     <div class="mb-5.5">
                         <label class="mb-3 block font-medium text-sm text-black dark:text-white">
-                            Name
+                            Nama
                           </label>
 						@if (!empty($item))
 						  <input type="hidden" name="id" value="{{ $item->id }}">

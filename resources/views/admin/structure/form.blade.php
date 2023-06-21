@@ -55,7 +55,7 @@
                     @if (count($structures) > 0)
                         <div class="mb-5.5">
                             <label class="mb-3 block font-medium text-sm text-black dark:text-white">
-                                Hirarkie Jabatan
+                               Atasan 
                             </label>
                             <div class="relative z-20 bg-transparent dark:bg-form-input">
                                 <select name="id_parent" class="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
@@ -86,7 +86,7 @@
 					<div class="mb-5.5  lg:flex lg:gap-4.5">
                         <div class="flex-1">
                             <label class="mb-3 block font-medium text-sm text-black dark:text-white">
-                                Avatar
+                               Foto Pengguna 
                             </label>
                             <div id="FileUpload"
                                 class="relative mb-5.5 block w-full cursor-pointer appearance-none rounded border-2 border-dashed border-primary bg-gray py-4 px-4 dark:bg-meta-4 sm:py-7.5">

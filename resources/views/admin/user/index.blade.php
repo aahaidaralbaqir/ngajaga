@@ -11,13 +11,13 @@
     <div
         class="grid grid-cols-6 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
         <div class="col-span-2 flex items-center">
-            <p class="font-medium">Name</p>
+            <p class="font-medium">Nama</p>
         </div>
         <div class="col-span-2 flex items-center">
             <p class="font-medium">Email</p>
         </div>
         <div class="col-span-2 flex items-center">
-            <p class="font-medium">Role</p>
+            <p class="font-medium">Jenis Peran</p>
         </div>
         <div class="col-span-1 flex items-center">
         <p class="font-medium">Aksi</p>

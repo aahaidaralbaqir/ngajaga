@@ -45,7 +45,7 @@
                     </div>
                     <div class="mb-5.5">
                         <label class="mb-3 block font-medium text-sm text-black dark:text-white">
-                            Nama partisipan
+                            Nama Partisipan
                           </label>
                         <input type="text" placeholder="Isi dengan nama orang yang ikut serta atau yang memimpin kegiatan ini" name="leader"
                             value="{{ old('leader', !empty($item->leader) ? $item->leader : '') }}"
@@ -58,7 +58,7 @@
                         <div class="flex justify-between w-full gap-4">
                             <div class="w-1/2">
                                 <label class="mb-3 block font-medium text-sm text-black dark:text-white">
-                                    Start time
+                                    Tanggal & Waktu Mulai
                                   </label>
                                 <input type="datetime-local" name="start_time" value="{{ old('start_time', !empty($item->start_time) ? $item->start_time : '') }}" class="custom-input-date custom-input-date-2 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
                                 @error('start_time')
@@ -67,7 +67,7 @@
                             </div>
                             <div class="w-1/2">
                                 <label class="mb-3 block font-medium text-sm text-black dark:text-white">
-                                    End time
+                                    Tanggal & Waktu Selesai
                                   </label>
                                 <input type="datetime-local" name="end_time" value="{{ old('end_time', !empty($item->end_time) ? $item->end_time : '') }}" class="custom-input-date custom-input-date-2 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
                                 @error('end')
