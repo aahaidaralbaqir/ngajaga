@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="flex">
-            <a href="" class="relative">
+            <a href="#" class="relative" @click.prevent="modalOpen = true">
                 Pencarian
                 <span class="absolute -top-0.5 right-0 z-1 h-2 w-2 rounded-full bg-meta-1">
                     <span class="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"></span>
@@ -117,6 +117,83 @@
         </div>
     </div>
     @endforeach
+    </div>
+
+    <div class="fixed top-0 left-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5">
+        <div @click.outside="modalOpen = false" class="w-full w-4/5 rounded-lg bg-white  dark:bg-boxdark md:py-5 md:px-5">
+          <p class="pb-2 text-xl text-black dark:text-white ">
+            Pencarian Transaksi
+          </p>
+          <div class="w-full px-36 py-10">
+            <div class="grid grid-cols-6 gap-2">
+                <div class="col-span-1">
+                    <label for="" class="font-primary text-base font-bold">Waktu Transaksi</label>
+                </div>
+                <div class="col-span-2">
+                    <label class="mb-3 block font-medium text-sm text-black dark:text-white">
+                        Dari
+                        </label>
+                    <input type="datetime-local" name="start_time" value="{{ old('start_time') }}" class="custom-input-date custom-input-date-2 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                    @error('start_time')
+                        <span class="text-sm text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="col-span-2">
+                    <label class="mb-3 block font-medium text-sm text-black dark:text-white">
+                        Sampai
+                        </label>
+                    <input type="datetime-local" name="start_time" value="{{ old('start_time') }}" class="custom-input-date custom-input-date-2 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                    @error('start_time')
+                        <span class="text-sm text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+            <div class="grid grid-cols-6 gap-2 mt-5">
+                <div class="col-span-1">
+                    <label for="" class="font-primary text-base font-bold">Waktu Settlement</label>
+                </div>
+                <div class="col-span-2">
+                    <label class="mb-3 block font-medium text-sm text-black dark:text-white">
+                        Dari
+                        </label>
+                    <input type="datetime-local" name="start_time" value="{{ old('start_time') }}" class="custom-input-date custom-input-date-2 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                    @error('start_time')
+                        <span class="text-sm text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="col-span-2">
+                    <label class="mb-3 block font-medium text-sm text-black dark:text-white">
+                        Sampai
+                        </label>
+                    <input type="datetime-local" name="start_time" value="{{ old('start_time') }}" class="custom-input-date custom-input-date-2 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                    @error('start_time')
+                        <span class="text-sm text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+            <div class="grid grid-cols-6 gap-2 mt-5">
+                <div class="col-span-1 flex flex-column align-end">
+                    <label for="" class="font-primary text-base font-bold">ID Pesanan</label>
+                </div>
+                <div class="col-span-5">
+                    <input type=text" name="start_time" value="{{ old('start_time') }}" class="custom-input-date custom-input-date-2 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                    @error('start_time')
+                        <span class="text-sm text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+          </div>
+          <div class="-mx-3 flex flex-wrap gap-y-4">
+            <div class="w-full px-3 flex justify-end gap-2">
+              <button @click="modalOpen = false" class="rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1">
+                Clear Filter
+              </button>
+              <button class="rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90">
+                Pencarian
+              </button>
+            </div>
+          </div>
+        </div>
     </div>
 </div>
 @endsection
