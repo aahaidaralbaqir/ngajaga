@@ -32,7 +32,7 @@ class Transaction {
         ]; 
         return $transaction_status_classes[$transaction_status];
     }
-    public function getTransactionStatusWithName()
+    public static function getTransactionStatusWithName()
     {
         $transaction_status_names = [
             Constant::TRANSACTION_FAILED => 'GAGAL',
