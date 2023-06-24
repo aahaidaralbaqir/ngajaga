@@ -40,7 +40,7 @@
         <div class="flex">
             <section x-data="{modalOpen: false}">
                 <div x-show="modalOpen" x-transition class="fixed top-0 left-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5">
-                    <div @click.outside="modalOpen = false" class="w-full w-2/3 rounded-lg bg-white  dark:bg-boxdark md:py-5 md:px-5 relative">
+                    <div @click.outside="modalOpen = false" class="w-2/3 rounded-lg bg-white  dark:bg-boxdark md:py-5 md:px-5 relative">
                         <form action="{{ route('transaction.index') }}" method="GET">
                             <div class="w-full flex justify-between">
                                 <p class="pb-2 text-xl text-black dark:text-white ">
