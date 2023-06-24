@@ -59,13 +59,7 @@ Route::prefix('admin')->group(function () {
 			Route::post('/update', [UserController::class, 'updateUser'])->name('user.update')->middleware('auth');
 		});
 
-		Route::prefix('payment')->group(function () {
-			Route::get('/', [PaymentController::class, 'index'])->name('payment.index')->middleware('auth');
-			Route::get('/create', [PaymentController::class, 'createForm'])->name('payment.create.form')->middleware('auth');
-			Route::post('/create', [PaymentController::class, 'createPayment'])->name('payment.create')->middleware('auth');
-			Route::get('/update/{paymentId}', [PaymentController::class, 'updateForm'])->name('payment.update.form')->middleware('auth');
-			Route::post('/update', [PaymentController::class, 'updatePayment'])->name('payment.update')->middleware('auth');
-		});
+		
 	});
 	
 	Route::prefix('setting')->group(function () {
@@ -127,7 +121,17 @@ Route::prefix('admin')->group(function () {
 		Route::get('/', [TransactionController::class, 'index'])->name('transaction.index')->middleware('auth');
 		Route::get('/sample', [TransactionController::class, 'sampleFile'])->name('transaction.sample')->middleware('auth');
 	});
+
+	
 	Route::get('/', [DashboardController::class, 'index'])->name('admin')->middleware('auth');
+
+	Route::prefix('payment')->group(function () {
+		Route::get('/', [PaymentController::class, 'index'])->name('payment.index')->middleware('auth');
+		Route::get('/create', [PaymentController::class, 'createForm'])->name('payment.create.form')->middleware('auth');
+		Route::post('/create', [PaymentController::class, 'createPayment'])->name('payment.create')->middleware('auth');
+		Route::get('/update/{paymentId}', [PaymentController::class, 'updateForm'])->name('payment.update.form')->middleware('auth');
+		Route::post('/update', [PaymentController::class, 'updatePayment'])->name('payment.update')->middleware('auth');
+	});
 });
 
 

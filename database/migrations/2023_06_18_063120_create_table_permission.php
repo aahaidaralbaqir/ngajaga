@@ -17,7 +17,7 @@ class CreateTablePermission extends Migration
             $table->id();
             $table->string('name', 100);
             $table->string('url', 100);
-            $table->string('alias', 20);
+            $table->string('alias', 100);
             $table->timestamps();
         });
     }
