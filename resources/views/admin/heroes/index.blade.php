@@ -5,8 +5,10 @@
 @include('partials.breadcumb', ['title' => 'Banner'])
 <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
     <div class="py-6 px-4 md:px-6 xl:px-7.5 flex justify-end items-center">
-    	<a href="{{ route('heroes.create') }}" class="flex items-center justify-center rounded-md bg-primary py-2 px-10 text-white hover:bg-opacity-95">Buat banner baru</a>
-    </div>
+		@if(in_array(App\Constant\Permission::CAN_CREATE_BANNER, $permissions))  	
+			<a href="{{ route('heroes.create') }}" class="flex items-center justify-center rounded-md bg-primary py-2 px-10 text-white hover:bg-opacity-95">Buat banner baru</a>
+		@endif
+	</div>
     
     <div
         class="grid grid-cols-6 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
@@ -50,6 +52,7 @@
             </p>
             </div>
             <div class="flex items-center space-x-3.5">
+				@if(in_array(App\Constant\Permission::CAN_UPDATE_BANNER, $permissions))
                 <a
 					href="{{ route('heroes.update.form', ['heroesId' => $item['id']]) }}"
 					class="hover:text-primary">
@@ -70,6 +73,8 @@
                         </defs>
                     </svg>
                 </a>
+				@endif
+				@if(in_array(App\Constant\Permission::CAN_ORDER_BANNER, $permissions))
                 <a 
 					class="hover:text-primary"
 					href="{{ route('heroes.order', [$item['id'], 'order_type' => 'down']) }}"
@@ -110,7 +115,8 @@
                         />
                     </svg>
                 </a>
-                </div>
+				@endif
+            </div>
         </div>
     @endforeach
     

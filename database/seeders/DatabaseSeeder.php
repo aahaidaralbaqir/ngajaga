@@ -150,6 +150,63 @@ class DatabaseSeeder extends Seeder
 				'alias' => 'view_transaction',
 				'icon' => 'example.svg',
 			],
+
+			[
+				'name' => 'Lihat hak akses',
+				'url' => 'permission.index',
+				'alias' => 'view_permission',
+				'icon' => 'example.svg',
+			],
+			[
+				'name' => 'Buat hak akses',
+				'url' => 'permission.create.form',
+				'alias' => 'create_permission',
+				'icon' => 'example.svg',
+			],
+			[
+				'name' => 'Update hak akses',
+				'url' => 'permission.update.form',
+				'alias' => 'update_permission',
+				'icon' => 'example.svg',
+			],
+
+			[
+				'name' => 'Lihat jenis pengguna',
+				'url' => 'roles.index',
+				'alias' => 'view_ROLES',
+				'icon' => 'example.svg',
+			],
+			[
+				'name' => 'Buat jenis pengguna',
+				'url' => 'roles.create.form',
+				'alias' => 'create_roles',
+				'icon' => 'example.svg',
+			],
+			[
+				'name' => 'Update jenis pengguna',
+				'url' => 'roles.update.form',
+				'alias' => 'update_roles',
+				'icon' => 'example.svg',
+			],
+
+			[
+				'name' => 'Lihat pengguna',
+				'url' => 'user.index',
+				'alias' => 'view_user',
+				'icon' => 'example.svg',
+			],
+			[
+				'name' => 'Buat pengguna',
+				'url' => 'user.create.form',
+				'alias' => 'create_user',
+				'icon' => 'example.svg',
+			],
+			[
+				'name' => 'Update pengguna',
+				'url' => 'user.update.form',
+				'alias' => 'update_user',
+				'icon' => 'example.svg',
+			],
 		];
         \App\Models\Unit::factory()
             ->count(5)
@@ -161,28 +218,26 @@ class DatabaseSeeder extends Seeder
                 ['name' => 'Ekor', 'description' => 5]
             )
             ->create();
-		$roles = [
-			[
-				'name' => 'Administrator',
-				'permission' => '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22',
-				'status' => 1,
-			],
-		];
+		$admin_permission = [];
 		foreach ($permissions as $permission)
 		{
-			\App\Models\Permission::factory()->create(
+			$record = \App\Models\Permission::factory()->create(
 				$permission
 			);
+			$admin_permission[] = $record->id;
 		}
+		$roles = [
+					'name' => 'Administrator',
+					'permission' => implode(',', $admin_permission),
+					'status' => 1];
+		
 
-		foreach ($roles as $role)
-		{
-			\App\Models\Roles::factory()->create(
-				$role
-			);
-		}
+		
+		$role = \App\Models\Roles::factory()->create(
+			$roles
+		);
 		
 		
-        \App\Models\User::factory(10)->administrator()->create();
+        \App\Models\User::factory(2)->state(['role_id' => $role->id])->create();
     }
 }

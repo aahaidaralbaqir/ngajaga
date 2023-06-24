@@ -1,6 +1,7 @@
 @extends('layout.dashboard')
 @section('content')
 <div class="max-w-screen-2xl mx-auto p-4 md:p-6 2xl:p-10">
+
 @include('partials.alert')
 @include('partials.breadcumb', ['title' => 'Hak Akses'])
 <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">

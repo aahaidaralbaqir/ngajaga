@@ -22,7 +22,9 @@
                 <input type="text" name="query" placeholder="Enter untuk mencari.."class="w-full bg-transparent pr-4 pl-9 focus:outline-none" value="{{ request('query') }}" />
             </div>
         </form>
-        <a href="{{ route('post.create') }}" class="flex items-center justify-center rounded-md bg-primary py-2 px-10 text-white hover:bg-opacity-95">Buat buletin baru</a>
+		@if(in_array(App\Constant\Permission::CAN_CREATE_POST, $permissions))
+        	<a href="{{ route('post.create') }}" class="flex items-center justify-center rounded-md bg-primary py-2 px-10 text-white hover:bg-opacity-95">Buat buletin baru</a>
+		@endif
     </div>
     
     {{-- Table header --}}
@@ -37,9 +39,11 @@
 		<div class="col-span-1 flex items-center">
 			<p class="font-medium">Status</p>
 		</div>
+		@if(in_array(App\Constant\Permission::CAN_UPDATE_POST, $permissions))
         <div class="col-span-1 flex items-center">
         <p class="font-medium">Aksi</p>
         </div>
+		@endif
     </div>
     {{-- End table header --}}
     {{-- Table body --}}
@@ -76,6 +80,7 @@
 					{{  $item['status'] }}
 				</button>
             </div>
+			@if(in_array(App\Constant\Permission::CAN_UPDATE_POST, $permissions))
             <div class="flex items-center space-x-3.5">
                 <a
 					href="{{ route('post.update.form', ['postId' => $item['id']]) }}"
@@ -97,7 +102,8 @@
                         </defs>
                     </svg>
                 </a>
-                </div>
+            </div>
+			@endif
         </div>
     @endforeach
     {{-- End table body --}}

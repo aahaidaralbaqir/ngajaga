@@ -5,7 +5,9 @@
 @include('partials.breadcumb', ['title' => 'payment'])
 <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
     <div class="py-6 px-4 md:px-6 xl:px-7.5 flex justify-end items-center">
-    	<a href="{{ route('payment.create.form') }}" class="flex items-center justify-center rounded-md bg-primary py-2 px-10 text-white hover:bg-opacity-95">Buat baru</a>
+		@if(in_array(App\Constant\Permission::CAN_VIEW_PAYMENT, $permissions))  	
+			<a href="{{ route('payment.create.form') }}" class="flex items-center justify-center rounded-md bg-primary py-2 px-10 text-white hover:bg-opacity-95">Buat baru</a>
+		@endif
     </div>
     
     <div
@@ -19,9 +21,11 @@
         <div class="col-span-2 flex items-center">
             <p class="font-medium">Status</p>
         </div>
+		@if(in_array(App\Constant\Permission::CAN_UPDATE_PAYMENT, $permissions))
         <div class="col-span-1 flex items-center">
         <p class="font-medium">Aksi</p>
         </div>
+		@endif
     </div>
     @empty($payment)
         <div class="grid grid-cols-6 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
@@ -48,6 +52,7 @@
                 {{ $item['status'] }}
             </button>
         </div>
+		@if(in_array(App\Constant\Permission::CAN_UPDATE_PAYMENT, $permissions))
         <div class="flex items-center space-x-3.5">
             <a
                 href="{{ route('payment.update.form', ['paymentId' => $item['id']]) }}"
@@ -64,6 +69,7 @@
                 </svg>
             </a>
         </div>
+		@endif
     </div>
     @endforeach
     

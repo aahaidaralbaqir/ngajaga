@@ -37,10 +37,10 @@
                 <p class="font-medium text-sm text-black dark:text-white">{{ $item['name']; }}</p>
             </div>
         </div>
-        <div class="col-span-2 flex items-center gap-4">
+        <div class="col-span-2 flex items-center gap-4 flex-wrap">
             @foreach ($item['permissions'] as $each_permission)
                 <button class="inline-flex rounded-full bg-[#EFEFEF] py-1 px-3 text-sm font-extralight text-[#212B36] hover:bg-opacity-90">
-                    {{ $each_permission->name }}
+                    {{ $each_permission->alias }}
                 </button> 
             @endforeach
         </div>
