@@ -24,7 +24,7 @@ class TransactionController extends Controller
 		$data = array_merge(array(), $user_profile);
         $data['transaction_statuses'] = TransactionUtil::getTransactionStatusWithName();
         $data['transaction_type'] = TransactionType::all();
-        $query = DB::table('transaction')->select(DB::raw('transaction.id, transaction.order_id, transaction.id_payment_type, payment_type.name as payment_name, transaction.transaction_status, transaction_type.name as transaction_type, customer.email as email, transaction.paid_amount, transaction.created_at, unit.name as unit_code'))->leftJoin('payment_type', function ($join) {
+        $query = DB::table('transaction')->select(DB::raw('transaction.id, transaction.order_id, transaction.id_payment_type, payment_type.name as payment_name, transaction.transaction_status, transaction_type.name as transaction_type, customer.email as email, transaction.paid_amount, transaction.created_at, unit.name as unit_name'))->leftJoin('payment_type', function ($join) {
             $join->on('transaction.id_payment_type', '=', 'payment_type.id');
         })->leftJoin('customer', function ($join) {
             $join->on('transaction.id', '=', 'customer.transaction_id'); 
