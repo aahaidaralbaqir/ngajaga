@@ -32,14 +32,19 @@ class Transaction {
         ]; 
         return $transaction_status_classes[$transaction_status];
     }
-    public static function getTransactionNameByTransactionStatus($transaction_status) 
+    public function getTransactionStatusWithName()
     {
         $transaction_status_names = [
             Constant::TRANSACTION_FAILED => 'GAGAL',
             Constant::TRANSACTION_PAID => 'DIBAYAR',
             Constant::TRANSACTION_EXPIRED => 'KADALUARSA',
             Constant::TRANSACTION_PENDING => 'TERTUNDA'
-        ]; 
+        ];
+        return $transaction_status_names;
+    }
+    public static function getTransactionNameByTransactionStatus($transaction_status) 
+    {
+        $transaction_status_names = self::getTransactionStatusWithName();   
         return $transaction_status_names[$transaction_status]; 
     }
 }

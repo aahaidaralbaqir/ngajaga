@@ -125,6 +125,7 @@ Route::prefix('admin')->group(function () {
 			Route::post('/update', [TransactionTypeController::class, 'updateTransactionType'])->name('transaction.type.update')->middleware('auth');
 		});
 		Route::get('/', [TransactionController::class, 'index'])->name('transaction.index')->middleware('auth');
+		Route::get('/sample', [TransactionController::class, 'sampleFile'])->name('transaction.sample')->middleware('auth');
 	});
 	Route::get('/', [DashboardController::class, 'index'])->name('admin')->middleware('auth');
 });

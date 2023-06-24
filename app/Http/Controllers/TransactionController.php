@@ -12,14 +12,72 @@ use App\Models\Payment;
 use App\Models\Customer;
 use App\Client\Midtrans;
 use App\Util\Transaction as TransactionUtil;
+use Illuminate\Support\Facades\DB;
+use App\Exports\TransactionExportSample;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TransactionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user_profile = $this->initProfile();
 		$data = array_merge(array(), $user_profile);
-		$data['transaction'] = Transaction::orderBy('id', 'desc')->with('type')->with('customer')->with('payment')->get();
+        $data['transaction_statuses'] = TransactionUtil::getTransactionStatusWithName();
+        $data['transaction_type'] = TransactionType::all();
+        $query = DB::table('transaction')->select(DB::raw('transaction.id, transaction.order_id, transaction.id_payment_type, payment_type.name as payment_name, transaction.transaction_status, transaction_type.name as transaction_type, customer.email as email, transaction.paid_amount, transaction.created_at'))->leftJoin('payment_type', function ($join) {
+            $join->on('transaction.id_payment_type', '=', 'payment_type.id');
+        })->leftJoin('customer', function ($join) {
+            $join->on('transaction.id', '=', 'customer.transaction_id'); 
+        })->join('transaction_type', function ($join) {
+            $join->on('transaction.id_transaction_type', '=', 'transaction_type.id');
+        })->where('transaction.id_payment_type', '>', 0);
+        $user_inputs = $request->all();
+        foreach($user_inputs as $user_input => $value)
+        {
+            if (in_array($user_input, ['transaction_end']) && !empty($value))
+            {
+                if (!empty($user_inputs['transaction_start']))
+                {
+                    $start = sprintf('%s 00:00:00', $user_inputs['transaction_start']);
+                    $end = sprintf('%s 23:59:50', $value);
+                    $query->where('transaction.created_at', '>', $start)->where('transaction.created_at', '<', $end);
+                }
+            }
+
+            if (in_array($user_input, ['settlement_end']) && !empty($value))
+            {
+                if (!empty($user_inputs['settlement_start']))
+                {
+                    $start = sprintf('%s 00:00:00', $user_inputs['settlement_start']);
+                    $end = sprintf('%s 23:59:50', $value);
+                    $query->where('transaction.settlement_datetime', '>', $start)->where('transaction.settlement_datetime', '<', $end);
+                }http://127.0.0.1:8000/admin/transaction#
+            }
+
+            if (in_array($user_input, ['nominal_end']) && !empty($value))
+            {
+                if (!empty($user_inputs['nominal_start']))
+                {
+                    $start = intval($user_inputs['nominal_start']);
+                    $end = intval($value); 
+                    $query->where('transaction.paid_amount', '>=', $start)->where('transaction.paid_amount', '<=', $end);
+                }
+            }
+
+            if ($user_input == 'transaction_status' && !empty($value))
+            {
+                $query->where('transaction.transaction_status', '=', $value);
+            }
+
+            if ($user_input == 'transaction_type' && !empty($value))
+            {
+                $query->where('transaction.id_transaction_type', '=', $value);
+            }
+        }
+        $transactions = $query->get();
+
+		$data['transaction'] = $transactions;
+    
 		return view('admin.transaction.list.index', $data);
     }
     private function getGroupedPayment($payment)
@@ -293,8 +351,9 @@ class TransactionController extends Controller
             ], 400); 
         }
 
-        $transaction_status = TransactionUtil::getTransactionStatusByPGStatus($midtrans_record->transaction_status); 
-        Transaction::where('id', $transaction_record->id)->update(['transaction_status' => $transaction_status]);
+        $transaction_status = TransactionUtil::getTransactionStatusByPGStatus($midtrans_record->transaction_status);
+        $settlement_time = $midtrans_record['settlement_time'];
+        Transaction::where('id', $transaction_record->id)->update(['transaction_status' => $transaction_status, 'settlement_datetime' => $settlement_time]);
         return response()->json([
             'success' => TRUE,
         ], 200);
@@ -309,6 +368,11 @@ class TransactionController extends Controller
                 ->with(['error' => 'ID Transaksi tidak dapat ditemukan']);
         $data['transaction_record'] = $current_record;
         return view('complete', $data);
+    }
+
+    public function sampleFile(Request $request)
+    {
+        return Excel::download(new TransactionExportSample, 'sample_export_transaction.csv');
     }
 
 }
