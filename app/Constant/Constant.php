@@ -49,4 +49,6 @@ class Constant {
 	const PG_STATUS_SETTLEMENT = 'settlement';
 	const PG_STATUS_CANCEL = 'cancel';
 	const PG_STATUS_PENDING = 'pending';
+
+	const UNIT_NAME_RUPIAH	= 'Rp';
 }

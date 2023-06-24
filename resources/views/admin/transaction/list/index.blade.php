@@ -269,7 +269,7 @@
         </div>
         <div class="col-span-1 flex items-center">
             <p class="text-sm text-black dark:text-white">
-                {{  \App\Util\Common::formatRupiah($item->paid_amount, 16) }}
+                {{  \App\Util\Common::formatAmount($item->unit_name, $item->paid_amount, 16) }}
             </p> 
         </div>
         <div class="col-span-1 flex items-center space-x-3.5">

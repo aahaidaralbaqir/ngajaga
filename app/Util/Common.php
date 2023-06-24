@@ -160,7 +160,11 @@ class Common {
 		return $trimmedText . $suffix;
 	}
 
-	public static function formatRupiah($amount) {
+	public static function formatAmount($unit_name, $amount) {
+		if ($unit_name != Constant::UNIT_NAME_RUPIAH)
+		{
+			return $amount . ' ' . $unit_name;
+		}
 		$formattedAmount = number_format($amount, 0, ',', '.');
 		return 'Rp ' . $formattedAmount;
 	}
