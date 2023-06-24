@@ -5,6 +5,7 @@ namespace App\Exports;
 use Maatwebsite\Excel\Concerns\FromArray;
 use App\Models\TransactionType;
 use App\Models\Payment;
+use App\Models\Unit;
 use App\Constant\Constant; 
 
 class TransactionExportSample implements FromArray
@@ -22,7 +23,7 @@ class TransactionExportSample implements FromArray
     /**
     * @return \Illuminate\Support\Collection
     */
-    private function _convert_transaction_type_to_string($records)
+    private function formatRecord($records)
     {
         $result = '';
         foreach ($records as $record) {
@@ -35,22 +36,28 @@ class TransactionExportSample implements FromArray
     {
         $transaction_type = TransactionType::where('status', Constant::STATUS_ACTIVE)->get();
         $payment_type = Payment::where('id_parent', '>', 0)->get();
-        $result = $this->_convert_transaction_type_to_string($transaction_type);
-        $result2 = $this->_convert_transaction_type_to_string($payment_type);
+        $unit = Unit::all();
+        $result = $this->formatRecord($transaction_type);
+        $result2 = $this->formatRecord($payment_type);
+        $result3 = $this->formatRecord($unit);
         return  [
             [
                 '#',
+                'Name',
+                'Email',
                 'Jenis Transaksi',
                 'Metode Pembayaran',
-                'Email',
-                'Nominal'
+                'Nominal',
+                'Satuan'
             ],
             [
                 '3',
+                'Name',
+                'sample@email.com',
                 $result,
                 $result2,
-                'sample@email.com',
-                '1'
+                '1',
+                $result3
             ]
         ];
     }
