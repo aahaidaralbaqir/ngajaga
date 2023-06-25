@@ -29,7 +29,7 @@ class RolesController extends Controller
     {
         $user_profile = $this->initProfile();
 		$data = array_merge(array(), $user_profile);
-        $data['permissions'] = Permission::all();
+        $data['list_permission'] = Permission::all();
 		$data['item'] = NULL; 
 		return view('admin.roles.form', $data);  
     }
@@ -62,7 +62,7 @@ class RolesController extends Controller
         $user_profile = $this->initProfile();
 		$data = array_merge(array(), $user_profile);
 		$data['item'] = Roles::find($roleId);
-		$data['permissions'] = Permission::all();
+		$data['list_permission'] = Permission::all();
 		return view('admin.roles.form', $data);  
     }
 

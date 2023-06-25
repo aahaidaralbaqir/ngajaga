@@ -46,7 +46,7 @@
                         <label class="mb-3 block font-medium text-sm text-black dark:text-white">
                             Hak Akses
                         </label>
-                        @foreach ($permissions as $each_permission)
+                        @foreach ($list_permission as $each_permission)
                             @php
                                 $checked = FALSE;
 
