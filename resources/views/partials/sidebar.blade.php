@@ -148,7 +148,7 @@
 
       <!-- Others Group --> 
         <div>
-          <h3 class="mb-4 ml-4 text-sm font-medium text-bodydark2">INFAQ &amp; ZAKAT</h3>
+          <h3 class="mb-4 ml-4 text-sm font-medium text-bodydark2">DANA MASUK</h3>
           <ul class="mb-6 flex flex-col gap-1.5">
             <!-- Menu Item Chart -->
 			@if(in_array(App\Constant\Permission::CAN_VIEW_REPORT, $permissions))
