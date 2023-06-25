@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HeroesController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RolesController;
+use App\Http\Controllers\BeneficiaryController;
 use App\Http\Controllers\StructureController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PermissionController;
@@ -137,6 +138,15 @@ Route::prefix('admin')->group(function () {
 		Route::post('/create', [PaymentController::class, 'createPayment'])->name('payment.create')->middleware('auth');
 		Route::get('/update/{paymentId}', [PaymentController::class, 'updateForm'])->name('payment.update.form')->middleware('auth');
 		Route::post('/update', [PaymentController::class, 'updatePayment'])->name('payment.update')->middleware('auth');
+	});
+
+	Route::prefix('beneficiary')->group(function () {
+		Route::get('/', [BeneficiaryController::class, 'index'])->name('beneficiary.index')->middleware('auth');
+		Route::get('/create', [BeneficiaryController::class, 'createForm'])->name('beneficiary.create.form')->middleware('auth');
+		Route::post('/create', [BeneficiaryController::class, 'createBeneficiary'])->name('beneficiary.create')->middleware('auth');
+		Route::get('/update/{beneficiaryId}', [BeneficiaryController::class, 'updateForm'])->name('beneficiary.update.form')->middleware('auth');
+		Route::get('/delete/{beneficiaryId}', [BeneficiaryController::class, 'deleteBeneficiary'])->name('beneficiary.delete')->middleware('auth');
+		Route::post('/update', [BeneficiaryController::class, 'updateBeneficiary'])->name('beneficiary.update')->middleware('auth');
 	});
 });
 
