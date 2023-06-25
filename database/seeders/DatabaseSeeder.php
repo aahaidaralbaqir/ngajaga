@@ -152,6 +152,19 @@ class DatabaseSeeder extends Seeder
 			],
 
 			[
+				'name' => 'Buat transaksi',
+				'url' => 'transaction.create',
+				'alias' => 'create_transaction',
+				'icon' => 'example.svg',
+			],
+			[
+				'name' => 'Update transaksi',
+				'url' => 'transaction.update',
+				'alias' => 'update_transaction',
+				'icon' => 'example.svg',
+			],
+
+			[
 				'name' => 'Lihat hak akses',
 				'url' => 'permission.index',
 				'alias' => 'view_permission',
@@ -205,6 +218,53 @@ class DatabaseSeeder extends Seeder
 				'name' => 'Update pengguna',
 				'url' => 'user.update.form',
 				'alias' => 'update_user',
+				'icon' => 'example.svg',
+			],
+
+			[
+				'name' => 'Lihat penerima dana',
+				'url' => 'beneficiary.index',
+				'alias' => 'view_beneficiary',
+				'icon' => 'example.svg',
+			],
+
+			[
+				'name' => 'Buat penerima dana',
+				'url' => 'beneficiary.create',
+				'alias' => 'create_beneficiary',
+				'icon' => 'example.svg',
+			],
+			[
+				'name' => 'Update penerima dana',
+				'url' => 'beneficiary.update',
+				'alias' => 'update_beneficiary',
+				'icon' => 'example.svg',
+			],
+
+			[
+				'name' => 'Lihat distribusi dana',
+				'url' => 'distribution.index',
+				'alias' => 'view_distribution',
+				'icon' => 'example.svg',
+			],
+
+			[
+				'name' => 'Buat distribusi dana',
+				'url' => 'distribution.create',
+				'alias' => 'create_distribution',
+				'icon' => 'example.svg',
+			],
+			[
+				'name' => 'Update distribution',
+				'url' => 'distribution.update',
+				'alias' => 'update_distribution',
+				'icon' => 'example.svg',
+			],
+
+			[
+				'name' => 'Lihat laporan',
+				'url' => 'report.index',
+				'alias' => 'view_report',
 				'icon' => 'example.svg',
 			],
 		];

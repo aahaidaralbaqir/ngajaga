@@ -215,7 +215,7 @@
               <!-- Dropdown Menu End -->
             </li>
             <!-- Menu Item Auth Pages -->
-
+			@if(in_array(App\Constant\Permission::CAN_VIEW_BENEFICIARY, $permissions))
 			<li>
 				<a href="{{ route('beneficiary.index') }}" class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 @php echo in_array(route_name(), ['beneficiary.index', 'beneficiary.create.form', 'beneficiary.update.form']) ? 'bg-graydark dark:bg-meta-4' : '' @endphp" >
 					<svg class="fill-current" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -225,6 +225,7 @@
 					Penerima Dana
 				</a>
 			</li>
+			@endif
           </ul>
         </div> 
     </nav>

@@ -31,6 +31,8 @@ class Permission {
 	const CAN_UPDATE_PAYMENT 	= 'update_payment';
 
 	const CAN_VIEW_TRANSACTION = 'view_transaction';
+	const CAN_UPDATE_TRANSACTION = 'update_transaction';
+	const CAN_CREATE_TRANSACTION = 'create_transaction';
 
 	const CAN_VIEW_PERMISSION = 'view_permission';
 	const CAN_CREATE_PERMISSION = 'create_permission';
@@ -47,4 +49,10 @@ class Permission {
 	const CAN_VIEW_REPORT = 'view_report';
 
 	const CAN_VIEW_DISTRIBUTION = 'view_distribution';
+	const CAN_CREATE_DISTRIBUTION = 'create_distribution';
+	const CAN_UPDATE_DISTRIBUTION = 'update_distribution';
+
+	const CAN_VIEW_BENEFICIARY = 'view_beneficiary';
+	const CAN_CREATE_BENEFICIARY = 'create_beneficiary';
+	const CAN_UPDATE_BENEFICIARY = 'update_beneficiary';
 }
