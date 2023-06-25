@@ -17,7 +17,8 @@ class Transaction extends Model
         'transaction_status',
         'redirect_payment',
         'user_id',
-        'id_payment_type'
+        'id_payment_type',
+		'unit_id'
     ];
 
     public function customer()

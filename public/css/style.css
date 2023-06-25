@@ -156,3 +156,17 @@ span.flatpickr-weekday,
 [x-cloak] {
   display: none !important;
 }
+
+.bg-requested {
+	background-color: rgb(249 115 22);
+}
+.bg-pending {
+	background-color: rgb(245 158 11);
+}
+.bg-failed {
+	background-color: rgb(220 38 38);
+}
+
+.bg-expired {
+	background-color: rgb(59 130 246);
+}

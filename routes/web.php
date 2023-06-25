@@ -118,9 +118,14 @@ Route::prefix('admin')->group(function () {
 			Route::post('/create', [TransactionTypeController::class, 'createTransactionType'])->name('transaction.type.create')->middleware('auth');
 			Route::post('/update', [TransactionTypeController::class, 'updateTransactionType'])->name('transaction.type.update')->middleware('auth');
 		});
-		Route::get('/', [TransactionController::class, 'index'])->name('transaction.index')->middleware('auth'); Route::get('/', [TransactionController::class, 'index'])->name('transaction.index')->middleware('auth');
-		Route::get('/create', [TransactionController::class, 'showCreateTransactionForm'])->name('transaction.create.form')->middleware('auth');
+		Route::get('/', [TransactionController::class, 'index'])->name('transaction.index')->middleware('auth'); Route::get('/', [TransactionController::class, 'index'])->name('transaction.index')->middleware('auth');	
 		Route::get('/sample', [TransactionController::class, 'sampleFile'])->name('transaction.sample')->middleware('auth');
+		
+		Route::get('/create', [TransactionController::class, 'showCreateTransactionForm'])->name('transaction.create.form')->middleware('auth');
+		Route::post('/create', [TransactionController::class, 'createTransaction'])->name('transaction.admin.create')->middleware('auth');
+		Route::post('/update', [TransactionController::class, 'updateTransaction'])->name('transaction.admin.update')->middleware('auth');
+		Route::get('/update/{transactionId}', [TransactionController::class, 'showUpdateTransactionForm'])->name('transaction.update.form')->middleware('auth');
+		
 	});
 
 	

@@ -16,6 +16,7 @@ use App\Util\Transaction as TransactionUtil;
 use Illuminate\Support\Facades\DB;
 use App\Exports\TransactionExportSample;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
@@ -392,16 +393,18 @@ class TransactionController extends Controller
 
 	public function createTransaction(Request $request)
 	{
+		$current_user = Auth::user();
 		$user_input_field_rules = [
 			'id_transaction_type' => 'required',
 			'unit_id' => 'required',
+			'id_transaction_type' => 'required',
 			'nominal' => 'required',
 			'name' => 'required',
-			'email' => 'required',
-			'phone_number' => 'required' 
+			'email' => 'required|email',
+			'phone_number' => 'required'
 		];
 
-		$user_input =  $request->only('id_transaction_type', 'unit_id', 'nominal', 'name', 'email', 'phone_number');
+		$user_input =  $request->only('id_transaction_type', 'unit_id', 'nominal', 'name', 'email', 'phone_number', 'id_payment_type');
 		$validator = Validator::make($user_input, $user_input_field_rules);
 		if ($validator->fails())
         {
@@ -409,6 +412,53 @@ class TransactionController extends Controller
 						->withErrors($validator)
 						->withInput();
         }
+
+		foreach ($user_input as $key => $value)
+		{
+			if (in_array($key, ['unit_id', 'id_transaction_type', 'nominal', 'id_payment_type']))
+			{
+				$user_input[$key] = intval($value);
+			}
+		}
+
+		$transaction_status = Constant::TRANSACTION_REQUESTED;
+		if ($current_user->role_id ==  env('ADMINISTRATOR_ROLE_ID', 1))
+			$transaction_status = Constant::TRANSACTION_PAID;	
+
+		$transaction_id = Uuid::uuid4();
+		$transaction_record = [
+			'id_transaction_type' => $user_input['id_transaction_type'],
+			'unit_id' => $user_input['unit_id'],
+			'id_payment_type' => $user_input['id_payment_type'],
+			'paid_amount' => $user_input['nominal'],
+			'user_id' => $current_user->id,
+			'order_id' => $transaction_id,
+			'transaction_status' => $transaction_status
+		];
+		
+		$transaction_result = Transaction::create($transaction_record);
+		
+		$customer_record = [
+			'transaction_id' => $transaction_result->id,
+			'name' => $user_input['name'],
+			'email' => $user_input['email'],
+			'phone_number' => $user_input['phone_number'] 
+		];
+
+		$customer_result = Customer::create($customer_record);
+		return redirect()
+                	->route('transaction.index')
+					->with(['success' => 'Berhasil menambahkan transaksi']);
+	}
+
+	public function showUpdateTransactionForm(Request $request, $transactionId)
+	{
+
+	}
+
+	public function updateTransaction(Request $request)
+	{
+
 	}
 
 }

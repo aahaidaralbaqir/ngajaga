@@ -198,15 +198,16 @@
                         </form>
                     </div>
                 </div>
-				<div class="flex gap-4 items-center">
+				<div class="flex gap-5 justify-center items-center">
 					<a href="#" class="relative" @click.prevent="modalOpen = true">
 						Pencarian
 						<span class="absolute -top-0.5 right-0 z-1 h-2 w-2 rounded-full bg-meta-1">
 							<span class="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"></span>
 						</span>
 					</a>
-					<a href="{{ route('transaction.create.form') }}" class="flex items-center justify-center rounded-md bg-primary py-2 px-10 text-white hover:bg-opacity-95">Buat Transaksi</a>
+					<a href="{{ route('transaction.create.form') }}" class="flex items-center justify-center rounded-md bg-primary py-2 px-10 text-white hover:bg-opacity-95">Buat transaksi</a>
 				</div>
+                
             </section>
             
         </div>
@@ -235,9 +236,9 @@
         <div class="col-span-1 flex items-center">
             <p class="font-medium">Status</p>
         </div>
-		<div class="col-span-1 flex-items-center">
-			<p class="font-medium">Aksi</p>
-		</div>
+		<div class="col-span-1 flex items-center">
+            <p class="font-medium">Aksi</p>
+        </div>
     </div>
     @if(count($transaction) == 0)
         <div class="grid grid-cols-8 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
@@ -268,13 +269,24 @@
                 {{  \App\Util\Common::trimWord($item->order_id, 16) }}
             </a>  
         </div>
-        <div class="col-span-2 flex items-center">
+        <div class="col-span-1 flex items-center">
             <p class="text-sm text-black dark:text-white">
-                {{ $item->email }}
+                {{  \App\Util\Common::trimWord($item->email, 10) }}
             </p>   
         </div>
+		
+        <div class="col-span-1 flex items-center">
+            <p class="text-sm text-black dark:text-white">
+                {{  \App\Util\Common::formatAmount($item->unit_name, $item->paid_amount, 16) }}
+            </p> 
+        </div>
+        <div class="col-span-1 flex items-center space-x-3.5">
+            <button class="{{  \App\Util\Transaction::getClassByTransactionStatus($item->transaction_status) }}">
+                {{  \App\Util\Transaction::getTransactionNameByTransactionStatus($item->transaction_status) }}
+            </button>
+        </div>
 		<div class="col-span-1 flex items-center">
-            <div x-data="{openDropDown: false}" class="relative">
+			<div x-data="{openDropDown: false}" class="relative">
 				<button @click.prevent="openDropDown = !openDropDown">
 				  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M2.25 11.25C3.49264 11.25 4.5 10.2426 4.5 9C4.5 7.75736 3.49264 6.75 2.25 6.75C1.00736 6.75 0 7.75736 0 9C0 10.2426 1.00736 11.25 2.25 11.25Z" fill="#98A6AD"></path>
@@ -282,7 +294,7 @@
 					<path d="M15.75 11.25C16.9926 11.25 18 10.2426 18 9C18 7.75736 16.9926 6.75 15.75 6.75C14.5074 6.75 13.5 7.75736 13.5 9C13.5 10.2426 14.5074 11.25 15.75 11.25Z" fill="#98A6AD"></path>
 				  </svg>
 				</button>
-				<div x-show="openDropDown" @click.outside="openDropDown = false" class="absolute right-0 top-full z-40 w-40 space-y-1 rounded-sm border border-stroke bg-white p-1.5 shadow-default dark:border-strokedark dark:bg-boxdark" style="display: none;">
+				<div x-show="openDropDown" @click.outside="openDropDown = false" class="absolute right-0 top-full z-40 w-40 space-y-1 rounded-sm border border-stroke bg-white p-1.5 shadow-default dark:border-strokedark dark:bg-boxdark">
 				  <button class="flex w-full items-center gap-2 rounded-sm py-1.5 px-4 text-left text-sm hover:bg-gray dark:hover:bg-meta-4">
 					<svg class="fill-current" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 					  <g clip-path="url(#clip0_62_9787)">
@@ -307,17 +319,7 @@
 				  </button>
 				</div>
 			  </div>
-        </div>
-        <div class="col-span-1 flex items-center">
-            <p class="text-sm text-black dark:text-white">
-                {{  \App\Util\Common::formatAmount($item->unit_name, $item->paid_amount, 16) }}
-            </p> 
-        </div>
-        <div class="col-span-1 flex items-center space-x-3.5">
-            <button class="{{  \App\Util\Transaction::getClassByTransactionStatus($item->transaction_status) }}">
-                {{  \App\Util\Transaction::getTransactionNameByTransactionStatus($item->transaction_status) }}
-            </button>
-        </div>
+		</div>
     </div>
     @endforeach
     </div>
