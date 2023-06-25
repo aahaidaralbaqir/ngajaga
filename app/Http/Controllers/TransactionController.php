@@ -384,6 +384,7 @@ class TransactionController extends Controller
 		$data = array_merge(array(), $user_profile);
 		$data['item'] = NULL;
 		$data['unit'] = Unit::all();
+		$data['payments'] = Payment::where('id_parent_payment',  env('MANUAL_PAYMENT_ID', 1))->get();
 		$data['transaction_type'] = TransactionType::where('status', Constant::STATUS_ACTIVE)->get();
 		return view('admin.transaction.list.form', $data);
 	}
