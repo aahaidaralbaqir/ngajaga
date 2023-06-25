@@ -140,6 +140,7 @@ class TransactionController extends Controller
         $user_input['transaction_status'] = Constant::TRANSACTION_PENDING;
 
         $user_input['id_payment_type'] = 0;
+		$user_input['unit_id'] = env('UNIT_DEFAULT',  10);
 
         $transaction_customer = [
             'transaction_id' => '',
