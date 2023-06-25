@@ -173,7 +173,7 @@ class DatabaseSeeder extends Seeder
 			[
 				'name' => 'Lihat jenis pengguna',
 				'url' => 'roles.index',
-				'alias' => 'view_ROLES',
+				'alias' => 'view_roles',
 				'icon' => 'example.svg',
 			],
 			[
