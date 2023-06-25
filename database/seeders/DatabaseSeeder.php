@@ -247,7 +247,7 @@ class DatabaseSeeder extends Seeder
 				'name' => 'Gopay',
 				'id_parent' => $online_payment_parent->id,
 				'value' => 'gopay',
-				'payment_logo' => 'gopay.jpeg',
+				'payment_logo' => 'gopay.png',
 				'expired_time' => 100,
 				'status' => Constant::STATUS_ACTIVE
 			],
@@ -255,7 +255,7 @@ class DatabaseSeeder extends Seeder
 				'name' => 'Shopee Pay',
 				'id_parent' => $online_payment_parent->id,
 				'value' => 'shopeepay',
-				'payment_logo' => 'shopeepay.jpeg',
+				'payment_logo' => 'shopeepay.png',
 				'expired_time' => 100,
 				'status' => Constant::STATUS_ACTIVE
 			]
