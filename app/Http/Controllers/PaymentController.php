@@ -57,7 +57,7 @@ class PaymentController extends Controller
 						->withErrors($validator)
 						->withInput();
 
-        $user_input['status'] = 1;
+        $user_input['status'] = Constant::STATUS_INACTIVE;
 
         if ($request->hasFile('payment_logo'))
 		{
@@ -70,7 +70,8 @@ class PaymentController extends Controller
 			}
 			$user_input['payment_logo'] = $filename;
 		}
-        if ($request->has('status')) $user_input['status'] = 2;
+        if ($request->has('status')) 
+			$user_input['status'] = Constant::STATUS_ACTIVE;
 		Payment::create($user_input);
 		return redirect()
 					->route('payment.index')

@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-
+use App\Constant\Constant;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -208,6 +208,92 @@ class DatabaseSeeder extends Seeder
 				'icon' => 'example.svg',
 			],
 		];
+		$transaction_type = [
+			[
+				'name' => 'ZAKAT',
+				'description' => 'description',
+				'icon' => 'zakat.jpeg',
+				'status' => Constant::STATUS_ACTIVE
+			],
+			[
+				'name' => 'SEDEKAH',
+				'description' => 'description',
+				'icon' => 'sedekah.jpeg',
+				'status' => Constant::STATUS_ACTIVE
+			]
+		];
+		foreach ($transaction_type as $item)
+		{
+			\App\Models\TransactionType::factory()->create($item);	
+		}
+		$online_payment_parent = \App\Models\Payment::factory()->create([
+			'name' => 'Online Payment',
+			'id_parent' => 0,
+			'value' => 'online_payment',
+			'payment_logo' => 'online_payment.jpeg',
+			'expired_time' => 10,
+			'status' => Constant::STATUS_ACTIVE
+		]);
+		$virtual_account_payment_parent = \App\Models\Payment::factory()->create([
+			'name' => 'Virtual Account',
+			'id_parent' => 0,
+			'value' => 'virtual_account',
+			'payment_logo' => 'online_virtual_account_payment.jpeg',
+			'expired_time' => 10,
+			'status' => Constant::STATUS_ACTIVE
+		]);
+		$online_payment = [
+			[
+				'name' => 'Gopay',
+				'id_parent' => $online_payment_parent->id,
+				'value' => 'gopay',
+				'payment_logo' => 'gopay.jpeg',
+				'expired_time' => 100,
+				'status' => Constant::STATUS_ACTIVE
+			],
+			[
+				'name' => 'Shopee Pay',
+				'id_parent' => $online_payment_parent->id,
+				'value' => 'shopeepay',
+				'payment_logo' => 'shopeepay.jpeg',
+				'expired_time' => 100,
+				'status' => Constant::STATUS_ACTIVE
+			]
+		];
+		foreach ($online_payment as $item)
+		{
+			\App\Models\Payment::factory()->create($item);	
+		}
+		$virtual_account = [
+			[
+				'name' => 'Virtual Account BCA',
+				'id_parent' => $virtual_account_payment_parent->id,
+				'value' => 'gopay',
+				'payment_logo' => 'bca.png',
+				'expired_time' => 100,
+				'status' => Constant::STATUS_ACTIVE
+			],
+			[
+				'name' => 'Virtual Account BNI',
+				'id_parent' => $virtual_account_payment_parent->id,
+				'value' => 'bni_va',
+				'payment_logo' => 'bni.png',
+				'expired_time' => 100,
+				'status' => Constant::STATUS_ACTIVE
+			],
+			[
+				'name' => 'Permata VA',
+				'id_parent' => $virtual_account_payment_parent->id,
+				'value' => 'permata_va',
+				'payment_logo' => 'permata.jpeg',
+				'expired_time' => 100,
+				'status' => Constant::STATUS_ACTIVE
+			]	
+		];
+		foreach ($virtual_account as $item)
+		{
+			\App\Models\Payment::factory()->create($item);	
+		}
         \App\Models\Unit::factory()
             ->count(5)
             ->sequence(

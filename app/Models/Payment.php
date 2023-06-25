@@ -23,7 +23,7 @@ class Payment extends Model
 
     public function getStatusAttribute($value)
     {
-        return $value == 1 ? 'Active' : 'Inactive';
+        return $value == Constant::STATUS_ACTIVE ? 'Active' : 'Inactive';
     }
 
     public function getPaymentLogoAttribute($value)

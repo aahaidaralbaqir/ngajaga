@@ -118,7 +118,8 @@ Route::prefix('admin')->group(function () {
 			Route::post('/create', [TransactionTypeController::class, 'createTransactionType'])->name('transaction.type.create')->middleware('auth');
 			Route::post('/update', [TransactionTypeController::class, 'updateTransactionType'])->name('transaction.type.update')->middleware('auth');
 		});
-		Route::get('/', [TransactionController::class, 'index'])->name('transaction.index')->middleware('auth');
+		Route::get('/', [TransactionController::class, 'index'])->name('transaction.index')->middleware('auth'); Route::get('/', [TransactionController::class, 'index'])->name('transaction.index')->middleware('auth');
+		Route::get('/create', [TransactionController::class, 'showCreateTransactionForm'])->name('transaction.create.form')->middleware('auth');
 		Route::get('/sample', [TransactionController::class, 'sampleFile'])->name('transaction.sample')->middleware('auth');
 	});
 

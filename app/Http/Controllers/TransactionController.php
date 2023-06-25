@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Transaction;
 use App\Models\TransactionType;
 use App\Models\Payment;
+use App\Models\Unit;
 use App\Models\Customer;
 use App\Client\Midtrans;
 use App\Util\Transaction as TransactionUtil;
@@ -376,5 +377,37 @@ class TransactionController extends Controller
     {
         return Excel::download(new TransactionExportSample, 'sample_export_transaction.csv');
     }
+
+	public function showCreateTransactionForm(Request $request)
+	{
+		$user_profile = $this->initProfile();
+		$data = array_merge(array(), $user_profile);
+		$data['item'] = NULL;
+		$data['unit'] = Unit::all();
+		$data['transaction_type'] = TransactionType::where('status', Constant::STATUS_ACTIVE)->get();
+		return view('admin.transaction.list.form', $data);
+	}
+
+
+	public function createTransaction(Request $request)
+	{
+		$user_input_field_rules = [
+			'id_transaction_type' => 'required',
+			'unit_id' => 'required',
+			'nominal' => 'required',
+			'name' => 'required',
+			'email' => 'required',
+			'phone_number' => 'required' 
+		];
+
+		$user_input =  $request->only('id_transaction_type', 'unit_id', 'nominal', 'name', 'email', 'phone_number');
+		$validator = Validator::make($user_input, $user_input_field_rules);
+		if ($validator->fails())
+        {
+            return back()
+						->withErrors($validator)
+						->withInput();
+        }
+	}
 
 }

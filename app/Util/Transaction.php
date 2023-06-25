@@ -25,6 +25,7 @@ class Transaction {
     public static function getClassByTransactionStatus($transaction_status)
     {
         $transaction_status_classes = [
+            Constant::TRANSACTION_REQUESTED => 'inline-flex rounded-full bg-[#DC3545] py-1 px-3 text-sm font-extralight text-white hover:bg-opacity-90',
             Constant::TRANSACTION_FAILED => 'inline-flex rounded-full bg-[#DC3545] py-1 px-3 text-sm font-extralight text-white hover:bg-opacity-90',
             Constant::TRANSACTION_PAID => 'inline-flex rounded-full bg-[#13C296] py-1 px-3 text-sm font-extralight text-white hover:bg-opacity-90',
             Constant::TRANSACTION_EXPIRED => 'inline-flex rounded-full bg-[#EFEFEF] py-1 px-3 text-sm font-extralight text-[#212B36] hover:bg-opacity-90',
@@ -38,7 +39,8 @@ class Transaction {
             Constant::TRANSACTION_FAILED => 'GAGAL',
             Constant::TRANSACTION_PAID => 'DIBAYAR',
             Constant::TRANSACTION_EXPIRED => 'KADALUARSA',
-            Constant::TRANSACTION_PENDING => 'TERTUNDA'
+            Constant::TRANSACTION_PENDING => 'TERTUNDA',
+            Constant::TRANSACTION_REQUESTED => 'MENUNGGU APPROVAL'
         ];
         return $transaction_status_names;
     }
