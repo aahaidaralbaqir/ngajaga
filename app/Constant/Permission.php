@@ -55,4 +55,5 @@ class Permission {
 	const CAN_VIEW_BENEFICIARY = 'view_beneficiary';
 	const CAN_CREATE_BENEFICIARY = 'create_beneficiary';
 	const CAN_UPDATE_BENEFICIARY = 'update_beneficiary';
+	const CAN_DELETE_BENEFICIARY = 'delete_beneficiary';
 }
