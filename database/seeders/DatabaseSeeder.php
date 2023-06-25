@@ -234,6 +234,14 @@ class DatabaseSeeder extends Seeder
 			'expired_time' => 10,
 			'status' => Constant::STATUS_ACTIVE
 		]);
+		$manual_payment_parent = \App\Models\Payment::factory()->create([
+			'name' => 'Manual Payment',
+			'id_parent' => 0,
+			'value' => 'manual_payment',
+			'payment_logo' => 'manual_payment.jpeg',
+			'expired_time' => 10,
+			'status' => Constant::STATUS_ACTIVE
+		]);
 		$virtual_account_payment_parent = \App\Models\Payment::factory()->create([
 			'name' => 'Virtual Account',
 			'id_parent' => 0,
@@ -242,6 +250,24 @@ class DatabaseSeeder extends Seeder
 			'expired_time' => 10,
 			'status' => Constant::STATUS_ACTIVE
 		]);
+		$manual_payment = [
+			[
+				'name' => 'Transfer Manual',
+				'id_parent' => $manual_payment_parent->id,
+				'value' => 'manual_payment',
+				'payment_logo' => 'atm_transfer.jpeg',
+				'expired_time' => 100,
+				'status' => Constant::STATUS_ACTIVE
+			],
+			[
+				'name' => 'Cash',
+				'id_parent' => $manual_payment_parent->id,
+				'value' => 'manual_payment',
+				'payment_logo' => 'cash.jpeg',
+				'expired_time' => 100,
+				'status' => Constant::STATUS_ACTIVE
+			],	
+		];
 		$online_payment = [
 			[
 				'name' => 'Gopay',
@@ -261,6 +287,10 @@ class DatabaseSeeder extends Seeder
 			]
 		];
 		foreach ($online_payment as $item)
+		{
+			\App\Models\Payment::factory()->create($item);	
+		}
+		foreach ($manual_payment as $item)
 		{
 			\App\Models\Payment::factory()->create($item);	
 		}

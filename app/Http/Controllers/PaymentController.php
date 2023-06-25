@@ -7,6 +7,7 @@ use App\Models\Payment;
 use Illuminate\Support\Facades\Validator;
 use App\Util\Common as CommonUtil;
 use Illuminate\Support\Facades\Storage;
+use App\Constant\Constant;
 
 class PaymentController extends Controller
 {
@@ -98,7 +99,7 @@ class PaymentController extends Controller
                         ->withErrors($validator)
                         ->withInput();
 
-        $user_input['status'] = 2;
+        $user_input['status'] = Constant::STATUS_INACTIVE;
 
         if ($request->hasFile('payment_logo'))
         {
@@ -113,7 +114,7 @@ class PaymentController extends Controller
             }
             $user_input['payment_logo'] = $filename;
         }
-        if ($request->has('status')) $user_input['status'] = TRUE;
+        if ($request->has('status')) $user_input['status'] = Constant::STATUS_ACTIVE;
         Payment::where('id', $request->id)->update($user_input);
         return redirect()
                     ->route('payment.index')
