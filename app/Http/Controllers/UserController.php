@@ -32,6 +32,36 @@ class UserController extends Controller
 		return view('admin.user.form', $data);
 	}
 
+	public function updateUser(Request $request)
+	{
+		$user_input_field_rules = [
+			'name' => 'required',
+			'email' => 'required',
+			'role_id' => 'required',
+		];
+		$user_input = $request->only('name', 'email', 'role_id');
+		$current_user = Auth::user();
+		$validator = Validator::make($user_input, $user_input_field_rules);
+		if ($validator->fails())
+			return back()
+						->withErrors($validator)
+						->withInput();
+	
+		User::where('id', $current_user->id)->update($user_input);
+		return redirect()
+					->route('user.index')
+					->with(['success' => 'Berhasil mengupdate pengguna']);	
+	}
+
+	public function updateForm(Request $request)
+	{
+		$user_profile = $this->initProfile();
+		$data = array_merge(array(), $user_profile);
+		$data['item'] = Auth::user();
+		$data['roles'] = Roles::where('status', true)->get();	
+		return view('admin.user.form', $data);
+	}
+
 	public function createUser(Request $request)
 	{
 		$user_input_field_rules = [
