@@ -148,7 +148,7 @@
 
       <!-- Others Group --> 
         <div>
-          <h3 class="mb-4 ml-4 text-sm font-medium text-bodydark2">DANA MASUK</h3>
+          <h3 class="mb-4 ml-4 text-sm font-medium text-bodydark2">DANA MASUK &amp; KELUAR</h3>
           <ul class="mb-6 flex flex-col gap-1.5">
             <!-- Menu Item Chart -->
 			@if(in_array(App\Constant\Permission::CAN_VIEW_REPORT, $permissions))
@@ -202,7 +202,7 @@
 				 	 @endif
 					@if(in_array(App\Constant\Permission::CAN_VIEW_TRANSACTION, $permissions))
 						<li>
-							<a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white @php echo in_array(route_name(), ['transaction.index', 'transaction.create.form', 'transaction.update.form']) ? 'text-white' : '' @endphp"  href="{{ route('transaction.index') }}">Daftar Transaksi</a>
+							<a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white @php echo in_array(route_name(), ['transaction.index', 'transaction.create.form', 'transaction.update.form']) ? 'text-white' : '' @endphp"  href="{{ route('transaction.index') }}">Dana Masuk</a>
 						</li>
 					@endif
                 </ul>
