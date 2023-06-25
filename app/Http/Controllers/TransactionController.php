@@ -140,7 +140,7 @@ class TransactionController extends Controller
         $user_input['transaction_status'] = Constant::TRANSACTION_PENDING;
 
         $user_input['id_payment_type'] = 0;
-		$user_input['unit_id'] = env('UNIT_DEFAULT',  10);
+		$user_input['unit_id'] = env('UNIT_DEFAULT',  11);
 
         $transaction_customer = [
             'transaction_id' => '',
@@ -229,7 +229,7 @@ class TransactionController extends Controller
                 ->with(['error' => 'Tidak dapat mendapatkan transaksi karena status transaksi tidak sesuai']); 
         }
         $data['transaction_record'] = $current_record;
-        $data['payments'] = $this->getGroupedPayment(Payment::where('status', TRUE)->get()->toArray());
+        $data['payments'] = $this->getGroupedPayment(Payment::where('status', Constant::STATUS_ACTIVE)->get()->toArray());
         return view('payment', $data); 
     }
 
@@ -243,7 +243,7 @@ class TransactionController extends Controller
         $customer = $transaction_record->customer;
         $expired_transaction = 900; // default
         if ($payment_record->expired_time > 0)
-            $expired_transaction = $payment_record->expired_time / Constant::ONE_MINUTE;
+            $expired_transaction = ceil($payment_record->expired_time / Constant::ONE_MINUTE);
         return [
             'expiry' => [
                 'unit' => 'minutes',
