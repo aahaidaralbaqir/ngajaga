@@ -16,7 +16,7 @@ class CreateTransaction extends Migration
         Schema::create('transaction', function (Blueprint $table) {
             $table->bigIncrements('id');
 			$table->unsignedInteger('id_transaction_type');
-			$table->string('order_id', 20);
+			$table->string('order_id', 100);
 			$table->integer('paid_amount');
 			$table->integer('va_number');
 			$table->enum('transaction_status', [1, 2, 3, 4, 5, 6]);
