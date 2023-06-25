@@ -23,19 +23,20 @@
 				@endphp 
                 {{ $form }}
 					<div class="mb-5.5">
+						<input type="hidden" name="id" value="{{ !empty($item) ? $item->id : 0 }}">
 						<label class="mb-3 block font-medium text-sm text-black dark:text-white">
 						Jenis Transaksi
 						</label>
 						<div class="relative z-20 bg-transparent dark:bg-form-input">
 							<select name="id_transaction_type" class="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
 								<option value="0">Pilih Jenis Transaksi</option>
-								@foreach ($transaction_type as $item)
+								@foreach ($transaction_type as $transaction)
 									@php
 										$selected = FALSE;
-										if (old('id_transaction_type', !empty($item) ? $item->id_transaction_type : 0) == $item->id)
+										if (old('id_transaction_type', !empty($item) ? $item->id_transaction_type : 0) == $transaction->id)
 											$selected = TRUE;
 									@endphp 
-									<option {{ $selected ? 'selected' : '' }} value="{{ $item->id }}">{{  $item->name }}</option>
+									<option {{ $selected ? 'selected' : '' }} value="{{ $transaction->id }}">{{  $transaction->name }}</option>
 								@endforeach
 							</select>
 							<span class="absolute top-1/2 right-4 z-30 -translate-y-1/2">
@@ -57,13 +58,13 @@
 						<div class="relative z-20 bg-transparent dark:bg-form-input">
 							<select name="unit_id" class="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
 								<option value="0">Pilih Satuan</option>
-								@foreach ($unit as $item)
+								@foreach ($unit as $each_unit)
 									@php
 										$selected = FALSE;
-										if (old('unit_id', !empty($item) ? $item->unit_id : 0) == $item->id)
+										if (old('unit_id', !empty($item) ? $item->unit_id : 0) == $each_unit->id)
 											$selected = TRUE;
 									@endphp 
-									<option {{ $selected ? 'selected' : '' }} value="{{ $item->id }}">{{  $item->name }}</option>
+									<option {{ $selected ? 'selected' : '' }} value="{{ $each_unit->id }}">{{  $each_unit->name }}</option>
 								@endforeach
 							</select>
 							<span class="absolute top-1/2 right-4 z-30 -translate-y-1/2">
@@ -85,13 +86,13 @@
 						<div class="relative z-20 bg-transparent dark:bg-form-input">
 							<select name="id_payment_type" class="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
 								<option value="0">Pilih Metode Pembayaran</option>
-								@foreach ($payments as $item)
+								@foreach ($payments as $payment)
 									@php
 										$selected = FALSE;
-										if (old('id_payment_type', !empty($item) ? $item->id_payment_type : 0) == $item->id)
+										if (old('id_payment_type', !empty($item) ? $item->id_payment_type : 0) == $payment->id)
 											$selected = TRUE;
 									@endphp 
-									<option {{ $selected ? 'selected' : '' }} value="{{ $item->id }}">{{  $item->name }}</option>
+									<option {{ $selected ? 'selected' : '' }} value="{{ $payment->id }}">{{  $payment->name }}</option>
 								@endforeach
 							</select>
 							<span class="absolute top-1/2 right-4 z-30 -translate-y-1/2">
@@ -106,6 +107,27 @@
 							<span class="text-sm text-danger">{{ $message }}</span>
 						@enderror
 					</div>
+					@if (!empty($item) && $item->user_id > 0)
+						<div class="mb-5.5">
+							<label class="mb-3 block font-medium text-sm text-black dark:text-white">
+								Status Transaksi
+							</label>
+							<select name="transaction_status" class="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+								<option value="0">Pilih Status Transaksi</option>
+								@foreach($transaction_statuses as $transaction_id => $transaction_name)
+									@php 
+										$selected = FALSE;
+										if (old('id_payment_type', !empty($item) ? $item->transaction_status : 0) == $transaction_id)
+											$selected = TRUE;
+									@endphp
+									<option value="{{ $transaction_id }}" {{ $selected  ? 'selected' : ''}}  >{{ $transaction_name }}</option>
+								@endforeach
+							</select>
+							@error('transaction_status')
+								<span class="text-sm text-danger">{{ $message }}</span>
+							@enderror
+						</div>
+					@endif
 					<div class="mb-5.5">
 						<label class="mb-3 block font-medium text-sm text-black dark:text-white">
 							Nominal
@@ -126,7 +148,7 @@
 						<input 
 							type="text" 
 							name="name"
-                            value="{{ old('name', !empty($item->name) ? $item->email : '') }}"
+                            value="{{ old('name', !empty($item->name) ? $item->name : '') }}"
                             class="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" 
 						/>
 						@error('name')

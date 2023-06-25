@@ -453,12 +453,80 @@ class TransactionController extends Controller
 
 	public function showUpdateTransactionForm(Request $request, $transactionId)
 	{
-
+		$current_record = DB::table('transaction')->select(DB::raw('transaction.id, transaction.order_id, transaction.id_payment_type, payment_type.name as payment_name, transaction.transaction_status, transaction_type.name as transaction_type, customer.email as email, transaction.paid_amount, customer.name as name, customer.email as email, customer.phone_number as phone_number, transaction.created_at, unit.name as unit_name, transaction.unit_id, transaction.id_transaction_type, transaction.user_id'))
+		->leftJoin('payment_type', function ($join) {
+            $join->on('transaction.id_payment_type', '=', 'payment_type.id');
+        })->leftJoin('customer', function ($join) {
+            $join->on('transaction.id', '=', 'customer.transaction_id'); 
+        })->join('transaction_type', function ($join) {
+            $join->on('transaction.id_transaction_type', '=', 'transaction_type.id');
+        })->join('unit', function ($join) {
+            $join->on('transaction.unit_id', '=', 'unit.id');
+        })->where('transaction.order_id', $transactionId)->first();
+		if (empty($current_record->id))
+		{
+			return redirect()
+					->route('transaction.index')
+					->with(['error' => 'Gagal mengupdate transaksi, entitas tidak di temukan']);
+		}
+		$user_profile = $this->initProfile();
+		$data = array_merge(array(), $user_profile);
+		$data['transaction_statuses'] = TransactionUtil::getTransactionStatusWithName();
+		$data['item'] = $current_record;
+		$data['unit'] = Unit::all();
+		$data['payments'] = Payment::where('id_parent',  env('MANUAL_PAYMENT_ID', 1))->get();
+		$data['transaction_type'] = TransactionType::where('status', Constant::STATUS_ACTIVE)->get();
+		return view('admin.transaction.list.form', $data);
 	}
 
 	public function updateTransaction(Request $request)
 	{
+		$current_record = Transaction::find($request->id);
+		$current_user = Auth::user();
+		$user_input_field_rules = [
+			'name' => 'required',
+			'email' => 'required|email',
+			'phone_number' => 'required'
+		];
 
+		$user_input =  $request->only('id_transaction_type', 'unit_id', 'nominal', 'name', 'email', 'phone_number', 'id_payment_type', 'transaction_status');
+		$validator = Validator::make($user_input, $user_input_field_rules);
+		if ($validator->fails())
+        {
+            return back()
+						->withErrors($validator)
+						->withInput();
+        }
+
+		foreach ($user_input as $key => $value)
+		{
+			if (in_array($key, ['unit_id', 'id_transaction_type', 'nominal', 'id_payment_type']))
+			{
+				$user_input[$key] = intval($value);
+			}
+		}
+
+		if ($current_record->user_id > 0)
+		{
+			$transaction_record['transaction_status'] = $user_input['transaction_status'];
+			$transaction_record['id_transaction_type'] = $user_input['id_transaction_type'];
+			$transaction_record['unit_id'] = $user_input['unit_id'];
+			$transaction_record['id_payment_type'] = $user_input['id_payment_type'];
+			$transaction_record['paid_amount'] = $user_input['nominal'];
+		}
+
+		if (!empty($transaction_record))
+			$transaction_result = Transaction::where(['id' => $current_record->id])->update($transaction_record);
+		
+		$customer_record = [
+			'name' => $user_input['name'],
+			'email' => $user_input['email'],
+			'phone_number' => $user_input['phone_number'] 
+		];
+
+		$customer_result = Customer::where(['transaction_id' => $current_record->id])->update($customer_record);
+		return redirect()
+                	->route('transaction.index')
+					->with(['success' => 'Berhasil mengupdate transaksi']);
 	}
-
 }
