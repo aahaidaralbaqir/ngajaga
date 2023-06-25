@@ -15,10 +15,11 @@ class FundDistribution extends Migration
     {
         Schema::create('fund_distribution', function (Blueprint $table) {
 			$table->id();
-			$table->unsignedInteger('beneficiary_id'); 
-			$table->unsignedInteger('transaction_id');
+			$table->unsignedBigInteger('beneficiary_id'); 
+			$table->unsignedBigInteger('transaction_id');
 			$table->text('description')->notNull();
-			$table->foreign('beneficiary_id')->references('id')->on('transaction_type');
+			$table->foreign('beneficiary_id')->references('id')->on('beneficiary');
+			$table->foreign('transaction_id')->references('id')->on('transaction');
             $table->timestamps();
 		});
     }
@@ -30,6 +31,6 @@ class FundDistribution extends Migration
      */
     public function down()
     {
-		Schema::dropIfExist('fund_distribution');
+		Schema::dropIfExists('fund_distribution');
     }
 }

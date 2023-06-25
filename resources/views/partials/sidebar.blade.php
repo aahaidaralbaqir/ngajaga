@@ -205,6 +205,11 @@
 							<a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white @php echo in_array(route_name(), ['transaction.index', 'transaction.create.form', 'transaction.update.form']) ? 'text-white' : '' @endphp"  href="{{ route('transaction.index') }}">Transaksi Masuk</a>
 						</li>
 					@endif
+					@if(in_array(App\Constant\Permission::CAN_VIEW_DISTRIBUTION, $permissions))
+						<li>
+							<a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white @php echo in_array(route_name(), ['distribution.index', 'distribution.create.form', 'distribution.update.form']) ? 'text-white' : '' @endphp"  href="{{ route('distribution.index') }}">Distribusi Dana</a>
+						</li>
+					@endif
                 </ul>
               </div>
               <!-- Dropdown Menu End -->

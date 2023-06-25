@@ -13,6 +13,7 @@ use App\Models\Unit;
 use App\Models\Customer;
 use App\Client\Midtrans;
 use App\Util\Transaction as TransactionUtil;
+use App\Util\Common as CommonUtil;
 use Illuminate\Support\Facades\DB;
 use App\Exports\TransactionExportSample;
 use Maatwebsite\Excel\Facades\Excel;
@@ -34,7 +35,8 @@ class TransactionController extends Controller
             $join->on('transaction.id_transaction_type', '=', 'transaction_type.id');
         })->join('unit', function ($join) {
             $join->on('transaction.unit_id', '=', 'unit.id');
-        })->where('transaction.id_payment_type', '>', 0);
+        })->where('transaction.id_payment_type', '>', 0)
+		->where('paid_amount', '>', 0);
         $user_inputs = $request->all();
         foreach($user_inputs as $user_input => $value)
         {
@@ -466,7 +468,7 @@ class TransactionController extends Controller
 		if (empty($current_record->id))
 		{
 			return redirect()
-					->route('transaction.index')
+					->route('distribution.index')
 					->with(['error' => 'Gagal mengupdate transaksi, entitas tidak di temukan']);
 		}
 		$user_profile = $this->initProfile();
@@ -528,5 +530,39 @@ class TransactionController extends Controller
 		return redirect()
                 	->route('transaction.index')
 					->with(['success' => 'Berhasil mengupdate transaksi']);
+	}
+
+	public function summaryTransactionType(Request $request)
+	{
+		if (empty($request->id_transaction_type))
+		{
+			return response()->json([
+				'error' => TRUE,
+				'message' => 'Request tidak sesuai'
+			], 400);
+		}
+		
+		$summary_transaction = DB::table('transaction')
+								->select(DB::raw('SUM(transaction.paid_amount) as total_amount, transaction_type.name, transaction_type.id'))
+								->join('transaction_type', function ($join) {
+									$join->on('transaction.id_transaction_type', '=', 'transaction_type.id');
+								})
+								->groupBy('transaction.id_transaction_type')
+								->where('transaction.id_transaction_type', $request->id_transaction_type)
+								->first();
+		$response = [
+			'error' => FALSE,
+			'data' => [
+				'total' => CommonUtil::formatAmount(Constant::UNIT_NAME_RUPIAH, 0)
+			]];
+		if ($summary_transaction != NULL)
+		{
+			$response['data']['total'] = CommonUtil::formatAmount(Constant::UNIT_NAME_RUPIAH, intval($summary_transaction->total_amount));
+			$response['data']['name'] =	$summary_transaction->name;
+		}
+		return response()->json([
+			'error' => FALSE,
+			'data' => $response
+		]);
 	}
 }

@@ -41,6 +41,7 @@ class Constant {
 	const TRANSACTION_PAID = 3;
 	const TRANSACTION_EXPIRED = 4;
 	const TRANSACTION_REQUESTED = 5;
+	const TRANSACTION_DISTRIBUTED = 6;
 
 	const ONE_MINUTE = 60;
 

@@ -23,5 +23,8 @@ Route::post('/schedule/create', [ActivityController::class, 'createSchedule']);
 Route::get('/schedule', [ActivityController::class, 'getScheduleList']);
 Route::delete('/schedule/{scheduleId}', [ActivityController::class, 'deleteSchedule']);
 
-Route::post('/transaction/token', [TransactionController::class, 'paymentToken'])->name('transaction.token');
-Route::post('/transaction/notification', [TransactionController::class, 'notification'])->name('transaction.notification');
+Route::prefix('transaction')->group(function () {
+	Route::post('/token', [TransactionController::class, 'paymentToken'])->name('transaction.token');
+	Route::post('/notification', [TransactionController::class, 'notification'])->name('transaction.notification');
+	Route::post('/type/summary', [TransactionController::class, 'summaryTransactionType'])->name('transaction.type.summary');
+});

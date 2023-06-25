@@ -45,4 +45,6 @@ class Permission {
 	const CAN_UPDATE_USER = 'update_user';
 
 	const CAN_VIEW_REPORT = 'view_report';
+
+	const CAN_VIEW_DISTRIBUTION = 'view_distribution';
 }
