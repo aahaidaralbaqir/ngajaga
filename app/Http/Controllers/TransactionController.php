@@ -388,7 +388,7 @@ class TransactionController extends Controller
 		$data = array_merge(array(), $user_profile);
 		$data['item'] = NULL;
 		$data['unit'] = Unit::all();
-		$data['payments'] = Payment::where('id_parent',  env('MANUAL_PAYMENT_ID', 1))->get();
+		$data['payments'] = Payment::where('id_parent',  env('MANUAL_PAYMENT_ID', 2))->get();
 		$data['transaction_type'] = TransactionType::where('status', Constant::STATUS_ACTIVE)->get();
 		return view('admin.transaction.list.form', $data);
 	}
@@ -566,4 +566,18 @@ class TransactionController extends Controller
 			'data' => $response
 		]);
 	}
+
+    public function getReport(Request $request)
+    {
+        $result = DB::table('transaction')->select(DB::raw('SUM(CASE WHEN transaction.paid_amount > 0 THEN transaction.paid_amount ELSE 0 END) as transaction_in, SUM(CASE WHEN transaction.paid_amount < 0 THEN transaction.paid_amount ELSE 0 END) as transaction_out, transaction_type.name'))
+                    ->join('transaction_type', function ($join) {
+                        $join->on('transaction.id_transaction_type', '=', 'transaction_type.id');
+                    })
+                    ->groupBy('transaction.id_transaction_type')
+                    ->get();
+        $user_profile = $this->initProfile();
+        $data = array_merge(array(), $user_profile);
+        $data['reports'] = $result;
+        return view('admin.report.index', $data);
+    }
 }

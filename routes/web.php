@@ -33,7 +33,9 @@ Route::prefix('admin')->group(function () {
     Route::post('/login', [UserController::class, 'login']);
 	Route::get('/logout', [UserController::class, 'logout'])->name('logout')->middleware('auth');
 
-
+	Route::prefix('report')->group(function () {
+		Route::get('/', [TransactionController::class, 'getReport'])->name('report.index')->middleware('auth');
+	});
 	Route::prefix('account')->group(function () {
 		Route::prefix('permission')->group(function () {
 			Route::get('/', [PermissionController::class, 'index'])->name('permission.index')->middleware('auth');
