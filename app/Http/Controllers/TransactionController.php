@@ -359,7 +359,7 @@ class TransactionController extends Controller
         }
 
         $transaction_status = TransactionUtil::getTransactionStatusByPGStatus($midtrans_record->transaction_status);
-        $settlement_time = $midtrans_record['settlement_time'];
+        $settlement_time = $midtrans_record->settlement_time;
         Transaction::where('id', $transaction_record->id)->update(['transaction_status' => $transaction_status, 'settlement_datetime' => $settlement_time]);
         return response()->json([
             'success' => TRUE,
