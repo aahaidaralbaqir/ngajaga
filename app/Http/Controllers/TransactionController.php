@@ -229,7 +229,7 @@ class TransactionController extends Controller
                 ->with(['error' => 'Tidak dapat mendapatkan transaksi karena status transaksi tidak sesuai']); 
         }
         $data['transaction_record'] = $current_record;
-        $data['payments'] = $this->getGroupedPayment(Payment::where('status', Constant::STATUS_ACTIVE)->get()->toArray());
+        $data['payments'] = $this->getGroupedPayment(Payment::where('status', Constant::STATUS_ACTIVE)->whereNotIn('id_parent', [env('MANUAL_PAYMENT_ID', 2)])->get()->toArray());
         return view('payment', $data); 
     }
 
