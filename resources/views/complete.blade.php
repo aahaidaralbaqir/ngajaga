@@ -69,8 +69,11 @@
                 <div class="s-container form-header">
                     <img src="https://baznas.go.id/application/views/assets/images/banner_zakat.jpg" alt="">
                     <h2>TUNAIKAN ZAKAT, INFAK, DAN SEDEKAH ANDA DENGAN <span style="color: #1f96e0">AMAN DAN MUDAH</span></h2>
-
-                    Pembayaran berhasil
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <h4>Pembayaran berhasil</h4>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
