@@ -4,7 +4,7 @@ namespace App\Util;
 use App\Constant\Constant;
 
 class Transaction {
-    public function getTransactionStatus()
+    public static function getTransactionStatus()
     {
         $transaction_status = [
             Constant::PG_STATUS_FAILURE => Constant::TRANSACTION_FAILED,
