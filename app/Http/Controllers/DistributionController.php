@@ -133,7 +133,7 @@ class DistributionController extends Controller
 		return view('admin.distribution.form', $data);
 	}
 
-	public static function getTransactionTotal($transaction_type_id)
+	public static function getTransactionTotal($unit_id, $transaction_type_id)
 	{
 		$summary_transaction = DB::table('transaction')
 								->select(DB::raw('SUM(transaction.paid_amount) as total_amount, transaction_type.name, transaction_type.id'))
@@ -142,6 +142,7 @@ class DistributionController extends Controller
 								})
 								->groupBy('transaction.id_transaction_type')
 								->where('transaction.id_transaction_type', $transaction_type_id)
+								->where('transaction.id_transaction_type', $unit_id)
 								->first();
 		if ($summary_transaction == NULL)
 			return 0;
@@ -178,7 +179,7 @@ class DistributionController extends Controller
 		}
 
 		// revalidate amount
-		if ($user_input['nominal'] > self::getTransactionTotal($user_input['id_transaction_type']))
+		if ($user_input['nominal'] > self::getTransactionTotal($user_input['unit_id'], $user_input['id_transaction_type']))
 		{
 			return back()
 					->with(['error' => 'Gagal menambah transaksi, total dana yang ingin dikeluarkan melebihi saldo saat ini']);
@@ -238,7 +239,7 @@ class DistributionController extends Controller
 						->withInput();
         }
 
-		if ($user_input['nominal'] > self::getTransactionTotal($user_input['id_transaction_type']))
+		if ($user_input['nominal'] > self::getTransactionTotal($user_input['unit_id'], $user_input['id_transaction_type']))
 		{
 			return back()
 					->with(['error' => 'Gagal mengupdate transaksi, total dana yang ingin dikeluarkan melebihi saldo saat ini']);

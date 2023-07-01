@@ -57,7 +57,7 @@ class TransactionController extends Controller
                     $start = sprintf('%s 00:00:00', $user_inputs['settlement_start']);
                     $end = sprintf('%s 23:59:50', $value);
                     $query->where('transaction.settlement_datetime', '>', $start)->where('transaction.settlement_datetime', '<', $end);
-                }http://127.0.0.1:8000/admin/transaction#
+                }
             }
 
             if (in_array($user_input, ['nominal_end']) && !empty($value))
@@ -535,7 +535,7 @@ class TransactionController extends Controller
 
 	public function summaryTransactionType(Request $request)
 	{
-		if (empty($request->id_transaction_type))
+		if (empty($request->id_transaction_type) || empty($request->unit_id))
 		{
 			return response()->json([
 				'error' => TRUE,
@@ -550,6 +550,7 @@ class TransactionController extends Controller
 								})
 								->groupBy('transaction.id_transaction_type')
 								->where('transaction.id_transaction_type', $request->id_transaction_type)
+								->where('transaction.unit_id', $request->unit_id)
 								->first();
 		$response = [
 			'error' => FALSE,
@@ -569,15 +570,54 @@ class TransactionController extends Controller
 
     public function getReport(Request $request)
     {
-        $result = DB::table('transaction')->select(DB::raw('SUM(CASE WHEN transaction.paid_amount > 0 THEN transaction.paid_amount ELSE 0 END) as transaction_in, SUM(CASE WHEN transaction.paid_amount < 0 THEN transaction.paid_amount ELSE 0 END) as transaction_out, transaction_type.name'))
+        $query = DB::table('transaction')->select(DB::raw('SUM(CASE WHEN transaction.paid_amount > 0 THEN transaction.paid_amount ELSE 0 END) as transaction_in, SUM(CASE WHEN transaction.paid_amount < 0 THEN transaction.paid_amount ELSE 0 END) as transaction_out, transaction_type.name, unit.name as unit_name, SUM(CASE WHEN transaction.paid_amount > 0 THEN 1  ELSE 0 END) as transaction_total_in, SUM(CASE WHEN transaction.paid_amount < 0 THEN 1 ELSE 0 END) as transaction_total_out'))
                     ->join('transaction_type', function ($join) {
                         $join->on('transaction.id_transaction_type', '=', 'transaction_type.id');
                     })
-                    ->groupBy('transaction.id_transaction_type')
-                    ->get();
+                    ->join('unit', function ($join) {
+                        $join->on('transaction.unit_id', '=', 'unit.id');
+                    })->whereIn('transaction.transaction_status', [Constant::TRANSACTION_PAID, Constant::TRANSACTION_DISTRIBUTED]);
+        $user_inputs  = $request->all();
+        if (!$request->has('unit_id'))
+            $user_inputs['unit_id'] = env('UNIT_DEFAULT');
+        foreach ($user_inputs as $key => $value)
+        {
+            if (in_array($key, ['transaction_end']) && !empty($value))
+            {
+                $start = $user_inputs['transaction_start'];
+                $end = $user_inputs['transaction_end'];
+                if ($tart <= $end)
+                {
+                    $start = sprintf('%s 00:00:00', $user_inputs['transaction_start']);
+                    $end = sprintf('%s 23:59:50', $value);
+                    $query->where('transaction.created_at', '>', $start)->where('transaction.created_at', '<', $end);
+                }
+            }
+
+            if (in_array($key, ['nominal_end']) && !empty($value))
+            {
+                if (!empty($user_inputs['nominal_start']))
+                {
+                    $start = intval($user_inputs['nominal_start']);
+                    $end = intval($value); 
+                    $query->where('transaction.paid_amount', '>=', $start)->where('transaction.paid_amount', '<=', $end);
+                }
+            }
+
+            if (in_array($key, ['unit_id']) && !empty($value))
+            {
+                $query->where('transaction.unit_id', '=', $value);
+            }
+        }
+        $result = $query->groupBy('transaction.id_transaction_type')->groupBy('transaction.unit_id')->get();
         $user_profile = $this->initProfile();
         $data = array_merge(array(), $user_profile);
         $data['reports'] = $result;
+        if (!$request->has('unit_id'))
+            $data['selected_unit'] = env('UNIT_DEFAULT');
+        $data['transaction_statuses'] = TransactionUtil::getTransactionStatusWithName();
+        $data['transaction_type'] = TransactionType::all();
+        $data['unit'] = Unit::all();
         return view('admin.report.index', $data);
     }
 }

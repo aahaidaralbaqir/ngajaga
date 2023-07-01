@@ -39,7 +39,7 @@
         <div class="col-span-2 flex items-center gap-4 flex-wrap">
 			<p class="font-medium text-sm text-black dark:text-white">{{ $item->category; }}</p> 
         </div>
-		@if(in_array(App\Constant\Permission::CAN_DELETE_BENEFICIARY, $permissions) ||  @if(in_array(App\Constant\Permission::CAN_UPDATE_BENEFICIARY, $permissions)))
+		@if(in_array(App\Constant\Permission::CAN_DELETE_BENEFICIARY, $permissions) || in_array(App\Constant\Permission::CAN_UPDATE_BENEFICIARY, $permissions))
         <div class="flex items-center space-x-3.5">
 			@if(in_array(App\Constant\Permission::CAN_DELETE_BENEFICIARY, $permissions))
             <a href="{{ route('beneficiary.delete', ['beneficiaryId' => $item->id]) }}">
@@ -66,6 +66,7 @@
             </a>
 			@endif
         </div>
+        @endif
     </div>
     @endforeach
     

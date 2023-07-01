@@ -35,6 +35,7 @@ Route::prefix('admin')->group(function () {
 
 	Route::prefix('report')->group(function () {
 		Route::get('/', [TransactionController::class, 'getReport'])->name('report.index')->middleware('auth');
+		Route::get('/download', [TransactionController::class, 'downloadReport'])->name('report.download')->middleware('auth');
 	});
 	Route::prefix('account')->group(function () {
 		Route::prefix('permission')->group(function () {
