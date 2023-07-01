@@ -142,7 +142,7 @@ class DistributionController extends Controller
 								})
 								->groupBy('transaction.id_transaction_type')
 								->where('transaction.id_transaction_type', $transaction_type_id)
-								->where('transaction.id_transaction_type', $unit_id)
+								->where('transaction.unit_id', $unit_id)
 								->first();
 		if ($summary_transaction == NULL)
 			return 0;

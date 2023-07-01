@@ -40,24 +40,24 @@ class UserController extends Controller
 			'role_id' => 'required',
 		];
 		$user_input = $request->only('name', 'email', 'role_id');
-		$current_user = Auth::user();
+		$current_user = User::find($request->id);
 		$validator = Validator::make($user_input, $user_input_field_rules);
 		if ($validator->fails())
 			return back()
 						->withErrors($validator)
 						->withInput();
-	
+		
 		User::where('id', $current_user->id)->update($user_input);
 		return redirect()
 					->route('user.index')
 					->with(['success' => 'Berhasil mengupdate pengguna']);	
 	}
 
-	public function updateForm(Request $request)
+	public function updateForm(Request $request, $userId)
 	{
 		$user_profile = $this->initProfile();
 		$data = array_merge(array(), $user_profile);
-		$data['item'] = Auth::user();
+		$data['item'] = User::find($userId);
 		$data['roles'] = Roles::where('status', true)->get();	
 		return view('admin.user.form', $data);
 	}
