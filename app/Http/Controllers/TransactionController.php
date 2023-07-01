@@ -579,7 +579,9 @@ class TransactionController extends Controller
                     })->whereIn('transaction.transaction_status', [Constant::TRANSACTION_PAID, Constant::TRANSACTION_DISTRIBUTED]);
         $user_inputs  = $request->all();
         if (!$request->has('unit_id'))
+		{
             $user_inputs['unit_id'] = env('UNIT_DEFAULT');
+		}
         foreach ($user_inputs as $key => $value)
         {
             if (in_array($key, ['transaction_end']) && !empty($value))

@@ -165,7 +165,7 @@
             <p class="font-medium">{{ $item->transaction_total_in; }}</p>
         </div>
         <div class="col-span-1 flex items-center">
-            <p class="font-medium text-sm text-black dark:text-white">{{  \App\Util\Common::formatAmount($item->unit_name, $item->transaction_out); }}</p>
+            <p class="font-medium text-sm text-black dark:text-white">{{  \App\Util\Common::formatAmount($item->unit_name, $item->transaction_out * -1); }}</p>
         </div>
         <div class="col-span-1 flex items-center">
             <p class="font-medium">{{ $item->transaction_total_out; }}</p>
