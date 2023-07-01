@@ -16,6 +16,7 @@ use App\Util\Transaction as TransactionUtil;
 use App\Util\Common as CommonUtil;
 use Illuminate\Support\Facades\DB;
 use App\Exports\TransactionExportSample;
+use App\Exports\TransactionExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
 
@@ -586,7 +587,7 @@ class TransactionController extends Controller
             {
                 $start = $user_inputs['transaction_start'];
                 $end = $user_inputs['transaction_end'];
-                if ($tart <= $end)
+                if ($start <= $end)
                 {
                     $start = sprintf('%s 00:00:00', $user_inputs['transaction_start']);
                     $end = sprintf('%s 23:59:50', $value);
@@ -620,4 +621,14 @@ class TransactionController extends Controller
         $data['unit'] = Unit::all();
         return view('admin.report.index', $data);
     }
+
+	public function downloadReport(Request $request)
+	{
+		$user_inputs  = $request->all();
+		$current_time = time();
+        if (!$request->has('unit_id'))
+            $user_inputs['unit_id'] = env('UNIT_DEFAULT');
+		$file_name = sprintf('Laporan-rangkuman-transaksi_%d.csv', $current_time);
+		return Excel::download(new TransactionExport($user_inputs), $file_name);	
+	}
 }
