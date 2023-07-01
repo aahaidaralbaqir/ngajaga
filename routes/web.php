@@ -128,6 +128,7 @@ Route::prefix('admin')->group(function () {
 
 		Route::get('/create', [TransactionController::class, 'showCreateTransactionForm'])->name('transaction.create.form')->middleware('auth');
 		Route::post('/create', [TransactionController::class, 'createTransaction'])->name('transaction.admin.create')->middleware('auth');
+		Route::get('/approve/{transactionId}', [TransactionController::class, 'approveTransaction'])->name('transaction.admin.approve')->middleware('auth');
 		Route::get('/update/{transactionId}', [TransactionController::class, 'showUpdateTransactionForm'])->name('transaction.update.form')->middleware('auth');
 		Route::post('/update', [TransactionController::class, 'updateTransaction'])->name('transaction.admin.update')->middleware('auth');
 		

@@ -517,10 +517,9 @@ class TransactionController extends Controller
 			$transaction_record['unit_id'] = $user_input['unit_id'];
 			$transaction_record['id_payment_type'] = $user_input['id_payment_type'];
 			$transaction_record['paid_amount'] = $user_input['nominal'];
+			$transaction_result = Transaction::where(['id' => $current_record->id])->update($transaction_record);
 		}
 
-		if (!empty($transaction_record))
-			$transaction_result = Transaction::where(['id' => $current_record->id])->update($transaction_record);
 		
 		$customer_record = [
 			'name' => $user_input['name'],
@@ -630,5 +629,32 @@ class TransactionController extends Controller
             $user_inputs['unit_id'] = env('UNIT_DEFAULT');
 		$file_name = sprintf('Laporan-rangkuman-transaksi_%d.csv', $current_time);
 		return Excel::download(new TransactionExport($user_inputs), $file_name);	
+	}
+
+	public function approveTransaction(Request $request, $transactionId)
+	{
+		$current_record = Transaction::where('order_id', $transactionId)->with('customer')->first();
+        if (!$current_record)
+            return redirect()
+                ->route('homepage')
+                ->with(['error' => 'ID Transaksi tidak dapat ditemukan']);
+		
+		if ($current_record->transaction_status != Constant::TRANSACTION_REQUESTED)
+		{
+			return back()
+                ->with(['error' => 'Status transaksi tidak sesuai']);	
+		}
+		
+		$new_transaction_status = Constant::TRANSACTION_DISTRIBUTED;
+		if ($current_record->paid_amount > 0)
+			$new_transaction_status = Constant::TRANSACTION_PAID;
+		
+		Transaction::where('id', $current_record->id)->update(['transaction_status' => $new_transaction_status]);
+		$redirect =  'distribution.index';
+		if ($current_record->paid_amount > 0)
+			$redirect = 'transaction.index';
+		return redirect()
+                ->route($redirect)
+                ->with(['success' => 'Berhasil menyetujui transaksi']);	
 	}
 }

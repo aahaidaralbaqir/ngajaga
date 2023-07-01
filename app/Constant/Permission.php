@@ -32,6 +32,7 @@ class Permission {
 
 	const CAN_VIEW_TRANSACTION = 'view_transaction';
 	const CAN_UPDATE_TRANSACTION = 'update_transaction';
+	const CAN_APPROVE_TRANSACTION = 'approve_transaction';
 	const CAN_CREATE_TRANSACTION = 'create_transaction';
 
 	const CAN_VIEW_PERMISSION = 'view_permission';
