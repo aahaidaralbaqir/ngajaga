@@ -170,7 +170,7 @@
             var cell = document.createElement("td");
             'ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-full'.split(' ').forEach(style => cell.classList.add(style))
             cell.textContent = date;
-            let fullDate = `${year}-${month < 10 ? '0' + month : month }-${date < 10 ? '0' + date : date }`
+            let fullDate = `${year}-${month < 10 ? '0' + (parseInt(month) + 1) : (parseInt(month)+1) }-${date < 10 ? '0' + date : date }`
             cell.addEventListener('click', function (e) {
               modal.classList.remove('hidden')
               selectedDate.value = fullDate

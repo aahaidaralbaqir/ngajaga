@@ -50,10 +50,18 @@ class ActivityController extends Controller
 		$user_input_field_rules = [
 			'name' => 'required',
 			'description' => 'required',
-			'start_time' => 'required',
-			'end_time'	=> 'required'
+			'start_time' => 'required|date_format:Y-m-d\TH:i',
+			'end_time'	=> 'required|date_format:Y-m-d\TH:i|lte:start_time'
 		];
 		$user_input = $request->only('name', 'description', 'start_time', 'end_time', 'leader');
+		
+		// validate in same month
+		if (date('M', strtotime($user_input['start_time'])) != date('M', strtotime($user_input['end_time'])))
+		{
+			return back()
+						->with(['error' => 'Jadwal kegiatan harus didalam bulan yang sama'])
+						->withInput();
+		}
 
 		$validator = Validator::make($user_input, $user_input_field_rules);
 		if ($validator->fails())
@@ -100,11 +108,34 @@ class ActivityController extends Controller
 		$user_input['start_time'] = strtotime($request->input('start_time'));
 		$user_input['end_time'] = strtotime($request->input('end_time'));
 		
-		Activity::create($user_input);
+		$result = Activity::create($user_input);
+		$this->_createSchedule($request->start_time, $request->end_time, $request->input('recurring_days'), $result->id);
 		return redirect()
 					->route('activity.type.index')
 					->with(['success' => 'Berhasil menambahkan jenis kegiatan baru']);
-	} 
+	}
+
+	private function _createSchedule($start_time, $end_time, $recurring_days, $activity_id)
+	{
+		Schedule::where('activity_id', $activity_id)->delete();
+		$dates = CommonUtil::getDatesFromRange($start_time, $end_time);
+		$schedule_time_start = date('H:i', strtotime($start_time));
+		$schedule_time_end = date('H:i', strtotime($end_time));
+		$created_records = [];
+		foreach ($dates as $date) 
+		{
+			$current_day = date('l', strtotime($date));
+			if (in_array(strtolower($current_day), $recurring_days))
+			{
+				$created_records[] = [
+					'activity_id' => $activity_id,
+					'scheduled_date' => $date,
+					'scheduled_start_time' => $schedule_time_start,
+					'scheduled_end_time' => $schedule_time_end];
+			}
+		}
+		Schedule::insert($created_records);
+	}
 
 	public function updateActivityType(Request $request)
 	{
@@ -116,8 +147,8 @@ class ActivityController extends Controller
 		$user_input_field_rules = [
 			'name' => 'required',
 			'description' => 'required',
-			'start_time' => 'required',
-			'end_time'	=> 'required'
+			'start_time' => 'required|date_format:Y-m-d\TH:i',
+			'end_time'	=> 'required|date_format:Y-m-d\TH:i|lte:start_time'
 		];
 		$user_input = $request->only('name', 'description', 'start_time', 'end_time', 'leader');
 
@@ -156,14 +187,14 @@ class ActivityController extends Controller
 		}
 
 		$user_input['recurring'] = FALSE;
-		if ($request->has('recurring_days') && count($request->input('recurring_days')) > 0)
+		if ($request->input('recurring') && $request->has('recurring_days') && count($request->input('recurring_days')) > 0)
 		{
 			$selected_days = $request->input('recurring_days');
 			$user_input['recurring'] = TRUE;
 			$user_input['recurring_days'] = CommonUtil::getDayValueFromCheckOptionIds($selected_days);
 		}
 		
-		if ($request->has('recurring_days') && count($request->input('recurring_days')) == 0)
+		if (!$user_input['recurring'])
 		{
 			$user_input['recurring'] = FALSE;
 			$user_input['recurring_days'] = 0;
@@ -176,6 +207,11 @@ class ActivityController extends Controller
 		
 		Activity::where('id', $current_record->id)
 				->update($user_input);
+		$this->_createSchedule($request->start_time, $request->end_time, $request->input('recurring_days'), $current_record->id);
+		if (!$user_input['recurring'])
+		{
+			Schedule::where('activity_id', $current_record->id)->delete();
+		}
 		return redirect()
 					->route('activity.type.index')
 					->with(['success' => 'Berhasil mengupdate jenis kegiatan']);
@@ -185,7 +221,7 @@ class ActivityController extends Controller
 	{
 		$user_profile = $this->initProfile();
 		$data = array_merge(array(), $user_profile);
-		$data['activity'] = Activity::all();
+		$data['activity'] = Activity::where('recurring', FALSE)->get();
 		return view('admin.activity.schedule.index', $data);	
 	}
 

@@ -168,4 +168,12 @@ class Common {
 		$formattedAmount = number_format($amount, 0, ',', '.');
 		return 'Rp ' . $formattedAmount;
 	}
+
+	public static function getDatesFromRange($start, $end, $format='Y-m-d') {
+		return array_map(function($timestamp) use($format) {
+			return date($format, $timestamp);
+		},
+		range(strtotime($start) + ($start < $end ? 4000 : 8000), strtotime($end) + ($start < $end ? 8000 : 4000), 86400));
+	}
+		
 }
