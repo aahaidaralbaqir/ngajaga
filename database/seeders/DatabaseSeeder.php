@@ -272,6 +272,12 @@ class DatabaseSeeder extends Seeder
 				'url' => 'transaction.approve',
 				'alias' => 'approve_transaction',
 				'icon' => 'example.png'
+			],
+			[
+				'name' => 'Manage bukti transaksi',
+				'url' => 'transaction.proof',
+				'alias' => 'proof_transaction',
+				'icon' => 'example.png'
 			]
 		];
 		$transaction_type = [

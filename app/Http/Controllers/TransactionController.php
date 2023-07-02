@@ -19,6 +19,8 @@ use App\Exports\TransactionExportSample;
 use App\Exports\TransactionExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
+use App\Models\ProofTransaction;
+use Illuminate\Support\Facades\Storage;
 
 class TransactionController extends Controller
 {
@@ -658,5 +660,84 @@ class TransactionController extends Controller
 		return redirect()
                 ->route($redirect)
                 ->with(['success' => 'Berhasil menyetujui transaksi']);	
+	}
+
+	public function proofTransactionForm(Request $request, $transactionId)
+	{
+		$transaction_record = Transaction::where('order_id', $transactionId)->first();
+		if (empty($transaction_record))
+		{
+			return back()
+					->with(['error' => 'Entitas tidak dapat ditemukan']);
+		}
+		$current_record = ProofTransaction::where('transaction_id', $transaction_record->id)->first();
+		$user_profile = $this->initProfile();
+        $data = array_merge(array(), $user_profile);
+		$data['item'] = $current_record;
+		$data['transaction_record'] = $transaction_record;
+        return view('admin.proof.form', $data);	
+	}
+
+	public function proofTransaction(Request $request)
+	{
+		$current_user = Auth::user();
+		$transaction_record = Transaction::find($request->transaction_id);
+		if (empty($transaction_record))
+			return back()
+					->with(['error' => 'Entitas tidak ditemukan']);
+		
+		$current_record = ProofTransaction::where('transaction_id', $transaction_record->id)->first();
+		$user_input_field_rules = [
+			'transaction_id' => 'required',
+			'uploaded_by' => 'required'
+		];
+		$user_input = [
+			'transaction_id' => $request->transaction_id,
+			'uploaded_by' => $current_user->id
+		];
+		$validator = Validator::make($user_input, $user_input_field_rules);
+		if ($validator->fails())
+        {
+            return back()
+						->withErrors($validator)
+						->withInput();
+        }
+		if (!$request->has('image') && empty($current_record->id))
+			return back()
+					->with(['error' => 'Silahkan upload bukti transfer']);
+		
+		if ($request->has('image'))
+		{
+			$filename = time() . '.' . $request->file('image')->getClientOriginalExtension();
+			$path = $request->file('image')->storeAs('public/transaction', $filename);
+			if (empty($path))
+			{
+				return back()->withErrors(['image' => 'Gagal mengupload bukti pembayaran'])
+							->withInput();
+			}
+			$user_input['image'] = $filename;
+
+			if (!empty($current_record))
+			{
+				$file_location = 'public/transaction/' . CommonUtil::getFileName($current_record->image);
+				Storage::delete($file_location);
+			}
+		}
+		
+		
+		
+		$redirect = 'distribution.index';
+		if ($transaction_record->paid_amount > 0)
+			$redirect = 'transaction.index';
+		
+		if (empty($current_record))
+		{
+			ProofTransaction::create($user_input);
+		} else {
+			ProofTransaction::where('id', $current_record->id)->update($user_input);
+		}
+		return redirect()
+				->route($redirect)
+				->with(['success' => 'Berhasil mengupload bukti transaksi']);
 	}
 }

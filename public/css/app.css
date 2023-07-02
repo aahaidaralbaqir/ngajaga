@@ -967,6 +967,9 @@ video {
 .w-screen {
   width: 100vw;
 }
+.w-50 {
+  width: 12.5rem;
+}
 .max-w-142\.5 {
   max-width: 35.625rem;
 }
@@ -1365,6 +1368,10 @@ video {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+.bg-\[\#212B36\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(33 43 54 / var(--tw-bg-opacity));
 }
 .bg-opacity-\[15\%\] {
   --tw-bg-opacity: 15%;

@@ -57,4 +57,6 @@ class Permission {
 	const CAN_CREATE_BENEFICIARY = 'create_beneficiary';
 	const CAN_UPDATE_BENEFICIARY = 'update_beneficiary';
 	const CAN_DELETE_BENEFICIARY = 'delete_beneficiary';
+
+	const CAN_MANAGE_TRANSACTION_PROOF = 'proof_transaction';
 }
