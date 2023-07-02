@@ -23,7 +23,7 @@
 				@endphp 
                 {{ $form }}
 					<input type="hidden" name="id" value="{{ !empty($item) ? $item->id : 0 }}">
-					@if(!empty($item) && $item->user_id > 0)
+					@if(empty($item) || (!empty($item) && $item->user_id > 0))
 					<div class="mb-5.5">
 						<label class="mb-3 block font-medium text-sm text-black dark:text-white">
 						Jenis Transaksi
@@ -53,7 +53,7 @@
 						@enderror
 					</div>
 					@endif
-					@if(!empty($item) && $item->user_id > 0)
+					@if(empty($item) || (!empty($item) && $item->user_id > 0))
 					<div class="mb-5.5">
 						<label class="mb-3 block font-medium text-sm text-black dark:text-white">
 						Unit
@@ -83,7 +83,7 @@
 						@enderror
 					</div>
 					@endif
-					@if(!empty($item) && $item->user_id > 0)
+					@if(empty($item) || (!empty($item) && $item->user_id > 0))
 						<div class="mb-5.5">
 							<label class="mb-3 block font-medium text-sm text-black dark:text-white">
 							Metode Pembayaran
@@ -113,7 +113,7 @@
 							@enderror
 						</div>
 					@endif
-					@if (!empty($item) && $item->user_id > 0)
+					@if ((!empty($item) && $item->user_id > 0))
 						<div class="mb-5.5">
 							<label class="mb-3 block font-medium text-sm text-black dark:text-white">
 								Status Transaksi
