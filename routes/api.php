@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/schedule/create', [ActivityController::class, 'createSchedule']);
 Route::get('/schedule', [ActivityController::class, 'getScheduleList']);
+Route::post('/schedule/update', [ActivityController::class, 'updateSchedule']);
 Route::delete('/schedule/{scheduleId}', [ActivityController::class, 'deleteSchedule']);
 
 Route::prefix('transaction')->group(function () {

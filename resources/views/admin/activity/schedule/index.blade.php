@@ -8,8 +8,8 @@
 </div>
 {{-- Modal --}}
 <div x-transition="" class="modal hidden fixed top-0 left-0 z-99999 flex h-screen w-full justify-center overflow-y-scroll bg-black/80 py-5 px-4">
-  <div class="relative m-auto w-full max-w-180 rounded-sm border border-stroke bg-gray p-4 shadow-default dark:border-strokedark dark:bg-meta-4 sm:p-8 xl:p-10">
-    <button class="close-modal absolute right-1 top-1 sm:right-5 sm:top-5">
+  <div class="relative m-auto w-full max-w-180 rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-meta-4 sm:p-8 xl:p-10">
+    <button class="close-modal create absolute right-1 top-1 sm:right-5 sm:top-5">
       <svg class="fill-current" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M11.8913 9.99599L19.5043 2.38635C20.032 1.85888 20.032 1.02306 19.5043 0.495589C18.9768 -0.0317329 18.141 -0.0317329 17.6135 0.495589L10.0001 8.10559L2.38673 0.495589C1.85917 -0.0317329 1.02343 -0.0317329 0.495873 0.495589C-0.0318274 1.02306 -0.0318274 1.85888 0.495873 2.38635L8.10887 9.99599L0.495873 17.6056C-0.0318274 18.1331 -0.0318274 18.9689 0.495873 19.4964C0.717307 19.7177 1.05898 19.9001 1.4413 19.9001C1.75372 19.9001 2.13282 19.7971 2.40606 19.4771L10.0001 11.8864L17.6135 19.4964C17.8349 19.7177 18.1766 19.9001 18.5589 19.9001C18.8724 19.9001 19.2531 19.7964 19.5265 19.4737C20.0319 18.9452 20.0245 18.1256 19.5043 17.6056L11.8913 9.99599Z" fill=""></path>
       </svg>
@@ -21,13 +21,17 @@
         <select class="activity w-full rounded-sm border border-stroke bg-white py-3 px-4.5 focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:focus:border-primary" name="activity_id">
           <option value="0">Pilih kegiatan</option>
           @foreach ($activity as $each_activity)
-              <option data-leader="{{ $each_activity->leader }}" value="{{ $each_activity->id }}">{{ $each_activity->name }}</option>
+				@php 
+					if ($each_activity->recurring)
+						continue;
+				@endphp
+            	<option data-leader="{{ $each_activity->leader }}" value="{{ $each_activity->id }}">{{ $each_activity->name }}</option>
           @endforeach
         </select>
       </div>
       <div class="mb-5 hidden">
         <label for="taskTitle" class="mb-2.5 block font-medium text-black dark:text-white">Pemateri</label>
-        <input type="text" disabled name="leader" id="taskTitle" placeholder="Enter task title" class="w-full rounded-sm border border-stroke bg-white py-3 px-4.5 focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:focus:border-primary">
+        <input type="text" name="leader" id="taskTitle" placeholder="Enter task title" class="w-full rounded-sm border border-stroke bg-white py-3 px-4.5 focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:focus:border-primary">
       </div>
       <div class="mb-5">
         <label for="taskTitle" class="mb-2.5 block font-medium text-black dark:text-white">Tanggal yang dipilih</label>
@@ -65,29 +69,72 @@
 </div>
 {{-- End modal --}}
 {{-- Modal delete confirmation --}}
-<div x-transition="" class="hidden modal-confirmation fixed top-0 left-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5">
-  <div class="w-full max-w-142.5 rounded-lg bg-white py-12 px-8 text-center dark:bg-boxdark md:py-15 md:px-17.5">
-    <h3 class="pb-2 text-xl font-bold text-black dark:text-white sm:text-2xl">
-      Konfirmasi
-    </h3>
-    <span class="mx-auto mb-6 inline-block h-1 w-22.5 rounded bg-primary"></span>
-    <input type="hidden" name="id_schedule">
-    <p class="mb-10 font-medium">
-      Yakin ingin menghapus jadwal ini ?
-    </p>
-    <div class="-mx-3 flex flex-wrap gap-y-4">
-      <div class="w-full px-3 2xsm:w-1/2">
-        <button class="cancel block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1">
-          Tidak
-        </button>
-      </div>
-      <div class="w-full px-3 2xsm:w-1/2">
-        <button class="continue block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90">
-          Ya
-        </button>
-      </div>
-    </div>
-  </div>
+<div x-transition="" class="modal hidden modal-confirmation fixed top-0 left-0 z-99999 flex h-screen w-full justify-center overflow-y-scroll bg-black/80 py-5 px-4">
+	<div class="relative m-auto w-full max-w-180 rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-meta-4 sm:p-8 xl:p-10">
+		<button class="close-modal update absolute right-1 top-1 sm:right-5 sm:top-5">
+		<svg class="fill-current" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path fill-rule="evenodd" clip-rule="evenodd" d="M11.8913 9.99599L19.5043 2.38635C20.032 1.85888 20.032 1.02306 19.5043 0.495589C18.9768 -0.0317329 18.141 -0.0317329 17.6135 0.495589L10.0001 8.10559L2.38673 0.495589C1.85917 -0.0317329 1.02343 -0.0317329 0.495873 0.495589C-0.0318274 1.02306 -0.0318274 1.85888 0.495873 2.38635L8.10887 9.99599L0.495873 17.6056C-0.0318274 18.1331 -0.0318274 18.9689 0.495873 19.4964C0.717307 19.7177 1.05898 19.9001 1.4413 19.9001C1.75372 19.9001 2.13282 19.7971 2.40606 19.4771L10.0001 11.8864L17.6135 19.4964C17.8349 19.7177 18.1766 19.9001 18.5589 19.9001C18.8724 19.9001 19.2531 19.7964 19.5265 19.4737C20.0319 18.9452 20.0245 18.1256 19.5043 17.6056L11.8913 9.99599Z" fill=""></path>
+		</svg>
+		</button>
+
+		<form action="#" method="POST" id="form-schedule">
+		<input type="hidden" name="id_schedule">
+		<div class="mb-5">
+			<label for="taskDescription" class="mb-2.5 block font-medium text-black dark:text-white">Jenis Kegiatan</label>
+			<select class="activity w-full rounded-sm border border-stroke bg-white py-3 px-4.5 focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:focus:border-primary" name="activity_id_update">
+			<option value="0">Pilih kegiatan</option>
+			@foreach ($activity as $each_activity)
+				<option data-leader="{{ $each_activity->leader }}" value="{{ $each_activity->id }}">{{ $each_activity->name }}</option>
+			@endforeach
+			</select>
+		</div>
+		<div class="mb-5">
+			<label for="taskTitle" class="mb-2.5 block font-medium text-black dark:text-white">Pemateri</label>
+			<input type="text" name="leader_update" id="taskTitle" placeholder="Enter task title" class="w-full rounded-sm border border-stroke bg-white py-3 px-4.5 focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:focus:border-primary">
+		</div>
+		<div class="mb-5">
+			<label for="taskTitle" class="mb-2.5 block font-medium text-black dark:text-white">Tanggal yang dipilih</label>
+			<input type="text" name="scheduled_date_update" readonly id="taskTitle" placeholder="Enter task title" class="w-full rounded-sm border border-stroke bg-white py-3 px-4.5 focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:focus:border-primary">
+		</div>
+
+		<div class="mb-5.5">
+			<div class="flex justify-between w-full gap-4">
+				<div class="w-1/2">
+					<label class="mb-3 block font-medium text-sm text-black dark:text-white">
+						Waktu mulai
+						</label>
+					<input type="time" name="scheduled_start_time_update" class="w-full rounded-sm border border-stroke bg-white py-3 px-4.5 focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:focus:border-primary">
+					@error('start_time')
+						<span class="text-sm text-danger">{{ $message }}</span>
+					@enderror
+				</div>
+				<div class="w-1/2">
+					<label class="mb-3 block font-medium text-sm text-black dark:text-white">
+						Waktu Berakhir
+						</label>
+					<input type="time" name="scheduled_end_time_update"  class="w-full rounded-sm border border-stroke bg-white py-3 px-4.5 focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:focus:border-primary">
+					@error('end')
+						<span class="text-sm text-danger">{{ $message }}</span>
+					@enderror
+				</div>
+			</div>
+		</div>
+
+		<div class="flex gap-4 flex-end">
+			<div class="w-1/2">
+				<button class="btn-delete block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition">
+					Delete
+				</button>
+			</div>
+			<div class="w-1/2">
+				<button class="btn-update flexitems-center w-full justify-center gap-2 rounded bg-primary py-2.5 px-4.5 font-medium text-white">
+					Update
+				</button>
+			</div>
+		</div>
+		
+		</form>
+	</div>
 </div>
 {{-- End delete modal confirmation --}}
 @endsection
@@ -99,7 +146,9 @@
     const confirmation = document.querySelector('.modal-confirmation')
     const cancelConfirmation = document.querySelector('.cancel')
     const continueConfirmation = document.querySelector('.continue')
-    const close = document.querySelector('.close-modal')
+    const close = document.querySelectorAll('.close-modal')
+    const btnDelete = document.querySelector('.btn-delete')
+    const btnUpdate = document.querySelector('.btn-update')
     const scheduleId = document.querySelector('input[name="id_schedule"]')
     const save = document.querySelector('.save-modal')
     const activity = document.querySelector('.activity')
@@ -194,7 +243,23 @@
                 activityTime.innerText = `${item.scheduled_start_time} - ${item.scheduled_start_time}`
                 card.addEventListener('click', function (e) {
                   e.stopPropagation();
-                  scheduleId.value = item.id
+                  scheduleId.value = item.id 
+                  let activities = document.querySelector('select[name="activity_id_update"]')
+                  for (let i = 0; i < activities.options.length; i++)
+                  {
+                    if (activities.options[i].value == item.activity_id)
+                    {
+                      activities.selectedIndex = i;
+                      break;
+                    }
+                  }
+                  let leader = item.activity.leader
+                  if (item.leader != '')
+                    leader = item.leader
+                  document.querySelector('input[name="leader_update"]').value = leader
+                  document.querySelector('input[name="scheduled_date_update"]').value = item.scheduled_date
+                  document.querySelector('input[name="scheduled_start_time_update"]').value = item.scheduled_start_time
+                  document.querySelector('input[name="scheduled_end_time_update"]').value = item.scheduled_end_time
                   confirmation.classList.remove('hidden');
                 })
                 cell.appendChild(card)
@@ -223,9 +288,11 @@
       const activityOptions = document.querySelector('select[name="activity_id"]')
       const selectedActivityOptions = activityOptions.options[activityOptions.selectedIndex]
       const scheduleDate = document.querySelector('input[name="scheduled_date"]')
+      const leader = document.querySelector('input[name="leader"]')
       const scheduleStartTime = document.querySelector('input[name="scheduled_start_time"]')
       const scheduleEndTime = document.querySelector('input[name="scheduled_end_time"]')
       return {
+        leader: leader.value,
         activity_id: selectedActivityOptions.value,
         scheduled_start_time: scheduleStartTime.value,
         scheduled_end_time: scheduleEndTime.value,
@@ -262,7 +329,12 @@
         }
       })
       .then(result => result.json())
-      .then(response => {
+      .then(({success, message}) => {
+        if (!success)
+        {
+          alert(message)
+          return;
+        }
         location.reload();
       })
       .catch(error => {
@@ -271,8 +343,16 @@
     }
     function closeModal()
     {
-      if (modal.classList.contains('hidden')) return;
-      modal.classList.add('hidden')
+      if (this.classList.contains('create'))
+      {
+        if (modal.classList.contains('hidden')) return;
+        modal.classList.add('hidden')
+      } else 
+      {
+        if (confirmation.classList.contains('hidden')) return;
+        confirmation.classList.add('hidden')
+      }
+      
     }
     function getSchedule()
     {
@@ -297,8 +377,9 @@
     {
       confirmation.classList.add('hidden')
     }
-    function next()
+    function deleteSchedule(e)
     {
+      e.preventDefault()
       fetch(`/api/schedule/${scheduleId.value}`, {
         method: "DELETE",
         headers: {
@@ -306,19 +387,54 @@
         }
       })
       .then(result => result.json())
-      .then(({message}) => {
+      .then(({message, success}) => {
+        console.log(message)
+        if (!success)
+        {
+          alert(message)
+          return;
+        }
         location.reload(); 
       })
       .catch(error => {
       }); 
     }
+    function updateSchedule(e)
+    {
+      e.preventDefault()
+      const requestBody = {
+        id_schedule: parseInt(scheduleId.value),
+        activity_id: document.querySelector('select[name="activity_id_update"]').value,
+        leader: document.querySelector('input[name="leader_update"]').value,
+        scheduled_date : document.querySelector('input[name="scheduled_date_update"]').value,
+        scheduled_start_time : document.querySelector('input[name="scheduled_start_time_update"]').value,
+        scheduled_end_time : document.querySelector('input[name="scheduled_end_time_update"]').value,
+      }
+      fetch(`/api/schedule/update`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        },
+        body: JSON.stringify(requestBody)
+      })
+      .then(result => result.json())
+      .then(({message, success}) => {
+        if (!success)
+        {
+          alert(message)
+          return;
+        }
+        location.reload(); 
+      })
+      .catch(error => {
+      });  
+    }
     getSchedule()
-    cancelConfirmation.addEventListener('click', cancel)
-    continueConfirmation.addEventListener('click', next)
-    close.addEventListener('click', closeModal)
+    close.forEach(item => item.addEventListener('click', closeModal))
     save.addEventListener('click', createSchedule)
     activity.addEventListener('change', selectActivity)
-    
+    btnDelete.addEventListener('click', deleteSchedule)
+    btnUpdate.addEventListener('click', updateSchedule)
   });
 
 </script>

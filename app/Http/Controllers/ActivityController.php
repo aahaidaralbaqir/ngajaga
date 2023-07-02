@@ -187,7 +187,7 @@ class ActivityController extends Controller
 		}
 
 		$user_input['recurring'] = FALSE;
-		if ($request->input('recurring') && $request->has('recurring_days') && count($request->input('recurring_days')) > 0)
+		if ($request->has('recurring_days') && count($request->input('recurring_days')) > 0)
 		{
 			$selected_days = $request->input('recurring_days');
 			$user_input['recurring'] = TRUE;
@@ -207,8 +207,11 @@ class ActivityController extends Controller
 		
 		Activity::where('id', $current_record->id)
 				->update($user_input);
-		$this->_createSchedule($request->start_time, $request->end_time, $request->input('recurring_days'), $current_record->id);
-		if (!$user_input['recurring'])
+		if ($user_input['recurring'])
+		{
+			$this->_createSchedule($request->start_time, $request->end_time, $request->input('recurring_days'), $current_record->id);
+		}
+		if ($user_input['recurring'] == FALSE)
 		{
 			Schedule::where('activity_id', $current_record->id)->delete();
 		}
@@ -221,7 +224,7 @@ class ActivityController extends Controller
 	{
 		$user_profile = $this->initProfile();
 		$data = array_merge(array(), $user_profile);
-		$data['activity'] = Activity::where('recurring', FALSE)->get();
+		$data['activity'] = Activity::all();
 		return view('admin.activity.schedule.index', $data);	
 	}
 
@@ -249,22 +252,48 @@ class ActivityController extends Controller
             'activity_id' => 'required',
             'scheduled_date' => 'required|date_format:Y-m-d',
 			'scheduled_start_time' => 'required|date_format:H:i',
+			'leader' => 'required',
 			'scheduled_end_time' => 'required|date_format:H:i'
         ];
 
-		$user_input = $request->only('activity_id', 'scheduled_date', 'scheduled_start_time', 'scheduled_end_time');
+		$user_input = $request->only('activity_id', 'scheduled_date', 'scheduled_start_time', 'scheduled_end_time', 'leader');
 		$validator = Validator::make($user_input, $user_input_field_rules);
 		if ($validator->fails())
 		{
 			return response()->json([
+				'success' => FALSE,
 				'message' => 'Input tidak sesuai',
 				'data' => $validator->errors()->all()
 			], 400); 
+		}
+
+		$unix_schedule_start_time = strtotime(sprintf('%s %s', $user_input['scheduled_date'], $user_input['scheduled_start_time']));
+		$unix_schedule_end_time = strtotime(sprintf('%s %s', $user_input['scheduled_date'], $user_input['scheduled_end_time']));
+
+		
+
+		$activity_record = Activity::find($user_input['activity_id']);
+		if ($unix_schedule_start_time < $activity_record->start_time || $unix_schedule_end_time > $activity_record->end_time)
+		{
+			return response()->json([
+				'success' => FALSE,
+				'message' => 'Tidak bisa membuat jadwal diluar jangkauan jadwal kegiatan',
+				'data' => $validator->errors()->all()
+			], 400); 		
+		}
+		if ($activity_record->recurring)
+		{
+			return response()->json([
+				'success' => FALSE,
+				'message' => 'Tidak bisa membuat jadwal berulang',
+				'data' => $validator->errors()->all()
+			], 400); 	
 		}
         
 		Schedule::create($user_input);
 		Session::flash('success', 'Berhasil membuat jadwal');
         return response()->json([
+			'success' => TRUE,
             'message' => 'Schedule berhasil dibuat',
             'data' => $user_input
         ]);
@@ -272,11 +301,79 @@ class ActivityController extends Controller
 
 	public function deleteSchedule(Request $request, $scheduleId)
 	{
-		Schedule::find($scheduleId)->delete();
-		Session::flash('success', 'Berhasil manghapus jadwal');
+		$current_record = Schedule::where('id', $scheduleId)->with('activity')->first();
+		if ($current_record->activity->recurring)
+		{
+			return response()->json([
+				'data' => [],
+				'success' => FALSE,
+				'message' => 'Jadwal berulang tidak bisa dihapus'
+			], 400);	
+		}
+
+		$current_record->delete();
+		
 		return response()->json([
 			'data' => [],
 			'message' => 'Berhasil menghapus jadwal'
+		]);
+	}
+
+	public function updateSchedule(Request $request)
+	{
+		$user_input_field_rules = [
+			'activity_id' => 'required',
+			'id_schedule' => 'required',
+			'leader' => 'required',
+			'scheduled_date' => 'required',
+			'scheduled_end_time' => 'required',
+			'scheduled_start_time' => 'required'
+		];
+		$user_input = $request->only('activity_id', 'id_schedule', 'leader', 'scheduled_date', 'scheduled_end_time', 'scheduled_start_time');
+		$validator = Validator::make($user_input, $user_input_field_rules);
+		if ($validator->fails())
+		{
+			return response()->json([
+				'success' => FALSE,
+				'message' => 'Input tidak sesuai',
+				'data' => $validator->errors()->all()
+			], 400); 
+		}
+
+		$current_record = Schedule::with('activity')->where('id', $user_input['id_schedule'])->first();
+		unset($user_input['id_schedule']);
+		if (empty($current_record))
+		{
+			return response()->json([
+				'success' => FALSE,
+				'message' => 'Entitas tidak ditemukan',
+			], 404); 
+		}
+
+		if ($current_record->activity->recurring)
+		{
+			$allowed_field_to_update = ['leader'];
+			foreach($user_input as $key => $value)
+			{
+				if (!in_array($key, $allowed_field_to_update))
+					unset($user_input[$key]);
+			}
+		} else 
+		{
+			$allowed_field_to_update = ['leader', 'scheduled_date', 'scheduled_end_time', 'scheduled_start_time'];
+			foreach($user_input as $key => $value)
+			{
+				if (!in_array($key, $allowed_field_to_update))
+					unset($user_input[$key]);
+			}	
+		}
+
+		Schedule::where('id', $current_record->id)->update($user_input);
+		
+		return response()->json([
+			'data' => [],
+			'success' => TRUE,
+			'message' => 'Berhasil mengupdate jadwal'
 		]);
 	}
 }

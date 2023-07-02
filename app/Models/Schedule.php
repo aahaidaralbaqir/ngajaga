@@ -17,7 +17,8 @@ class Schedule extends Model
 		'activity_id',
 		'scheduled_date',
 		'scheduled_start_time',
-		'scheduled_end_time'
+		'scheduled_end_time',
+		'leader'
 	];
 
     public function activity()
