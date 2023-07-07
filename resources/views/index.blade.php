@@ -67,7 +67,7 @@ Licence URI: https://www.os-templates.com/template-terms
 			  @endforeach
 			</ul>
 		</li>	
-        <li><a class="drop" href="#">Layanan</a>
+        <li><a class="drop" href="#">Pembayaran</a>
           <ul>
 			@foreach ($transaction_type as $transaction_item)
             	<li><a href="pages/font-icons.html">{{ $transaction_item->name }}</a></li>
