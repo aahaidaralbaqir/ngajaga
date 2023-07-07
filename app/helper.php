@@ -34,3 +34,23 @@ if (!function_exists('get_banner'))
 		return CommonUtil::getStorage(Constant::STORAGE_BANNER, $filename);	
 	}
 }
+
+if (!function_exists('read_more'))
+{
+	function read_more($text, $maxLength, $suffix = '...')
+	{
+		if (strlen($text) <= $maxLength) {
+			return $text;
+		}
+		
+		$trimmedText = substr($text, 0, $maxLength);
+		
+		// Find the last space within the trimmed text to avoid breaking words
+		$lastSpace = strrpos($trimmedText, ' ');
+		
+		// Append the suffix
+		$trimmedText = substr($trimmedText, 0, $lastSpace) . $suffix;
+		
+		return $trimmedText;
+	}
+}

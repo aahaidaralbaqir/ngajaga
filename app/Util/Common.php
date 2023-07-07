@@ -37,9 +37,19 @@ class Common {
 
 	public static function getCategories()
 	{
-		return [Constant::CATEGORY_KAJIAN => Constant::CATEGORY_KAJIAN_NAME,
-				Constant::CATEGORY_KHUTBAH => Constant::CATEGORY_KHUTBAH_NAME,
-				Constant::CATEGORY_BULETIN => Constant::CATEGORY_BULETIN_NAME];
+		return [Constant::CATEGORY_TAFSIR 	=> Constant::CATEGORY_TAFSIR_NAME,
+				Constant::CATEGORY_KHUTBAH 	=> Constant::CATEGORY_KHUTBAH_NAME,
+				Constant::CATEGORY_HADIST 	=> Constant::CATEGORY_HADIST_NAME,
+				Constant::CATEGORY_TASAWUF 	=> Constant::CATEGORY_TASAWUF_NAME,
+				Constant::CATEGORY_FIQIH 	=> Constant::CATEGORY_FIQIH_NAME];
+	}
+
+	public static function getPrograms()
+	{
+		return [Constant::CATEGORY_ZAKAT => Constant::CATEGORY_ZAKAT_NAME,
+				Constant::CATEGORY_INFAQ => Constant::CATEGORY_INFAQ_NAME,
+				Constant::CATEGORY_SEDEKAH => Constant::CATEGORY_SEDEKAH_NAME,
+				Constant::CATEGORY_QURBAN => Constant::CATEGORY_QURBAN_NAME];
 	}
 
 	public static function getCategoriesById(int $id)

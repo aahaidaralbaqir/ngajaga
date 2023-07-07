@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Util\Common as CommonUtil;
+use App\Constant\Constant;
 
 class Heroes extends Model
 {
@@ -19,4 +21,9 @@ class Heroes extends Model
     ];
 
     protected $table = 'heroes';
+
+	public function getImageAttribute($value)
+	{
+		return CommonUtil::getStorage(Constant::STORAGE_BANNER, $value);
+	}
 }

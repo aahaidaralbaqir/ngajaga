@@ -95,7 +95,7 @@ class ActivityController extends Controller
 						->withInput();
 		}
 		$user_input['icon'] = $filename;
-
+		$user_input['recurring'] = FALSE;
 		if ($request->has('recurring') && $request->has('recurring_days'))
 		{
 			$selected_days = $request->input('recurring_days');
@@ -109,7 +109,8 @@ class ActivityController extends Controller
 		$user_input['end_time'] = strtotime($request->input('end_time'));
 		
 		$result = Activity::create($user_input);
-		$this->_createSchedule($request->start_time, $request->end_time, $request->input('recurring_days'), $result->id);
+		if ($user_input['recurring'] && $user_input['recurring_days'])
+			$this->_createSchedule($request->start_time, $request->end_time, $request->input('recurring_days'), $result->id);
 		return redirect()
 					->route('activity.type.index')
 					->with(['success' => 'Berhasil menambahkan jenis kegiatan baru']);
@@ -207,7 +208,7 @@ class ActivityController extends Controller
 		
 		Activity::where('id', $current_record->id)
 				->update($user_input);
-		if ($user_input['recurring'])
+		if ($user_input['recurring'] && count($user_input['recurring_days']))
 		{
 			$this->_createSchedule($request->start_time, $request->end_time, $request->input('recurring_days'), $current_record->id);
 		}

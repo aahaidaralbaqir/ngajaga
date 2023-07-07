@@ -19,13 +19,25 @@ class Constant {
 	const ORDER_UP = 'up';
 	const ORDER_DOWN = 'down';
 
-	const CATEGORY_KAJIAN_NAME = 'Kajian';
-	const CATEGORY_KHUTBAH_NAME = 'Khutbah';
-	const CATEGORY_BULETIN_NAME = 'Buletin';
+	const CATEGORY_TAFSIR_NAME = 'Khutbah';
+	const CATEGORY_KHUTBAH_NAME = 'Tafsir';
+	const CATEGORY_HADIST_NAME = 'Hadist';
+	const CATEGORY_TASAWUF_NAME = 'Tasawuf';
+	const CATEGORY_FIQIH_NAME = 'Fikih';
+	const CATEGORY_ZAKAT_NAME = 'Distribusi Zakat';
+	const CATEGORY_INFAQ_NAME = 'Penyaluran Infaq';
+	const CATEGORY_SEDEKAH_NAME = 'Penyaluran Sedekah';
+	const CATEGORY_QURBAN_NAME = 'Pelaksanaan Qurban';
 
-	const CATEGORY_KAJIAN = 1;
+	const CATEGORY_TAFSIR = 1;
 	const CATEGORY_KHUTBAH = 2;
-	const CATEGORY_BULETIN = 3;
+	const CATEGORY_HADIST = 3;
+	const CATEGORY_TASAWUF = 4;
+	const CATEGORY_FIQIH = 5;
+	const CATEGORY_ZAKAT = 6;
+	const CATEGORY_INFAQ = 7;
+	const CATEGORY_SEDEKAH = 8;
+	const CATEGORY_QURBAN = 9;
 
 	const STATUS_PUBLISHED = 1;
 	const STATUS_DRAFT = 2;

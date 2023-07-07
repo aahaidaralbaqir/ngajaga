@@ -38,7 +38,7 @@
             <div class="col-span-3 flex items-center">
             <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
                 <div class="h-12.5 w-15 rounded-md">
-                <img src="{{ get_banner($item['image']) }}" alt="Product" />
+                <img src="{{ $item['image'] }}" alt="Product" />
                 </div>
                 <p class="font-medium text-sm text-black dark:text-white">{{ $item['title']; }}</p>
             </div>
