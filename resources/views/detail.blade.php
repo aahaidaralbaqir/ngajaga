@@ -16,6 +16,11 @@ Licence URI: https://www.os-templates.com/template-terms
 <link href="{{ URL::asset('css/layout.css') }}" rel="stylesheet" type="text/css" media="all">
 <link href="{{ URL::asset('css/modified.css') }}" rel="stylesheet" type="text/css" media="all">
 <link href="{{ URL::asset('css/animate.css') }}" rel="stylesheet" type="text/css" media="all">
+<style type="text/css">
+	.wrapper {
+		background-color: #fbfbfb !important;
+	}
+</style>
 </head>
 <body id="top">
 <!-- ################################################################################################ -->
