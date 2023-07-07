@@ -11,20 +11,80 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Constant\Constant;
+use Illuminate\Support\Facades\Crypt;
 
 class HomeController extends Controller
 {
+	public function filterCategories($categories)
+	{
+		$filtered = [];
+		foreach ($categories as $key => $value)
+		{
+			if (!in_array($key, array_keys(CommonUtil::getPrograms())))
+				$filtered[$key] = $value;
+		}
+		return $filtered;
+	}
     public function index(Request $request)
     {
         $data['transaction_type'] = TransactionType::all();
-		$data['categories'] = CommonUtil::getCategories();
+		$data['categories'] = $this->filterCategories(CommonUtil::getCategories());
 		$data['programs'] = CommonUtil::getPrograms();
 		$data['activity'] = Activity::where('show_landing_page', 1)->get();
 		$data['structure'] = Structure::all();
-		$data['posts'] = Post::whereIn('category', array_keys(CommonUtil::getCategories()))->limit(6)->get(); 
+		$data['posts'] = Post::whereNotIn('category', array_keys(CommonUtil::getPrograms()))->limit(6)->get(); 
 		$data['summary_transaction'] = $this->getSummaryTransaction();
         return view('index', $data);
     }
+
+	public function categories(Request $request, $id)
+	{
+		$decrypted = Crypt::decryptString($id);
+		$decrypted_array = explode('_', $decrypted);
+		if (count($decrypted_array) < 2)
+		{
+			return redirect()
+					->route('homepage');
+		}
+		$page = 'Program';
+		if (in_array(intval($decrypted_array[0]), array_keys(CommonUtil::getCategories())))
+		{
+			$page = 'Jurnal';
+		}
+		$data['category_name'] = $decrypted_array[1];
+		$data['transaction_type'] = TransactionType::all();
+		$data['page'] = $page;
+		$data['categories'] = $this->filterCategories(CommonUtil::getCategories());
+		$data['programs'] = CommonUtil::getPrograms();
+		$data['activity'] = Activity::where('show_landing_page', 1)->get();
+		$data['posts'] = Post::where('category', $decrypted_array[0])->limit(10)->get(); 
+        return view('category', $data);	
+	}
+
+	public function detailCategories(Request $request, $id)
+	{
+		$decrypted = Crypt::decryptString($id);
+		$decrypted_array = explode('_', $decrypted);
+		if (count($decrypted_array) < 2)
+		{
+			return redirect()
+					->route('homepage');
+		}
+		$current_record = Post::with('user')->where('id', $decrypted_array[0])->first();
+		if (empty($current_record))
+		{
+			return redirect()
+						->route('homepage');
+		}
+		
+		$data['item'] = $current_record;
+		$data['transaction_type'] = TransactionType::all();
+		$data['categories'] = $this->filterCategories(CommonUtil::getCategories());
+		$data['programs'] = CommonUtil::getPrograms();
+		$data['activity'] = Activity::where('show_landing_page', 1)->get();
+		$data['posts'] = [];
+        return view('detail', $data);		
+	}
 
     public function pay(Request $request)
     {   

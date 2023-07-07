@@ -41,7 +41,11 @@ class Common {
 				Constant::CATEGORY_KHUTBAH 	=> Constant::CATEGORY_KHUTBAH_NAME,
 				Constant::CATEGORY_HADIST 	=> Constant::CATEGORY_HADIST_NAME,
 				Constant::CATEGORY_TASAWUF 	=> Constant::CATEGORY_TASAWUF_NAME,
-				Constant::CATEGORY_FIQIH 	=> Constant::CATEGORY_FIQIH_NAME];
+				Constant::CATEGORY_FIQIH 	=> Constant::CATEGORY_FIQIH_NAME,
+				Constant::CATEGORY_ZAKAT => Constant::CATEGORY_ZAKAT_NAME,
+				Constant::CATEGORY_INFAQ => Constant::CATEGORY_INFAQ_NAME,
+				Constant::CATEGORY_SEDEKAH => Constant::CATEGORY_SEDEKAH_NAME,
+				Constant::CATEGORY_QURBAN => Constant::CATEGORY_QURBAN_NAME];
 	}
 
 	public static function getPrograms()

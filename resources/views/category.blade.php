@@ -92,13 +92,11 @@ Licence URI: https://www.os-templates.com/template-terms
   <div id="pageintro" class="hoc clear slider"> 
 	<div class="slide">
 		<article>
-			<h3 class="title"  id="title" data-wow-duration="1s">Magna feugiat pulvinar</h3>
-			<p id="subtitle" data-wow-duration="1s">At dapibus ac velit cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus maecenas ut</p>
-			<footer>
-				<a class="btn" id="btn" href="">Klik Ini</a>
-			</footer>
+			<h3 class="title" >{{ $page }}</h3>
+			<p>{{ $category_name }}</p>
 		</article>
 	</div>
+	
     <!-- ################################################################################################ -->
     
     <!-- ################################################################################################ -->
@@ -118,11 +116,15 @@ Licence URI: https://www.os-templates.com/template-terms
 		@foreach($posts as $post)
         <li class="one_third">
           <figure>
-			<a class="imgover" href="#">
-				<img src="{{ $post->banner }}" alt="">
-			</a>
+			<img src="{{ $post->banner }}" alt="">
             <figcaption>
-              <h6 class="heading">{{ read_more($post->title, 100) }}</h6>
+				@php
+					$hashed_id = \Illuminate\Support\Facades\Crypt::encryptString($post->id.'_'.$post->title);
+					$route = 'detail.categories';
+					if (in_array($post->category, array_values(\App\Util\Common::getPrograms())))
+						$route = 'detail.program';
+				@endphp
+              <a href="{{ route($route, ['id' => $hashed_id]) }}" class="heading" style="color: black;">{{ read_more($post->title, 100) }}</a>
               <p>{!! read_more(html_entity_decode($post->content), 100) !!}</p>
             </figcaption>
           </figure>
@@ -130,6 +132,11 @@ Licence URI: https://www.os-templates.com/template-terms
 		@endforeach
       </ul>
     </section>
+	@if (count($posts) == 0)
+	<section class="detail">
+		<h2 class="notfound"><?php echo 'Tidak ada ' . $page . ' dengan pilihan ' ?> <span style="color: #41C379"><?php echo $category_name ?></span></h2>
+	</section>
+	@endif
     <!-- ################################################################################################ -->
     <!-- / main body -->
     <div class="clear"></div>
@@ -138,87 +145,15 @@ Licence URI: https://www.os-templates.com/template-terms
 <!-- ################################################################################################ -->
 <!-- ################################################################################################ -->
 <!-- ################################################################################################ -->
-<div class="wrapper row2">
-  <section class="hoc container clear"> 
-    <!-- ################################################################################################ -->
-    <div class="sectiontitle">
-      <p class="nospace font-xs">Jenis Kegiatan</p>
-      <h6 class="heading">Daftar kegiatan</h6>
-    </div>
-    <ul class="nospace group center activity">
-	@foreach ($activity as $index => $item )
-      <li class="one_third <?php echo $index == 0 ? 'first' : '' ?>">
-        <article>
-			<img src="{{ $item->icon }}" alt="">
-          <h6 class="heading"> {{ $item->name }} </h6>
-          <p class="btmspace-30">{!! read_more($item->description, 100) !!}</p>
-        </article>
-      </li>
-	@endforeach
-    </ul>
-    <!-- ################################################################################################ -->
-  </section>
-</div>
-<!-- ################################################################################################ -->
-<!-- ################################################################################################ -->
-<!-- ################################################################################################ -->
-<div class="wrapper row3">
-  <section class="hoc container clear"> 
-    <!-- ################################################################################################ -->
-    <div class="sectiontitle">
-      <p class="nospace font-xs">Keuanga</p>
-      <h6 class="heading">Rangkuman Laporan Keuangan</h6>
-    </div>
-    <ul id="stats" class="nospace group">
-      <li><i class="fas fa-id-badge"></i>
-        <p><a href="#">{{ $summary_transaction['month']['in'] }}</a></p>
-        <p>Total dana masuk bulan ini</p>
-      </li>
-      <li><i class="fas fa-inbox"></i>
-        <p><a href="#">{{ $summary_transaction['month']['out'] }}</a></p>
-        <p>Totan dana keluar bulan ini</p>
-      </li>
-     
-      <li><i class="fas fa-store-alt"></i>
-        <p><a href="#">{{ $summary_transaction['total'] }}</a></p>
-        <p>Semua Dana Terkumpul</p>
-      </li>
-    </ul>
-    <!-- ################################################################################################ -->
-  </section>
-</div>
-<!-- ################################################################################################ -->
-<!-- ################################################################################################ -->
-<!-- ################################################################################################ -->
-<div class="wrapper coloured">
-  <section id="testimonials" class="hoc container clear"> 
-    <!-- ################################################################################################ -->
-    <div class="sectiontitle">
-      <p class="nospace font-xs">Struktur Organisasi</p>
-      <h6 class="heading">Keanggotaan Masjid Darul Ulum Universitas Pamulang</h6>
-    </div>
-	<div class="organization">
-		@foreach($structure as $item)
-		<div class="item">
-			<img width="100" height="100" alt="" src="{{ $item->avatar }}">
-			<h6 class="heading">{{ $item->name }}</h6>
-			<em>{{ $item->title }}</em>
-		</div>
-		@endforeach
-	</div>
-    {{--<article class="one_half first"><img width="100" height="100" alt="">
-      <h6 class="heading">J. Doe</h6>
-      <em>Nulla mauris hendrerit</em></article>
-    <article class="one_half"><img src="images/demo/100x100.png" alt="">
-      <h6 class="heading">G. Doe</h6>
-      <em>Aenean vestibulum mattis</em></article>
 
-	  <article class="one_half"><img src="images/demo/100x100.png" alt="">
-		<h6 class="heading">G. Doe</h6>
-		<em>Aenean vestibulum mattis</em></article>--}}
-    <!-- ################################################################################################ -->
-  </section>
-</div>
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+
 <!-- ################################################################################################ -->
 <!-- ################################################################################################ -->
 <!-- ################################################################################################ -->

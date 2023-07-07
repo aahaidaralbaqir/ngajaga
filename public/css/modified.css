@@ -30,3 +30,29 @@
 	height: 70px;
 	border-radius: 100px;
 }
+
+.wrapper {
+	background-color: #fbfbfb !important;
+}
+.c-detail {
+	margin-top: -200px !important;
+}
+.c-detail .content {
+	padding: 10px;
+}
+.detail {
+	width: 100%;
+    min-height: 200px;
+    background: white;
+	position: relative;
+	z-index: 99;
+}
+.detail .notfound {
+	text-align: center;
+	padding-top: 20px;
+}
+.detail .banner {
+	width: 100%;
+	height: 200px;
+	object-fit: cover;
+}

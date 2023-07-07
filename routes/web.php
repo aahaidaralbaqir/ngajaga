@@ -171,6 +171,10 @@ Route::get('/login', function () {
 })->name('login')->middleware('guest');
 
 Route::get('/', [HomeController::class, 'index'])->name('homepage');
+Route::get('/categories/{id}', [HomeController::class, 'categories'])->name('categories');
+Route::get('/program/{id}', [HomeController::class, 'categories'])->name('program');
+Route::get('/detail/categories/{id}', [HomeController::class, 'detailCategories'])->name('detail.categories');
+Route::get('/detail/program/{id}', [HomeController::class, 'detailCategories'])->name('detail.program');
 Route::get('/pay', [HomeController::class, 'pay'])->name('pay');
 
 Route::prefix('transaction')->group(function () {
