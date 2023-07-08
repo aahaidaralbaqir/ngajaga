@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Constant\Constant;
+use \Exception;
 use Illuminate\Support\Facades\Crypt;
 
 class HomeController extends Controller
@@ -46,10 +47,10 @@ class HomeController extends Controller
 			return redirect()
 					->route('homepage');
 		}
-		$page = 'Program';
-		if (in_array(intval($decrypted_array[0]), array_keys(CommonUtil::getCategories())))
+		$page = 'Jurnal';
+		if (in_array(intval($decrypted_array[0]), array_keys(CommonUtil::getPrograms())))
 		{
-			$page = 'Jurnal';
+			$page = 'Program';
 		}
 		$data['category_name'] = $decrypted_array[1];
 		$data['transaction_type'] = TransactionType::all();

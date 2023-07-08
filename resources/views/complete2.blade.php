@@ -23,30 +23,21 @@ Licence URI: https://www.os-templates.com/template-terms
 	}
 	.detail {
 		margin: -200px auto 0px auto;
-		width: 43%;
+		border: 1px solid #e5e5e5;
+		width: 50%;
 		padding: 30px 20px;
 		box-sizing: border-box;
 	}
-	h1 {
-		margin: 0px;
-	}
-
-	
-	.w-payment {
+	.detail div {
 		display: flex;
+		flex-direction: column;
+		justify-content: center;
 		align-items: center;
-		justify-content: space-between;
-		padding: 10px 0px 10px 0px;
-		cursor: pointer;
 	}
-	.w-payment:not(:last-child) {
-		border-bottom: 1px solid #d7d7d7;
-	}
-	.w-payment .w-information img {
-		width: 30px;
-	}
-	.w-payment .w-information span {
-		margin-left: 10px;
+	.detail div h2 {
+		font-size: 15px;
+		font-weight: 200;
+		text-align: justify;
 	}
 </style>
 </head>
@@ -106,7 +97,7 @@ Licence URI: https://www.os-templates.com/template-terms
 			  @endforeach
 			</ul>
 		</li>	
-       
+      
       </ul>
     </nav>
     <!-- ################################################################################################ -->
@@ -138,46 +129,9 @@ Licence URI: https://www.os-templates.com/template-terms
     <!-- ################################################################################################ -->
    
 	<section class="detail">
-		{{ Form::open(['route' => 'transaction.confirm', 'method' => 'POST', 'class' => 's-container form-confirm']); }}
-		<div>
-			<h1>Metode Pembayaran</h1>
-			<small>Silahkan pilih metode pembayaran yang ingin digunakan</small>
-			<hr>
-			<input type="hidden" class="transaction-id" name="transaction_id" value="{{ $transaction_record->order_id }}">
-			<div class="form-group">
-				<div class="list">
-					@foreach($payments as $parent_payment)
-						@if (array_key_exists('childs', $parent_payment))
-							<div class="card">
-								<div class="card-body">
-									<div class="form-group">
-										<p>{{ $parent_payment['name'] }}</p>
-									</div>
-									<div class="form-group s-payment">
-										@foreach($parent_payment['childs'] as $each_child)
-											<div class="w-payment" id-payment="{{ $each_child['id'] }}">
-												<div class="w-information">
-													<img src="{{ $each_child['payment_logo'] }}" alt="">
-													<span>{{ $each_child['name'] }}</span>
-												</div>
-												<input type="radio" id="id_payment_{{ $each_child['id'] }}" name="id_payment_type" value="{{ $each_child['id'] }}" >
-											</div>
-										@endforeach
-									</div>
-								</div>
-							</div>
-						@endif
-					@endforeach
-				</div>
-			</div>
-		
-
-			<div class="form-group" style="display: flex; gap: 20px">
-				<button id="btn-back" style="background-color: #bcbcbc; color: black;" type="button" target-url="{{ route('transaction.checkout', ['transactionId' => $transaction_record->order_id]) }}">Kembali</button>
-				<button type="button" id="btn-pay">Bayar</button>
-			</div>	
+		<div class="payment-status">
+			@include('template.' . $template_type)
 		</div>
-		{{ Form::close() }}
 	</section>
 	
     <!-- ################################################################################################ -->
@@ -252,42 +206,7 @@ Licence URI: https://www.os-templates.com/template-terms
 <script src="{{ URL::asset('js/jquery.mobilemenu.js') }}"></script>
 <script src="{{ URL::asset('js/wow.min.js') }}"></script>
 <script type="text/javascript">
-	$(document).ready(function () {
-		let paymentList = document.querySelectorAll('.w-payment')
-		const btnBack = document.getElementById('btn-back')
-		const btnPay = document.getElementById('btn-pay')
-		new WOW().init();
-		function unselectPayment() {
-			paymentList.forEach(item => {
-				let paymentId = item.getAttribute('id-payment')
-				let radioButton = document.getElementById(`id_payment_${paymentId}`)
-				if (radioButton.hasAttribute('checked'))
-				{
-					radioButton.removeAttribute('checked') 
-				}
-			}) 
-		}
-		function getSelectedPayment()
-		{
-			return 
-		}
-		paymentList.forEach(item => {
-			item.addEventListener('click', function () {
-				unselectPayment()
-				let paymentId = this.getAttribute('id-payment')
-				let radioButton = document.getElementById(`id_payment_${paymentId}`)
-				radioButton.setAttribute('checked', true)
-			})
-		})
-		btnBack.addEventListener('click', function () {
-			let targetUrl = this.getAttribute('target-url')
-			window.location = targetUrl  
-		})
-		
-		btnPay.addEventListener('click', function (e) {
-			e.preventDefault()
-			$('.form-confirm').submit();
-		})
+	$(document).ready(function () {	
 
 		new WOW().init();
 		$.ajax({

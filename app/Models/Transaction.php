@@ -18,7 +18,8 @@ class Transaction extends Model
         'redirect_payment',
         'user_id',
         'id_payment_type',
-		'unit_id'
+		'unit_id',
+		'invoice_expired'
     ];
 
     public function customer()

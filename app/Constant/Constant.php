@@ -58,7 +58,7 @@ class Constant {
 	const ONE_MINUTE = 60;
 
 	const PG_STATUS_FAILURE = 'failure';
-	const PG_STATUS_EXPIRED = 'expired';
+	const PG_STATUS_EXPIRED = 'expire';
 	const PG_STATUS_SETTLEMENT = 'settlement';
 	const PG_STATUS_CANCEL = 'cancel';
 	const PG_STATUS_PENDING = 'pending';

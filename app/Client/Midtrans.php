@@ -5,6 +5,7 @@ namespace App\Client;
 use Midtrans\Config;
 use Midtrans\Snap;
 use Midtrans\Transaction;
+use \Exception;
 
 class Midtrans {
     protected $serverKey;
@@ -37,8 +38,17 @@ class Midtrans {
         return $snapToken;
     }
 
+	public function createTransaction($requestPayload)
+	{
+		return Snap::createTransaction($requestPayload);
+	}
+
     public function getTransactionStatus($orderId)
     {
-        return Transaction::status($orderId);
+		try {
+			return Transaction::status($orderId);
+		} catch (\Exception $e) {
+			throw new \Exception('Midtrans error : ' . $e->getMessage());
+		}
     }
 }

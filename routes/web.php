@@ -180,7 +180,8 @@ Route::get('/pay', [HomeController::class, 'pay'])->name('pay');
 Route::prefix('transaction')->group(function () {
     Route::post('/create', [TransactionController::class, 'create'])->name('transaction.create');
     Route::post('/register', [TransactionController::class, 'register'])->name('transaction.register');
+	Route::post('/confirm', [TransactionController::class, 'confirm'])->name('transaction.confirm');
 });
 Route::get('/payment/{transactionId}', [TransactionController::class, 'payment'])->name('transaction.payment');
 Route::get('/checkout/{transactionId}', [TransactionController::class, 'checkout'])->name('transaction.checkout');
-Route::get('/complete/{transactionId}', [TransactionController::class, 'complete'])->name('transaction.complete');
+Route::get('/complete', [TransactionController::class, 'complete'])->name('transaction.complete');

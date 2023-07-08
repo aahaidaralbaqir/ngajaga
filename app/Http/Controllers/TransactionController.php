@@ -21,6 +21,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ProofTransaction;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class TransactionController extends Controller
 {
@@ -294,6 +295,52 @@ class TransactionController extends Controller
         ];
     }
 
+	public function confirm(Request $request)
+	{
+		$user_input_field_rules = [
+            'transaction_id' => 'required',
+            'id_payment_type' => 'required'
+        ];
+        $user_input =  $request->only('transaction_id', 'id_payment_type');
+		$validator = Validator::make($user_input, $user_input_field_rules);
+		if ($validator->fails())
+        {
+            return back()
+						->withErrors($validator)
+						->withInput();
+        }
+        $payment_record = Payment::find($user_input['id_payment_type']);
+        if (empty($payment_record))
+        {
+           return back()
+					->with(['error' => 'Entitas tidak dapat ditemukan']);
+        }
+		
+		$default_expire_time_seconds = 900;
+		if ($payment_record->expired_time > 0)
+			$default_expire_time_seconds = $payment_record->expired_time;
+			
+        $invoice_expired = Carbon::now()->addSeconds($default_expire_time_seconds)->timestamp;
+        $transaction_record = Transaction::with('customer')->where('order_id', $user_input['transaction_id'])->first();
+        if (empty($transaction_record))
+        {
+			return back()
+					->with(['error' => 'Entidak tidak dapat ditemukan']);
+        }
+        $transaction_type_record = TransactionType::find($transaction_record->id_transaction_type);
+        $request_payload = $this->_buildMidtransPayload($payment_record, $transaction_record, $transaction_type_record);
+
+        $midtrans = new Midtrans();
+        $result = $midtrans->createTransaction($request_payload);
+        if (!$result)
+        {
+            return back()
+					->with(['error' => 'Gagal membuat transaksi']);
+        }
+        Transaction::where('id', $transaction_record->id)->update(['redirect_payment' => $result->redirect_url, 'id_payment_type' => $payment_record->id, 'invoice_expired' => $invoice_expired]);
+        return redirect()->route('transaction.complete', ['order_id' =>$transaction_record->order_id]);
+	}
+
     public function paymentToken(Request $request)
     {
         $user_input_field_rules = [
@@ -388,15 +435,46 @@ class TransactionController extends Controller
         ], 200);
     }
 
-    public function complete(Request $request, $transactionId)
+    public function complete(Request $request)
     {
-        $current_record = Transaction::where('order_id', $transactionId)->with('customer')->first();
+		$data['transaction_type'] = TransactionType::all();
+		$data['categories'] = $this->filterCategories(CommonUtil::getCategories());
+		$data['programs'] = CommonUtil::getPrograms();
+		$orderId = $request->order_id;
+        $current_record = Transaction::where('order_id', $orderId)->with(['customer', 'payment'])->first();
         if (!$current_record)
             return redirect()
                 ->route('homepage')
                 ->with(['error' => 'ID Transaksi tidak dapat ditemukan']);
+		$current_time = time();
+		$midtrans_record = NULL;
+		try {
+			$midtrans = new Midtrans();
+			$midtrans_record = $midtrans->getTransactionStatus($current_record->order_id);
+		} catch (\Exception $e)
+		{
+			
+		}
+		
+		$transaction_status = Constant::TRANSACTION_PENDING;
+		if ($current_time > $current_record->invoice_expired)
+			$transaction_status = Constant::TRANSACTION_EXPIRED;
+		$data['transaction_type_record']  = TransactionType::find($current_record->id_transaction_type);	
+		if ($midtrans_record)
+			$transaction_status = TransactionUtil::getTransactionStatusByPGStatus($midtrans_record->transaction_status);
+	
+		$template = [
+			Constant::TRANSACTION_PENDING => 'pending',
+			Constant::TRANSACTION_PAID => 'success'
+		];
+		Transaction::where('id', $current_record->id)->update(['transaction_status' => $transaction_status]);
+		$template_type = 'failed';
+		if (array_key_exists($transaction_status, $template))
+			$template_type = $template[$transaction_status];
         $data['transaction_record'] = $current_record;
-        return view('complete', $data);
+		$data['transaction_status_name'] = TransactionUtil::getTransactionNameByTransactionStatus($transaction_status);
+		$data['template_type'] = $template_type;
+        return view('complete2', $data);
     }
 
     public function sampleFile(Request $request)
