@@ -201,11 +201,24 @@ class TransactionController extends Controller
         Transaction::where('id', $current_record->id)->update($transaction_record);
         return redirect()->route('transaction.payment', ['transactionId' => $current_record->order_id]);
     }
-
+	public function filterCategories($categories)
+	{
+		$filtered = [];
+		foreach ($categories as $key => $value)
+		{
+			if (!in_array($key, array_keys(CommonUtil::getPrograms())))
+				$filtered[$key] = $value;
+		}
+		return $filtered;
+	}
     public function checkout(Request $request, $transactionId)
     {
+		$data['categories'] = $this->filterCategories(CommonUtil::getCategories());
+		$data['programs'] = CommonUtil::getPrograms();
         $data['transaction_type'] = TransactionType::all();
         $current_record = Transaction::where('order_id', $transactionId)->with('customer')->first();
+		
+		
         if (!$current_record)
             return redirect()
                 ->route('homepage')
@@ -215,13 +228,15 @@ class TransactionController extends Controller
             return back()
                 ->with(['error' => 'Tidak dapat mendapatkan transaksi karena status transaksi tidak sesuai']); 
         }
+		$data['transaction_type_record']  = TransactionType::find($current_record->id_transaction_type);
         $data['transaction_record'] = $current_record;
         $data['payments'] = $this->getGroupedPayment(Payment::where('status', TRUE)->get()->toArray());
-        return view('checkout', $data);
+        return view('checkout2', $data);
     }
 
     public function payment(Request $request, $transactionId)
     {
+		
         $current_record = Transaction::where('order_id', $transactionId)->with('customer')->first();
         if (!$current_record)
             return back()
@@ -231,9 +246,13 @@ class TransactionController extends Controller
             return back()
                 ->with(['error' => 'Tidak dapat mendapatkan transaksi karena status transaksi tidak sesuai']); 
         }
+		$data['categories'] = $this->filterCategories(CommonUtil::getCategories());
+		$data['programs'] = CommonUtil::getPrograms();
+        $data['transaction_type'] = TransactionType::all();
         $data['transaction_record'] = $current_record;
+		$data['transaction_type_record']  = TransactionType::find($current_record->id_transaction_type);
         $data['payments'] = $this->getGroupedPayment(Payment::where('status', Constant::STATUS_ACTIVE)->whereNotIn('id_parent', [env('MANUAL_PAYMENT_ID', 2)])->get()->toArray());
-        return view('payment', $data); 
+        return view('payment2', $data); 
     }
 
     public function pay(Request $request)

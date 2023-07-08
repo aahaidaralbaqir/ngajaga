@@ -16,6 +16,17 @@ Licence URI: https://www.os-templates.com/template-terms
 <link href="{{ URL::asset('css/layout.css') }}" rel="stylesheet" type="text/css" media="all">
 <link href="{{ URL::asset('css/modified.css') }}" rel="stylesheet" type="text/css" media="all">
 <link href="{{ URL::asset('css/animate.css') }}" rel="stylesheet" type="text/css" media="all">
+<style type="text/css">
+	.wrapper {
+		background-color: #fbfbfb !important;
+	}
+	.detail {
+		margin: -200px auto 0px auto;
+		width: 43%;
+		padding: 30px 20px;
+		box-sizing: border-box;
+	}
+</style>
 </head>
 <body id="top">
 <!-- ################################################################################################ -->
@@ -53,7 +64,7 @@ Licence URI: https://www.os-templates.com/template-terms
     <nav id="mainav">
       <ul class="clear">
         <li class="{{ route_name() == 'homepage' ? 'active' : '' }}"><a href="{{ route('homepage') }}">Beranda</a></li>
-        <li class="{{ route_name() == 'categories' ? 'active' : '' }}"><a class="drop" href="#">Jurnal</a>
+        <li class="{{ route_name() == 'detail.categories' ? 'active' : '' }}"><a class="drop" href="#">Jurnal</a>
           <ul>
 			@foreach ($categories as $key => $value)
 				@php
@@ -63,7 +74,7 @@ Licence URI: https://www.os-templates.com/template-terms
 			@endforeach
           </ul>
         </li>
-		<li class="{{ route_name() == 'program' ? 'active' : '' }}"><a class="drop" href="#">Program</a>
+		<li class="{{ route_name() == 'detail.program' ? 'active' : '' }}"><a class="drop" href="#">Program</a>
 			<ul>
 			  @foreach ($programs as $key => $value)
 			  @php
@@ -92,45 +103,11 @@ Licence URI: https://www.os-templates.com/template-terms
   <div id="pageintro" class="hoc clear slider"> 
 	<div class="slide">
 		<article>
-			<h3 class="title"  id="title" data-wow-duration="1s">Magna feugiat pulvinar</h3>
-			<p id="subtitle" data-wow-duration="1s">At dapibus ac velit cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus maecenas ut</p>
-			<footer>
-				<a class="btn" id="btn" href="">Klik Ini</a>
-			</footer>
+			<h3 class="title" >Pembayaran</h3>
+			<p>{{ $transaction_type_record->name }}</p>
 		</article>
-		<div class="box">
-			{{ Form::open(['route' => 'transaction.create', 'method' => 'POST', 'class' => 'form-header']); }}
-				<div class="form-group">
-					<label>Jenis Pembayaran</label>
-					<select name="id_transaction_type" id="">
-						@foreach ($transaction_type as $transaction)
-							<option value="{{ $transaction->id }}">{{ $transaction->name }}</option>
-						@endforeach
-					</select>
-					@error('id_transaction_type')
-						<span class="error-message">{{ $message }}</span>
-					@enderror
-				</div>
-				<div class="form-group">
-					<label>Nama</label>
-					<input type="text" name="name">
-					@error('name')
-						<span class="error-message">{{ $message }}</span>
-					@enderror
-				</div>
-				<div class="form-group">
-					<label>Email</label>
-					<input type="email" name="email">
-					@error('email')
-						<span class="error-message">{{ $message }}</span>
-					@enderror	
-				</div>
-				<div class="form-group">
-					<button type="submit">Submit</button>
-				</div>
-			{{ Form::close() }}
-		</div>
 	</div>
+	
     <!-- ################################################################################################ -->
     
     <!-- ################################################################################################ -->
@@ -145,23 +122,67 @@ Licence URI: https://www.os-templates.com/template-terms
   <main class="hoc container clear"> 
     <!-- main body -->
     <!-- ################################################################################################ -->
-    <section id="introblocks">
-      <ul class="nospace group">
-		@foreach($posts as $post)
-        <li class="one_third">
-          <figure>
-			<a class="imgover" href="#">
-				<img src="{{ $post->banner }}" alt="">
-			</a>
-            <figcaption>
-              <h6 class="heading">{{ read_more($post->title, 100) }}</h6>
-              <p>{!! read_more(html_entity_decode($post->content), 100) !!}</p>
-            </figcaption>
-          </figure>
-        </li>
-		@endforeach
-      </ul>
-    </section>
+   
+	<section class="detail">
+		{{ Form::open(['route' => 'transaction.register', 'method' => 'POST', 'class' => 's-container form-header']); }}
+		<div>
+			<h1>Pilih Jenis Dana</h1>
+			<hr>
+			<input type="hidden" name="transaction_id" value="{{ $transaction_record->order_id }}">
+			<div class="form-group">
+				<label>Jenis Pembayaran</label>
+				<select name="id_transaction_type">
+					@foreach ($transaction_type as $transaction)
+						@php
+							$checked = FALSE;
+							if ($transaction->id == $transaction_record->id_transaction_type)
+								$checked = TRUE;
+						@endphp
+						<option value="{{ $transaction->id }}" {{ $checked ? 'selected' : '' }}>{{ $transaction->name }}</option>
+					@endforeach
+				</select>
+				@error('id_transaction_type')
+					<span class="error-message">{{ $message }}</span>
+				@enderror
+			</div>
+			<div class="form-group">
+				<label>Nominal</label>
+				<input type="number" name="nominal" value="{{ old('name', $transaction_record->paid_amount) }}">
+				@error('nominal')
+					<span class="error-message">{{ $message }}</span>
+				@enderror
+			</div>
+
+			<h1 style="margin-top: 30px">Silahkan Lengkapi data diri</h1>
+			<hr>
+			<div class="form-group">
+				<label>Nama</label>
+				<input type="text" name="name" value="{{ old('name', $transaction_record->customer->name) }}">
+				@error('name')
+					<span class="error-message">{{ $message }}</span>
+				@enderror
+			</div>
+			<div class="form-group">
+				<label>Nomer Telepon</label>
+				<input type="text" name="phone_number" value="{{ old('name', $transaction_record->customer->phone_number) }}">
+				@error('phone_number')
+					<span class="error-message">{{ $message }}</span>
+				@enderror
+			</div>
+			<div class="form-group">
+				<label>Email</label>
+				<input type="email" name="email" value="{{ old('name', $transaction_record->customer->email) }}">
+				@error('email')
+					<span class="error-message">{{ $message }}</span>
+				@enderror
+			</div>
+			<div class="form-group">
+				<button type="submit">Submit</button>
+			</div>	
+		</div>
+		{{ Form::close() }}
+	</section>
+	
     <!-- ################################################################################################ -->
     <!-- / main body -->
     <div class="clear"></div>
@@ -170,87 +191,15 @@ Licence URI: https://www.os-templates.com/template-terms
 <!-- ################################################################################################ -->
 <!-- ################################################################################################ -->
 <!-- ################################################################################################ -->
-<div class="wrapper row2">
-  <section class="hoc container clear"> 
-    <!-- ################################################################################################ -->
-    <div class="sectiontitle">
-      <p class="nospace font-xs">Jenis Kegiatan</p>
-      <h6 class="heading">Daftar kegiatan</h6>
-    </div>
-    <ul class="nospace group center activity">
-	@foreach ($activity as $index => $item )
-      <li class="one_third <?php echo $index == 0 ? 'first' : '' ?>">
-        <article>
-			<img src="{{ $item->icon }}" alt="">
-          <h6 class="heading"> {{ $item->name }} </h6>
-          <p class="btmspace-30">{!! read_more($item->description, 100) !!}</p>
-        </article>
-      </li>
-	@endforeach
-    </ul>
-    <!-- ################################################################################################ -->
-  </section>
-</div>
-<!-- ################################################################################################ -->
-<!-- ################################################################################################ -->
-<!-- ################################################################################################ -->
-<div class="wrapper row3">
-  <section class="hoc container clear"> 
-    <!-- ################################################################################################ -->
-    <div class="sectiontitle">
-      <p class="nospace font-xs">Keuanga</p>
-      <h6 class="heading">Rangkuman Laporan Keuangan</h6>
-    </div>
-    <ul id="stats" class="nospace group">
-      <li><i class="fas fa-id-badge"></i>
-        <p><a href="#">{{ $summary_transaction['month']['in'] }}</a></p>
-        <p>Total dana masuk bulan ini</p>
-      </li>
-      <li><i class="fas fa-inbox"></i>
-        <p><a href="#">{{ $summary_transaction['month']['out'] }}</a></p>
-        <p>Totan dana keluar bulan ini</p>
-      </li>
-     
-      <li><i class="fas fa-store-alt"></i>
-        <p><a href="#">{{ $summary_transaction['total'] }}</a></p>
-        <p>Semua Dana Terkumpul</p>
-      </li>
-    </ul>
-    <!-- ################################################################################################ -->
-  </section>
-</div>
-<!-- ################################################################################################ -->
-<!-- ################################################################################################ -->
-<!-- ################################################################################################ -->
-<div class="wrapper coloured">
-  <section id="testimonials" class="hoc container clear"> 
-    <!-- ################################################################################################ -->
-    <div class="sectiontitle">
-      <p class="nospace font-xs">Struktur Organisasi</p>
-      <h6 class="heading">Keanggotaan Masjid Darul Ulum Universitas Pamulang</h6>
-    </div>
-	<div class="organization">
-		@foreach($structure as $item)
-		<div class="item">
-			<img width="100" height="100" alt="" src="{{ $item->avatar }}">
-			<h6 class="heading">{{ $item->name }}</h6>
-			<em>{{ $item->title }}</em>
-		</div>
-		@endforeach
-	</div>
-    {{--<article class="one_half first"><img width="100" height="100" alt="">
-      <h6 class="heading">J. Doe</h6>
-      <em>Nulla mauris hendrerit</em></article>
-    <article class="one_half"><img src="images/demo/100x100.png" alt="">
-      <h6 class="heading">G. Doe</h6>
-      <em>Aenean vestibulum mattis</em></article>
 
-	  <article class="one_half"><img src="images/demo/100x100.png" alt="">
-		<h6 class="heading">G. Doe</h6>
-		<em>Aenean vestibulum mattis</em></article>--}}
-    <!-- ################################################################################################ -->
-  </section>
-</div>
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+
 <!-- ################################################################################################ -->
 <!-- ################################################################################################ -->
 <!-- ################################################################################################ -->
