@@ -141,11 +141,15 @@ Licence URI: https://www.os-templates.com/template-terms
 		@foreach($posts as $post)
         <li class="one_third">
           <figure>
-			<a class="imgover" href="#">
-				<img src="{{ $post->banner }}" alt="">
-			</a>
+			<img src="{{ $post->banner }}" alt="">
             <figcaption>
-              <h6 class="heading">{{ read_more($post->title, 100) }}</h6>
+				@php
+					$hashed_id = \Illuminate\Support\Facades\Crypt::encryptString($post->id.'_'.$post->title);
+					$route = 'detail.categories';
+					if (in_array($post->category, array_values(\App\Util\Common::getPrograms())))
+						$route = 'detail.program';
+				@endphp
+		  	<a href="{{ route($route, ['id' => $hashed_id]) }}" class="heading" style="color: black;">{{ read_more($post->title, 100) }}</a>
               <p>{!! read_more(html_entity_decode($post->content), 100) !!}</p>
             </figcaption>
           </figure>
