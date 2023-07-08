@@ -451,7 +451,7 @@ class TransactionController extends Controller
 		try {
 			$midtrans = new Midtrans();
 			$midtrans_record = $midtrans->getTransactionStatus($current_record->order_id);
-		} catch (\Exception $e)
+		} catch (\ Exception $e)
 		{
 			
 		}
