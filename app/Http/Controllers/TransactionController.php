@@ -232,7 +232,7 @@ class TransactionController extends Controller
 		$data['transaction_type_record']  = TransactionType::find($current_record->id_transaction_type);
         $data['transaction_record'] = $current_record;
         $data['payments'] = $this->getGroupedPayment(Payment::where('status', TRUE)->get()->toArray());
-        return view('checkout2', $data);
+        return view('checkout', $data);
     }
 
     public function payment(Request $request, $transactionId)
@@ -253,7 +253,7 @@ class TransactionController extends Controller
         $data['transaction_record'] = $current_record;
 		$data['transaction_type_record']  = TransactionType::find($current_record->id_transaction_type);
         $data['payments'] = $this->getGroupedPayment(Payment::where('status', Constant::STATUS_ACTIVE)->whereNotIn('id_parent', [env('MANUAL_PAYMENT_ID', 2)])->get()->toArray());
-        return view('payment2', $data); 
+        return view('payment', $data); 
     }
 
     public function pay(Request $request)
@@ -474,7 +474,7 @@ class TransactionController extends Controller
         $data['transaction_record'] = $current_record;
 		$data['transaction_status_name'] = TransactionUtil::getTransactionNameByTransactionStatus($transaction_status);
 		$data['template_type'] = $template_type;
-        return view('complete2', $data);
+        return view('complete', $data);
     }
 
     public function sampleFile(Request $request)
