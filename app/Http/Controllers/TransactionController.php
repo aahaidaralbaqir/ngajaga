@@ -84,6 +84,7 @@ class TransactionController extends Controller
                 $query->where('transaction.id_transaction_type', '=', $value);
             }
         }
+		$query->orderBy('transaction.created_at', 'DESC');
         $transactions = $query->get();
 
 		$data['transaction'] = $transactions;
