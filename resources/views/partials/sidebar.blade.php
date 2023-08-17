@@ -230,5 +230,8 @@
         </div> 
     </nav>
     <!-- Sidebar Menu -->
+	<div class="mx-auto mb-10 w-full max-w-60 text-center">
+		<a href="{{ route('logout') }}" rel="nofollow" class="flex items-center justify-center rounded-md bg-primary p-2 text-white hover:bg-opacity-95">Keluar</a>
+	</div>
   </div>
 </aside>
