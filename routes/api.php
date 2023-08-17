@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 /*
 |--------------------------------------------------------------------------
@@ -29,4 +30,9 @@ Route::prefix('transaction')->group(function () {
 	Route::post('/token', [TransactionController::class, 'paymentToken'])->name('transaction.token');
 	Route::post('/notification', [TransactionController::class, 'notification'])->name('transaction.notification');
 	Route::post('/type/summary', [TransactionController::class, 'summaryTransactionType'])->name('transaction.type.summary');
+});
+
+Route::prefix('report')->group(function () {
+	Route::get('/donut', [DashboardController::class, 'getTransactionChartDonut'])->name('report.chart.donut');
+	Route::get('/diagram', [DashboardController::class, 'getTransactionChartDiagram'])->name('report.chart.diagram');
 });
