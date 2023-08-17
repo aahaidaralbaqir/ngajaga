@@ -79,13 +79,23 @@ class TransactionController extends Controller
                 $query->where('transaction.transaction_status', '=', $value);
             }
 
+			if ($user_input == 'email' && !empty($value))
+			{
+				$query->where('customer.email', 'like', '%'.$value.'%');
+			}
+			 
+			if ($user_input == 'order_id' && !empty($value))
+			{
+				$query->where('transaction.order_id', '=', $value);
+			}
+
             if ($user_input == 'transaction_type' && !empty($value))
             {
                 $query->where('transaction.id_transaction_type', '=', $value);
             }
         }
 		$query->orderBy('transaction.created_at', 'DESC');
-        $transactions = $query->paginate(10);
+        $transactions = $query->paginate(20);
 
 		$data['transaction'] = $transactions;
     

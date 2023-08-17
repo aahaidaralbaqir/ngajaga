@@ -108,7 +108,7 @@
                                         <label class="mb-3 block font-medium text-sm text-black dark:text-white">
                                             Dari
                                             </label>
-                                            <input type="date" value="{{ request('settlement_start') }}" name="settlement_start" value="{{ old('start_time') }}" class="custom-input-date custom-input-date-2 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                                            <input type="date" value="{{ request('settlement_start') }}" name="settlement_start"  class="custom-input-date custom-input-date-2 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
                                         @error('settlement_start')
                                             <span class="text-sm text-danger">{{ $message }}</span>
                                         @enderror
@@ -128,7 +128,7 @@
                                         <label for="" class="font-primary text-base font-bold">ID Pesanan</label>
                                     </div>
                                     <div class="col-span-5">
-                                        <input type=text" name="order_id" value="{{ old('start_time') }}" class="custom-input-date custom-input-date-2 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                                        <input type="text" name="order_id" value="{{ request('order_id') }}" class="custom-input-date custom-input-date-2 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
                                         @error('order_id')
                                             <span class="text-sm text-danger">{{ $message }}</span>
                                         @enderror
@@ -139,7 +139,7 @@
                                         <label for="" class="font-primary text-base font-bold">Email</label>
                                     </div>
                                     <div class="col-span-5">
-                                        <input type=text" name="email" value="{{ old('start_time') }}" class="custom-input-date custom-input-date-2 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                                        <input type="email" name="email" value="{{ request('email') }}" class="custom-input-date custom-input-date-2 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
                                         @error('email')
                                             <span class="text-sm text-danger">{{ $message }}</span>
                                         @enderror
@@ -335,10 +335,10 @@
 		</div>
     </div>
     @endforeach
-	@if ($transaction->total() > 0 && count($transaction) == $transaction->perPage())
+	@if ($transaction->total() > 0)
 		<div class="border-t border-stroke py-4.5 px-4 flex dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
 			{{-- @include('partials.pagination') --}}
-			{{ $transaction->links() }}
+			{{ $transaction->appends(request()->except('page'))->links() }}
 		</div>
 	@endif
     </div>
