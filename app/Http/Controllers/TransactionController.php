@@ -85,7 +85,7 @@ class TransactionController extends Controller
             }
         }
 		$query->orderBy('transaction.created_at', 'DESC');
-        $transactions = $query->get();
+        $transactions = $query->paginate(10);
 
 		$data['transaction'] = $transactions;
     
