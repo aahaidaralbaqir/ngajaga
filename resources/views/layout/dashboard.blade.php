@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="{{ URL::asset('css/app.css') }}">
   <link rel="stylesheet" href="{{ URL::asset('css/font.css') }}">
   <link rel="stylesheet" href="{{ URL::asset('css/style.css') }}">
+  <link rel="stylesheet" href="{{ URL::asset('css/dashboard.css') }}">
   @stack('styles')
 </head>
 

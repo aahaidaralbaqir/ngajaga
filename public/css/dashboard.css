@@ -1,0 +1,9 @@
+.bg-pending {
+	background-color: #F9C107;
+}
+.bg-requested {
+	background-color: #DC3545;
+}
+.bg-expired {
+	background-color: 	#EFEFEF;
+}
