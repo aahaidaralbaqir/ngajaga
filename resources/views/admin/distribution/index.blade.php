@@ -331,6 +331,12 @@
 		@endif
     </div>
     @endforeach
+	@if ($transaction->total() > 0)
+		<div class="border-t border-stroke py-4.5 px-4 flex dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
+			{{-- @include('partials.pagination') --}}
+			{{ $transaction->appends(request()->except('page'))->links() }}
+		</div>
+	@endif
     </div>
     
 </div>

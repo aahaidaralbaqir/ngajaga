@@ -80,7 +80,7 @@ class DistributionController extends Controller
                 $query->where('transaction.id_transaction_type', '=', $value);
             }
         }
-        $transactions = $query->get();
+        $transactions = $query->paginate(20);
 
 		$data['transaction'] = $transactions;
     
