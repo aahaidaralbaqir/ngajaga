@@ -19,6 +19,7 @@ class Permission {
 	const CAN_VIEW_ACTIVITY 	= 'view_activity';
 	const CAN_CREATE_ACTIVITY 	= 'create_activity';
 	const CAN_UPDATE_ACTIVITY 	= 'update_activity';
+	const CAN_MANAGE_ACTIVITY_DOCUMENTATION = 'activity_documentation';
 
 	const CAN_MANAGE_SCHEDULE = 'manage_schedule';
 

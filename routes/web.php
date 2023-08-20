@@ -104,6 +104,7 @@ Route::prefix('admin')->group(function () {
 		Route::prefix('type')->group(function () {
 			Route::get('/', [ActivityController::class, 'getActivityType'])->name('activity.type.index')->middleware('auth');
 			Route::get('/create', [ActivityController::class, 'showCreateActivityTypeForm'])->name('activity.type.create.form')->middleware('auth');
+			Route::get('/documentation', [ActivityController::class, 'showCreateActivityTypeForm'])->name('activity.type.documentation')->middleware('auth');
 			Route::get('/update/{id}', [ActivityController::class, 'showUpdateActivityTypeForm'])->name('activity.type.update.form')->middleware('auth');
 			Route::post('/create', [ActivityController::class, 'createActivityType'])->name('activity.type.create')->middleware('auth');
 			Route::post('/update', [ActivityController::class, 'updateActivityType'])->name('activity.type.update')->middleware('auth');
