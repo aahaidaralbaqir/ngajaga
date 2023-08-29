@@ -80,7 +80,7 @@
 					@if(in_array(App\Constant\Permission::CAN_VIEW_ACTIVITY, $permissions))
 						<li>
 							<a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white
-												@php echo in_array(route_name(), ['activity.type.index', 'activity.type.create.form', 'activity.type.update.form']) ? 'text-white' : '' @endphp" href="{{ route('activity.type.index') }}">Jenis</a>
+												@php echo in_array(route_name(), ['activity.type.documentation', 'activity.type.documentation.upload', 'activity.type.documentation.deldete', 'activity.type.index', 'activity.type.create.form', 'activity.type.update.form']) ? 'text-white' : '' @endphp" href="{{ route('activity.type.index') }}">Jenis</a>
 						</li>
 					@endif
 					@if(in_array(App\Constant\Permission::CAN_MANAGE_SCHEDULE, $permissions))

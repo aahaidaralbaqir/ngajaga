@@ -15,6 +15,7 @@ class Constant {
 	const STORAGE_ACTIVITY = 'activity';
 	const STORAGE_TRANSACTION = 'transaction';
 	const STORAGE_PAYMENT = 'payment_logo';
+	const STORAGE_DOCUMENTATION = 'documentation';
 
 	const ORDER_UP = 'up';
 	const ORDER_DOWN = 'down';

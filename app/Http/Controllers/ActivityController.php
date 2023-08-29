@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Activity;
+use App\Models\Documentation;
 use App\Models\Schedule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
@@ -18,6 +19,51 @@ class ActivityController extends Controller
 		$data = array_merge(array(), $user_profile);
 		$data['activities_type'] = Activity::all();	
 		return view('admin.activity.type.index', $data);
+	}
+	
+	public function deleteDocumentation(Request $request, $id)
+	{
+		$current_record = Documentation::find($id);
+		if (empty($current_record))
+		{
+			return back()->with(['error' => 'Entitas tidak dapat ditemukan']);	
+		}
+		$file_location = 'public/documentation/' . CommonUtil::getFileName($current_record->image);
+		Storage::delete($file_location);	
+		Documentation::where('id', $id)->delete();
+		return back()
+					->with(['success' => 'Berhasil menghapus gambar']);		
+	}
+
+	public function showDocumentation(Request $request, $id)
+	{
+		$user_profile = $this->initProfile();
+		$data = array_merge(array(), $user_profile);
+		$data['activity_id'] = $id;
+		$data['documentation'] = Documentation::where('activity_id', $id)->get();	
+		return view('admin.activity.type.documentation', $data);
+	}
+
+	public function uploadDocumentation(Request $request)
+	{
+		if (empty($request->input('activity_id')))
+			return back()->with(['error' => 'Input tidak valid']);
+		if (!$request->hasFile('image'))
+			return back()->with(['error' => 'Gambar tidak boleh kosong']);
+
+		$filename = time() . '.' . $request->file('image')->getClientOriginalExtension();
+		$path = $request->file('image')->storeAs('public/documentation', $filename);
+		if (empty($path))
+		{
+			return back()->with(['error' => 'Gagal mengupload gambar']);
+		}
+		$user_input = [
+			'activity_id' => $request->input('activity_id'),
+			'image' => $filename
+		];
+		Documentation::create($user_input);
+		return back()
+					->with(['success' => 'Berhasil menambahkan gambar baru']);	
 	}
 
 	public function showCreateActivityTypeForm(Request $request)
