@@ -130,7 +130,7 @@ Route::prefix('admin')->group(function () {
 		});
 		Route::get('/', [TransactionController::class, 'index'])->name('transaction.index')->middleware('auth'); 
 		Route::get('/sample', [TransactionController::class, 'sampleFile'])->name('transaction.sample')->middleware('auth');
-
+		Route::get('/upload', [TransactionController::class, 'showUploadTransactionform'])->name('transaction.upload.form')->middleware('auth');
 		Route::get('/create', [TransactionController::class, 'showCreateTransactionForm'])->name('transaction.create.form')->middleware('auth');
 		Route::get('/proof/{transactionId}', [TransactionController::class, 'proofTransactionForm'])->name('transaction.proof.form')->middleware('auth');
 		Route::post('/proof', [TransactionController::class, 'proofTransaction'])->name('transaction.proof')->middleware('auth');

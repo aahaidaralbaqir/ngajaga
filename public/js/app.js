@@ -5678,28 +5678,29 @@ var chart03 = function chart03() {
       }
     }]
   };
+  var chartSelector = document.querySelectorAll("#chartThree");
+  if (chartSelector.length == 0) return;
   fetch('/api/report/donut').then(function (response) {
     return response.json();
   }).then(function (result) {
     if (!Array.isArray(result)) return;
-    var wrapperLabel = document.getElementById('donut-label');
-    var total = result.reduce(function (n, _ref2) {
-      var total_transaction = _ref2.total_transaction;
-      return n + total_transaction;
-    }, 0);
-    result.forEach(function (item) {
-      var color = stringToColor(item.name);
-      chartThreeOptions.series.push(item.total_transaction);
-      chartThreeOptions.labels.push(item.name);
-      chartThreeOptions.colors.push(color);
-      wrapperLabel.insertAdjacentHTML('afterbegin', createLabel({
-        name: item.name,
-        percentage: Math.round(item.total_transaction / total * 100),
-        color: color
-      }));
-    });
-    var chartSelector = document.querySelectorAll("#chartThree");
     if (chartSelector.length) {
+      var wrapperLabel = document.getElementById('donut-label');
+      var total = result.reduce(function (n, _ref2) {
+        var total_transaction = _ref2.total_transaction;
+        return n + total_transaction;
+      }, 0);
+      result.forEach(function (item) {
+        var color = stringToColor(item.name);
+        chartThreeOptions.series.push(item.total_transaction);
+        chartThreeOptions.labels.push(item.name);
+        chartThreeOptions.colors.push(color);
+        wrapperLabel.insertAdjacentHTML('afterbegin', createLabel({
+          name: item.name,
+          percentage: Math.round(item.total_transaction / total * 100),
+          color: color
+        }));
+      });
       var chartThree = new (apexcharts__WEBPACK_IMPORTED_MODULE_0___default())(document.querySelector("#chartThree"), chartThreeOptions);
       chartThree.render();
     }

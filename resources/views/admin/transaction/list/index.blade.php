@@ -3,7 +3,7 @@
 <div class="max-w-screen-2xl mx-auto p-4 md:p-6 2xl:p-10">
 @include('partials.alert')
 @include('partials.breadcumb', ['title' => 'Transaksi'])
-<div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark" >
+<div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark"  x-data="{popupOpen: false}">
     <div class="py-6 px-4 md:px-6 xl:px-7.5 flex justify-between items-center">
         <div x-data="{openDropDown: false}" class="relative inline-block">
             <a href="#" @click.prevent="openDropDown = !openDropDown" class="flex items-center justify-center rounded-md bg-[#f6f6f6] py-2 px-10 text-[#212B36] hover:bg-opacity-95">
@@ -25,7 +25,7 @@
                   </div>
                 </li>
                 <li>
-                  <a href="#" class="flex py-2 px-5 font-medium hover:bg-whiter hover:text-primary dark:hover:bg-meta-4">
+                  <a @click.prevent="popupOpen = true" href="#" class="flex py-2 px-5 font-medium hover:bg-whiter hover:text-primary dark:hover:bg-meta-4">
                     Sisipkan Transaksi
                   </a>
                 </li>
@@ -38,6 +38,79 @@
             </div>
         </div>
         <div class="flex">
+			<div x-show="popupOpen" x-transition="" class="fixed top-0 left-0 z-99999 flex h-screen w-full justify-center overflow-y-scroll bg-black/80 py-5 px-4">
+				<div @click.outside="popupOpen = false" class="relative m-auto w-full max-w-180 rounded-sm border border-stroke bg-gray p-4 shadow-default dark:border-strokedark dark:bg-meta-4 sm:p-8 xl:p-10">
+				<button @click="popupOpen = false" class="absolute right-1 top-1 sm:right-5 sm:top-5">
+					<svg class="fill-current" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M11.8913 9.99599L19.5043 2.38635C20.032 1.85888 20.032 1.02306 19.5043 0.495589C18.9768 -0.0317329 18.141 -0.0317329 17.6135 0.495589L10.0001 8.10559L2.38673 0.495589C1.85917 -0.0317329 1.02343 -0.0317329 0.495873 0.495589C-0.0318274 1.02306 -0.0318274 1.85888 0.495873 2.38635L8.10887 9.99599L0.495873 17.6056C-0.0318274 18.1331 -0.0318274 18.9689 0.495873 19.4964C0.717307 19.7177 1.05898 19.9001 1.4413 19.9001C1.75372 19.9001 2.13282 19.7971 2.40606 19.4771L10.0001 11.8864L17.6135 19.4964C17.8349 19.7177 18.1766 19.9001 18.5589 19.9001C18.8724 19.9001 19.2531 19.7964 19.5265 19.4737C20.0319 18.9452 20.0245 18.1256 19.5043 17.6056L11.8913 9.99599Z" fill=""></path>
+					</svg>
+				</button>
+					<div class="mb-5">
+						<label for="taskImg" class="mb-2.5 block font-medium text-black dark:text-white">Upload Transaksi</label>
+						<div x-data="{ files: null }">
+							<div id="FileUpload" class="relative block w-full appearance-none rounded-sm border border-dashed border-stroke bg-white py-4 px-4 dark:border-strokedark dark:bg-boxdark sm:py-14">
+							<input type="file" id="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" class="absolute inset-0 z-50 m-0 h-full w-full p-0 opacity-0 outline-none" x-on:change="files = $event.target.files;" x-on:dragover="$el.classList.add('active')" x-on:dragleave="$el.classList.remove('active')" x-on:drop="$el.classList.remove('active')">
+							<div class="flex flex-col items-center justify-center space-y-3">
+								<span class="flex h-11.5 w-11.5 items-center justify-center rounded-full border border-stroke bg-primary/5 dark:border-strokedark">
+								<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<g clip-path="url(#clip0_75_12841)">
+									<path d="M2.5 15.8333H17.5V17.5H2.5V15.8333ZM10.8333 4.85663V14.1666H9.16667V4.85663L4.1075 9.91663L2.92917 8.73829L10 1.66663L17.0708 8.73746L15.8925 9.91579L10.8333 4.85829V4.85663Z" fill="#3C50E0"></path>
+									</g>
+									<defs>
+									<clipPath id="clip0_75_12841">
+										<rect width="20" height="20" fill="white"></rect>
+									</clipPath>
+									</defs>
+								</svg>
+								</span>
+								<p class="text-xs">
+								<span class="text-primary">Click to upload</span> or drag and
+								drop
+								</p>
+							</div>
+							</div>
+				
+							<template x-if="files !== null">
+								<div class="mt-4.5 border border-stroke bg-white py-3 px-4 dark:border-strokedark dark:bg-boxdark">
+									<div class="flex items-center justify-between">
+									<template x-for="(_,index) in Array.from({ length: files.length })">
+										<span x-text="files[index].name">Uploading</span>
+									</template>
+					
+									<button @click="files = null">
+										<svg class="fill-current" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M0.279337 0.279338C0.651787 -0.0931121 1.25565 -0.0931121 1.6281 0.279338L9.72066 8.3719C10.0931 8.74435 10.0931 9.34821 9.72066 9.72066C9.34821 10.0931 8.74435 10.0931 8.3719 9.72066L0.279337 1.6281C-0.0931125 1.25565 -0.0931125 0.651788 0.279337 0.279338Z" fill=""></path>
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M0.279337 9.72066C-0.0931125 9.34821 -0.0931125 8.74435 0.279337 8.3719L8.3719 0.279338C8.74435 -0.0931127 9.34821 -0.0931123 9.72066 0.279338C10.0931 0.651787 10.0931 1.25565 9.72066 1.6281L1.6281 9.72066C1.25565 10.0931 0.651787 10.0931 0.279337 9.72066Z" fill=""></path>
+										</svg>
+									</button>
+									</div>
+								</div>
+							</template>
+						</div>
+					</div>
+					<div class="relative h-2.5 w-full mb-5 mt-10 rounded-full bg-stroke dark:bg-strokedark">
+						<div class="hidden absolute left-0 h-full w-9/12 rounded-full bg-primary progress-bar">
+						  <span class="absolute bottom-full -right-4 z-1 mb-2 inline-block rounded-sm bg-primary px-2 py-1 text-xs font-bold text-white">
+							<span class="absolute -bottom-1 left-1/2 -z-1 h-2 w-2 -translate-x-1/2 rotate-45 bg-primary progress-text"></span>
+							75%
+						  </span>
+						</div>
+					  </div>
+					<button class="flex w-full items-center justify-center gap-2 rounded bg-primary py-2.5 px-4.5 font-medium text-white" id="upload-transaction">
+					<svg class="fill-current" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<g clip-path="url(#clip0_60_9740)">
+						<path d="M18.75 9.3125H10.7187V1.25C10.7187 0.875 10.4062 0.53125 10 0.53125C9.625 0.53125 9.28125 0.84375 9.28125 1.25V9.3125H1.25C0.875 9.3125 0.53125 9.625 0.53125 10.0312C0.53125 10.4062 0.84375 10.75 1.25 10.75H9.3125V18.75C9.3125 19.125 9.625 19.4687 10.0312 19.4687C10.4062 19.4687 10.75 19.1562 10.75 18.75V10.7187H18.75C19.125 10.7187 19.4687 10.4062 19.4687 10C19.4687 9.625 19.125 9.3125 18.75 9.3125Z" fill=""></path>
+						</g>
+						<defs>
+						<clipPath id="clip0_60_9740">
+							<rect width="20" height="20" fill="white"></rect>
+						</clipPath>
+						</defs>
+					</svg>
+					Upload Transaksi
+					</button>
+				</div>
+			</div>
             <section x-data="{modalOpen: false}">
                 <div x-show="modalOpen" x-transition class="fixed top-0 left-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5">
                     <div @click.outside="modalOpen = false" class="w-2/3 rounded-lg bg-white  dark:bg-boxdark md:py-5 md:px-5 relative">
@@ -347,4 +420,91 @@
 @endsection
 
 @push('scripts')
+<script type="text/javascript">
+window.addEventListener('load', function () {
+	const uploadButton = document.querySelector('#upload-transaction')
+	const fileInput = document.querySelector('#file')
+	const progressBar = document.querySelector('.progress-bar')
+	const progressText = document.querySelector('.progress-text')
+	let data = []
+	let uploaded = 0
+	uploadButton.addEventListener('click', function (event) {
+		if (data.length <= 0) return;
+		data.forEach(item => {
+			progressBar.parentNode.classList.remove('hidden')
+			createTransaction(userData)
+				.then(response => {
+				})
+				.catch(err =>  console.log(err))
+		})
+	})
+
+	function createTransaction(request)
+	{
+		const options = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(request)
+		}
+		return fetch('/api/transaction/upload', options)
+			.then(response => response.json())
+			.then(result => {
+				console.log(result)
+			})
+			.catch(error => {
+				console.log(Error)
+			})
+	}
+
+	function cleanUserInput(request)
+	{
+		return {
+			email: request.email,
+			transaction_type: parseInt(request.jenis_transaksi),
+			payment_method: parseInt(request.metode_pembayaran),
+			name: request.email,
+			nominal: parseInt(request.nominal),
+			id_user: '{{ Auth::user()->id }}',
+			unit: parseInt(request.satuan_.trim())
+		}
+	}
+
+	function parseCSV(csvText) {
+        const rows = csvText.split("\n");
+
+        // Assuming the first row contains headers
+        const headers = rows[0].split(",").map(header => header.toLowerCase().replace(/\s+/g, '_'));
+        const jsonData = [];
+        for (let i = 1; i < rows.length; i++) {
+            const row = rows[i].split(",");
+            const rowData = {};
+
+            for (let j = 0; j < headers.length; j++) {
+				if (row[j] == undefined || row[j] == '') continue;
+                rowData[headers[j]] = row[j];
+            }
+			if (Object.keys(rowData).length > 0)
+			{
+            	jsonData.push(rowData);
+			}
+        }
+		data = jsonData
+    }
+
+	fileInput.addEventListener('change', function (event) {
+		const file = event.target.files[0];
+		if (file) 
+		{
+			const reader = new FileReader();
+			reader.onload = function (e) {
+				const contents = e.target.result;
+                parseCSV(contents);
+			};
+			reader.readAsText(file);
+		}
+	})
+})
+</script>
 @endpush

@@ -848,4 +848,55 @@ class TransactionController extends Controller
 				->route($redirect)
 				->with(['success' => 'Berhasil mengupload bukti transaksi']);
 	}
+
+	public function showUploadTransactionForm(Request $request)
+	{
+		$user_profile = $this->initProfile();
+		$data = array_merge(array(), $user_profile);
+		return view('admin.transaction.upload');
+	}
+
+	public function uploadTransaction(Request $request)
+	{
+		$user_input_field_rules = [
+			'name' => 'required',
+			'email' => 'required|email',
+			'transaction_type' => 'required',
+			'payment_method' => 'required',
+			'nominal' => 'required',
+			'unit' => 'required',
+			'id_user' => 'required'
+		];
+
+		$user_input = $request->only(['name', 'email', 'transaction_type', 'payment_method', 'nominal', 'unit', 'id_user']);
+		$validator = Validator::make($user_input, $user_input_field_rules);
+		if ($validator->fails())
+        {
+            return back()
+						->withErrors($validator)
+						->withInput();
+        }
+
+		$transaction_data = [
+			'id_transaction_type' => $user_input['transaction_type'],
+			'order_id' => Uuid::uuid4(),
+			'id_payment_type' => $user_input['payment_method'],
+			'paid_amount' => $user_input['nominal'],
+			'user_id' => $user_input['id_user'],
+			'settlement_datetime' => Carbon::now(),
+			'unit_id' => $user_input['unit'],
+			'transaction_status' => Constant::TRANSACTION_PAID,
+		];
+		$transaction_record = Transaction::create($transaction_data);
+		$customer_data = [
+			'transaction_id' => $transaction_record->id,
+			'name' => $user_input['name'],
+			'email' => $user_input['email']
+		];
+		$customer_record = Customer::create($customer_data);
+		return response()->json([
+			'message' => 'Transaksi dengan nama '. $customer_data['email'] . ' dan email ' . $customer_data['email'] . ' berhasil dibuat.',
+			'success' => true
+		], 200);	
+	}
 }

@@ -619,6 +619,12 @@ video {
 .top-full {
   top: 100%;
 }
+.-bottom-1 {
+  bottom: -0.25rem;
+}
+.-right-4 {
+  right: -1rem;
+}
 .-z-1 {
   z-index: -1;
 }
@@ -776,6 +782,9 @@ video {
 .mt-4 {
   margin-top: 1rem;
 }
+.mt-4\.5 {
+  margin-top: 1.125rem;
+}
 .mt-5 {
   margin-top: 1.25rem;
 }
@@ -785,8 +794,8 @@ video {
 .mt-8 {
   margin-top: 2rem;
 }
-.mt-4\.5 {
-  margin-top: 1.125rem;
+.mt-10 {
+  margin-top: 2.5rem;
 }
 .block {
   display: block;
@@ -805,6 +814,9 @@ video {
 }
 .grid {
   display: grid;
+}
+.contents {
+  display: contents;
 }
 .hidden {
   display: none;
@@ -962,8 +974,8 @@ video {
 .w-screen {
   width: 100vw;
 }
-.w-12\.5 {
-  width: 3.125rem;
+.w-9\/12 {
+  width: 75%;
 }
 .min-w-47\.5 {
   min-width: 11.875rem;
@@ -1364,6 +1376,9 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(60 80 224 / var(--tw-bg-opacity));
 }
+.bg-primary\/5 {
+  background-color: rgb(60 80 224 / 0.05);
+}
 .bg-secondary {
   --tw-bg-opacity: 1;
   background-color: rgb(128 202 238 / var(--tw-bg-opacity));
@@ -1375,8 +1390,9 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
-.bg-primary\/5 {
-  background-color: rgb(60 80 224 / 0.05);
+.bg-stroke {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity));
 }
 .bg-opacity-\[15\%\] {
   --tw-bg-opacity: 15%;
@@ -1898,6 +1914,10 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
+:is(.dark .dark\:bg-strokedark) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(46 58 71 / var(--tw-bg-opacity));
+}
 :is(.dark .dark\:bg-opacity-30) {
   --tw-bg-opacity: 0.3;
 }
@@ -2049,6 +2069,11 @@ video {
     padding-right: 1.875rem;
   }
 
+  .sm\:py-14 {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
   .sm\:py-7 {
     padding-top: 1.75rem;
     padding-bottom: 1.75rem;
@@ -2057,11 +2082,6 @@ video {
   .sm\:py-7\.5 {
     padding-top: 1.875rem;
     padding-bottom: 1.875rem;
-  }
-
-  .sm\:py-14 {
-    padding-top: 3.5rem;
-    padding-bottom: 3.5rem;
   }
 
   .sm\:pt-0 {
