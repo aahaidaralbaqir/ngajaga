@@ -107,7 +107,7 @@ class UserController extends Controller
 			$request->session()
 					->regenerate();
 
-			return redirect()->intended('admin');
+			return redirect()->route('admin');
 		}
 
 		return back()->withErrors($validator)

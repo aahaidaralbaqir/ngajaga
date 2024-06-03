@@ -1,4 +1,5 @@
 /src/node_modules
+/src/public/tinymce
 /src/public/hot
 /src/public/storage
 /src/storage/*.key
