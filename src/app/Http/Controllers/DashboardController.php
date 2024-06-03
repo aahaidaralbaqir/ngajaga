@@ -66,13 +66,13 @@ class DashboardController extends Controller
 		$transaction_type = DB::table('transaction_type');
 		$activity = DB::table('activity')->count();
 		$posts = DB::table('post')->where('status', Constant::STATUS_PUBLISHED)->count();
-		$amount_in = $transaction->transaction_in;
+		$amount_in = $transaction == NULL ? 0 : $transaction->transaction_in;
 		if ($amount_in == NULL)
 			$amount_in = 0;
-		$amount_out = $transaction->transaction_out;
+		$amount_out = $transaction == NULL ? 0 : $transaction->transaction_out;
 		if ($amount_out == NULL)
 			$amount_out = 0;
-		$total_amount = $transaction->total_transaction;
+		$total_amount = $transaction == NULL ? 0 : $transaction->total_transaction;
 		if ($total_amount == NULL)
 			$total_amount = 0;
 		return [
@@ -81,8 +81,8 @@ class DashboardController extends Controller
 				'transaction_type' => $transaction_type->count(),
 				'activity' => $activity, 
 				'amount' => [
-					'total_in' => $transaction->total_transaction_in,
-					'total_out' => $transaction->total_transaction_out,
+					'total_in' => $transaction == NULL ? 0 : $transaction->total_transaction_in,
+					'total_out' => $transaction == NULL ? 0 : $transaction->total_transaction_out,
 					'in' => CommonUtil::formatAmount(Constant::UNIT_NAME_RUPIAH, $amount_in),
 					'out' => CommonUtil::formatAmount(Constant::UNIT_NAME_RUPIAH, $amount_out * -1),
 					'total' => CommonUtil::formatAmount(Constant::UNIT_NAME_RUPIAH, $total_amount)]],

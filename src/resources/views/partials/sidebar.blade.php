@@ -1,4 +1,4 @@
-<aside :class="sidebarToggle ? 'translate-x-0' : '-translate-x-full'" class="absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0" @click.outside="sidebarToggle = false">
+<aside :class="sidebarToggle ? 'translate-x-0' : '-translate-x-full'" class="absolute left-0 top-0 z-9999 flex h-screen w-65 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0" @click.outside="sidebarToggle = false">
   <!-- SIDEBAR HEADER -->
   <div class="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
     <a href="{{ route('admin') }}">
@@ -11,19 +11,19 @@
     </button>
   </div>
   <!-- SIDEBAR HEADER -->
-  <div class="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
+  <div class="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear h-full flex justify-between">
     <!-- Sidebar Menu -->
-    <nav class="mt-5 py-4 px-4 lg:mt-9 lg:px-6" x-data="{selected: 'Dashboard'}" x-init="
+    <nav class="mt-2 px-4" x-data="{selected: 'Dashboard'}" x-init="
         selected = JSON.parse(localStorage.getItem('selected'));
         $watch('selected', value => localStorage.setItem('selected', JSON.stringify(value)))">
       <!-- Menu Group -->
       <div>
-        <h3 class="mb-4 ml-4 text-sm font-medium text-bodydark2">CMS</h3>
+        <h3 class="mb-4 ml-4 text-sm text-sm text-bodydark2">CMS</h3>
         <ul class="mb-6 flex flex-col gap-1.5">
           <!-- Menu Item Dashboard -->
 		  @if(in_array(App\Constant\Permission::CAN_VIEW_DASHBOARD, $permissions))
 			<li>
-				<a class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 @php echo route_is('admin') ? 'bg-graydark dark:bg-meta-4' : '' @endphp" href="{{ route('admin') }}">
+				<a class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 text-sm text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 @php echo route_is('admin') ? 'bg-graydark dark:bg-meta-4' : '' @endphp" href="{{ route('admin') }}">
 				<svg class="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M6.10322 0.956299H2.53135C1.5751 0.956299 0.787598 1.7438 0.787598 2.70005V6.27192C0.787598 7.22817 1.5751 8.01567 2.53135 8.01567H6.10322C7.05947 8.01567 7.84697 7.22817 7.84697 6.27192V2.72817C7.8751 1.7438 7.0876 0.956299 6.10322 0.956299ZM6.60947 6.30005C6.60947 6.5813 6.38447 6.8063 6.10322 6.8063H2.53135C2.2501 6.8063 2.0251 6.5813 2.0251 6.30005V2.72817C2.0251 2.44692 2.2501 2.22192 2.53135 2.22192H6.10322C6.38447 2.22192 6.60947 2.44692 6.60947 2.72817V6.30005Z" fill="" />
 					<path d="M15.4689 0.956299H11.8971C10.9408 0.956299 10.1533 1.7438 10.1533 2.70005V6.27192C10.1533 7.22817 10.9408 8.01567 11.8971 8.01567H15.4689C16.4252 8.01567 17.2127 7.22817 17.2127 6.27192V2.72817C17.2127 1.7438 16.4252 0.956299 15.4689 0.956299ZM15.9752 6.30005C15.9752 6.5813 15.7502 6.8063 15.4689 6.8063H11.8971C11.6158 6.8063 11.3908 6.5813 11.3908 6.30005V2.72817C11.3908 2.44692 11.6158 2.22192 11.8971 2.22192H15.4689C15.7502 2.22192 15.9752 2.44692 15.9752 2.72817V6.30005Z" fill="" />
@@ -36,7 +36,7 @@
           <!-- Menu Item Calendar -->
 		  @if(in_array(App\Constant\Permission::CAN_VIEW_BANNER, $permissions))
           <li>
-            <a class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 @php echo in_array(route_name(), ['heroes.index', 'heroes.create.form', 'heroes.update.form']) ? 'bg-graydark dark:bg-meta-4' : '' @endphp" href="{{ route('heroes.index') }}">
+            <a class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 text-sm text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 @php echo in_array(route_name(), ['heroes.index', 'heroes.create.form', 'heroes.update.form']) ? 'bg-graydark dark:bg-meta-4' : '' @endphp" href="{{ route('heroes.index') }}">
               <svg class="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M15.7499 2.9812H14.2874V2.36245C14.2874 2.02495 14.0062 1.71558 13.6405 1.71558C13.2749 1.71558 12.9937 1.99683 12.9937 2.36245V2.9812H4.97803V2.36245C4.97803 2.02495 4.69678 1.71558 4.33115 1.71558C3.96553 1.71558 3.68428 1.99683 3.68428 2.36245V2.9812H2.2499C1.29365 2.9812 0.478027 3.7687 0.478027 4.75308V14.5406C0.478027 15.4968 1.26553 16.3125 2.2499 16.3125H15.7499C16.7062 16.3125 17.5218 15.525 17.5218 14.5406V4.72495C17.5218 3.7687 16.7062 2.9812 15.7499 2.9812ZM1.77178 8.21245H4.1624V10.9968H1.77178V8.21245ZM5.42803 8.21245H8.38115V10.9968H5.42803V8.21245ZM8.38115 12.2625V15.0187H5.42803V12.2625H8.38115ZM9.64678 12.2625H12.5999V15.0187H9.64678V12.2625ZM9.64678 10.9968V8.21245H12.5999V10.9968H9.64678ZM13.8374 8.21245H16.228V10.9968H13.8374V8.21245ZM2.2499 4.24683H3.7124V4.83745C3.7124 5.17495 3.99365 5.48433 4.35928 5.48433C4.7249 5.48433 5.00615 5.20308 5.00615 4.83745V4.24683H13.0499V4.83745C13.0499 5.17495 13.3312 5.48433 13.6968 5.48433C14.0624 5.48433 14.3437 5.20308 14.3437 4.83745V4.24683H15.7499C16.0312 4.24683 16.2562 4.47183 16.2562 4.75308V6.94683H1.77178V4.75308C1.77178 4.47183 1.96865 4.24683 2.2499 4.24683ZM1.77178 14.5125V12.2343H4.1624V14.9906H2.2499C1.96865 15.0187 1.77178 14.7937 1.77178 14.5125ZM15.7499 15.0187H13.8374V12.2625H16.228V14.5406C16.2562 14.7937 16.0312 15.0187 15.7499 15.0187Z" fill="" />
               </svg> Banner </a>
@@ -46,7 +46,7 @@
           <!-- Menu Item Profile -->
 		  @if(in_array(App\Constant\Permission::CAN_VIEW_POST, $permissions))
           <li>
-            <a class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 @php echo in_array(route_name(), ['post.index', 'post.create.form', 'post.update.form']) ? 'bg-graydark dark:bg-meta-4' : '' @endphp" href="{{ route('post.index') }}">
+            <a class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 text-sm text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 @php echo in_array(route_name(), ['post.index', 'post.create.form', 'post.update.form']) ? 'bg-graydark dark:bg-meta-4' : '' @endphp" href="{{ route('post.index') }}">
               <svg class="fill-current" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clip-path="url(#clip0_130_9756)">
                   <path d="M15.7501 0.55835H2.2501C1.29385 0.55835 0.506348 1.34585 0.506348 2.3021V15.8021C0.506348 16.7584 1.29385 17.574 2.27822 17.574H15.7782C16.7345 17.574 17.5501 16.7865 17.5501 15.8021V2.3021C17.522 1.34585 16.7063 0.55835 15.7501 0.55835ZM6.69385 10.599V6.4646H11.3063V10.5709H6.69385V10.599ZM11.3063 11.8646V16.3083H6.69385V11.8646H11.3063ZM1.77197 6.4646H5.45635V10.5709H1.77197V6.4646ZM12.572 6.4646H16.2563V10.5709H12.572V6.4646ZM2.2501 1.82397H15.7501C16.0313 1.82397 16.2563 2.04897 16.2563 2.33022V5.2271H1.77197V2.3021C1.77197 2.02085 1.96885 1.82397 2.2501 1.82397ZM1.77197 15.8021V11.8646H5.45635V16.3083H2.2501C1.96885 16.3083 1.77197 16.0834 1.77197 15.8021ZM15.7501 16.3083H12.572V11.8646H16.2563V15.8021C16.2563 16.0834 16.0313 16.3083 15.7501 16.3083Z" fill="" />
@@ -62,7 +62,7 @@
           <!-- Menu Item Profile -->
           <!-- Menu Item Forms -->
           <li>
-            <a class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4" href="#" @click.prevent="selected = (selected === 'Activity' ? '':'Activity')" :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Activity') || (page === 'formElements' || page === 'formLayout') }">
+            <a class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 text-sm text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4" href="#" @click.prevent="selected = (selected === 'Activity' ? '':'Activity')" :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Activity') || (page === 'formElements' || page === 'formLayout') }">
               <svg class="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M1.43425 7.5093H2.278C2.44675 7.5093 2.55925 7.3968 2.58737 7.31243L2.98112 6.32805H5.90612L6.27175 7.31243C6.328 7.48118 6.46862 7.5093 6.58112 7.5093H7.453C7.76237 7.48118 7.87487 7.25618 7.76237 7.03118L5.428 1.4343C5.37175 1.26555 5.3155 1.23743 5.14675 1.23743H3.88112C3.76862 1.23743 3.59987 1.29368 3.57175 1.4343L1.153 7.08743C1.0405 7.2843 1.20925 7.5093 1.43425 7.5093ZM4.47175 2.98118L5.3155 5.17493H3.59987L4.47175 2.98118Z" fill="" />
                 <path d="M10.1249 2.5031H16.8749C17.2124 2.5031 17.5218 2.22185 17.5218 1.85623C17.5218 1.4906 17.2405 1.20935 16.8749 1.20935H10.1249C9.7874 1.20935 9.47803 1.4906 9.47803 1.85623C9.47803 2.22185 9.75928 2.5031 10.1249 2.5031Z" fill="" />
@@ -79,13 +79,13 @@
             	<ul class="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
 					@if(in_array(App\Constant\Permission::CAN_VIEW_ACTIVITY, $permissions))
 						<li>
-							<a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white
+							<a class="group relative flex items-center gap-2.5 rounded-md px-4 text-sm text-bodydark2 duration-300 ease-in-out hover:text-white
 												@php echo in_array(route_name(), ['activity.type.documentation', 'activity.type.documentation.upload', 'activity.type.documentation.deldete', 'activity.type.index', 'activity.type.create.form', 'activity.type.update.form']) ? 'text-white' : '' @endphp" href="{{ route('activity.type.index') }}">Jenis</a>
 						</li>
 					@endif
 					@if(in_array(App\Constant\Permission::CAN_MANAGE_SCHEDULE, $permissions))
 					<li>
-					<a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white
+					<a class="group relative flex items-center gap-2.5 rounded-md px-4 text-sm text-bodydark2 duration-300 ease-in-out hover:text-white
 									@php echo in_array(route_name(), ['activity.schedule.index']) ? 'text-white' : '' @endphp" href="{{ route('activity.schedule.index') }}">Jadwal</a>
 					</li>
 					@endif
@@ -97,7 +97,7 @@
           <!-- Menu Item Tables -->
 		  @if(in_array(App\Constant\Permission::CAN_VIEW_STRUCTURE, $permissions))
 			<li>
-				<a class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 @php echo in_array(route_name(), ['structure.index', 'structure.create.form', 'structure.update.form']) ? 'bg-graydark dark:bg-meta-4' : '' @endphp" href="{{ route('structure.index') }}">
+				<a class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 text-sm text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 @php echo in_array(route_name(), ['structure.index', 'structure.create.form', 'structure.update.form']) ? 'bg-graydark dark:bg-meta-4' : '' @endphp" href="{{ route('structure.index') }}">
 				<svg class="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M9.0002 7.79065C11.0814 7.79065 12.7689 6.1594 12.7689 4.1344C12.7689 2.1094 11.0814 0.478149 9.0002 0.478149C6.91895 0.478149 5.23145 2.1094 5.23145 4.1344C5.23145 6.1594 6.91895 7.79065 9.0002 7.79065ZM9.0002 1.7719C10.3783 1.7719 11.5033 2.84065 11.5033 4.16252C11.5033 5.4844 10.3783 6.55315 9.0002 6.55315C7.62207 6.55315 6.49707 5.4844 6.49707 4.16252C6.49707 2.84065 7.62207 1.7719 9.0002 1.7719Z" fill="" />
 					<path d="M10.8283 9.05627H7.17207C4.16269 9.05627 1.71582 11.5313 1.71582 14.5406V16.875C1.71582 17.2125 1.99707 17.5219 2.3627 17.5219C2.72832 17.5219 3.00957 17.2407 3.00957 16.875V14.5406C3.00957 12.2344 4.89394 10.3219 7.22832 10.3219H10.8564C13.1627 10.3219 15.0752 12.2063 15.0752 14.5406V16.875C15.0752 17.2125 15.3564 17.5219 15.7221 17.5219C16.0877 17.5219 16.3689 17.2407 16.3689 16.875V14.5406C16.2846 11.5313 13.8377 9.05627 10.8283 9.05627Z" fill="" />
@@ -105,7 +105,7 @@
 			</li>
 		  @endif
             <li>
-              <a class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4" href="#" @click.prevent="selected = (selected === 'Users' ? '':'Users')">
+              <a class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 text-sm text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4" href="#" @click.prevent="selected = (selected === 'Users' ? '':'Users')">
                 <svg class="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M1.43425 7.5093H2.278C2.44675 7.5093 2.55925 7.3968 2.58737 7.31243L2.98112 6.32805H5.90612L6.27175 7.31243C6.328 7.48118 6.46862 7.5093 6.58112 7.5093H7.453C7.76237 7.48118 7.87487 7.25618 7.76237 7.03118L5.428 1.4343C5.37175 1.26555 5.3155 1.23743 5.14675 1.23743H3.88112C3.76862 1.23743 3.59987 1.29368 3.57175 1.4343L1.153 7.08743C1.0405 7.2843 1.20925 7.5093 1.43425 7.5093ZM4.47175 2.98118L5.3155 5.17493H3.59987L4.47175 2.98118Z" fill="" />
                   <path d="M10.1249 2.5031H16.8749C17.2124 2.5031 17.5218 2.22185 17.5218 1.85623C17.5218 1.4906 17.2405 1.20935 16.8749 1.20935H10.1249C9.7874 1.20935 9.47803 1.4906 9.47803 1.85623C9.47803 2.22185 9.75928 2.5031 10.1249 2.5031Z" fill="" />
@@ -123,19 +123,19 @@
                 <ul class="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
 					@if(in_array(App\Constant\Permission::CAN_VIEW_PERMISSION, $permissions))
 						<li>
-							<a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white
+							<a class="group relative flex items-center gap-2.5 rounded-md px-4 text-sm text-bodydark2 duration-300 ease-in-out hover:text-white
 									@php echo in_array(route_name(), ['permission.index', 'permission.create.form', 'permission.update.form']) ? 'text-white' : '' @endphp" href="{{ route('permission.index') }}">Hak Akses</a>
 						</li>
 					@endif
 					@if(in_array(App\Constant\Permission::CAN_VIEW_ROLE, $permissions))
 						<li>
-							<a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white
+							<a class="group relative flex items-center gap-2.5 rounded-md px-4 text-sm text-bodydark2 duration-300 ease-in-out hover:text-white
 							@php echo in_array(route_name(), ['roles.index', 'roles.create.form', 'roles.update.form']) ? 'text-white' : '' @endphp" href="{{ route('roles.index') }}">Jenis Peran</a>
 						</li>
 				  	@endif
 					@if(in_array(App\Constant\Permission::CAN_VIEW_USER, $permissions))
 						<li>
-							<a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white
+							<a class="group relative flex items-center gap-2.5 rounded-md px-4 text-sm text-bodydark2 duration-300 ease-in-out hover:text-white
 							@php echo in_array(route_name(), ['user.index', 'user.create.form', 'user.update.form']) ? 'text-white' : '' @endphp" href="{{ route('user.index') }}">Pengguna</a>
 						</li>
 				  	@endif
@@ -148,12 +148,12 @@
 
       <!-- Others Group --> 
         <div>
-          <h3 class="mb-4 ml-4 text-sm font-medium text-bodydark2">DANA MASUK &amp; KELUAR</h3>
+          <h3 class="mb-4 ml-4 text-sm text-sm text-bodydark2">DANA MASUK &amp; KELUAR</h3>
           <ul class="mb-6 flex flex-col gap-1.5">
             <!-- Menu Item Chart -->
 			@if(in_array(App\Constant\Permission::CAN_VIEW_REPORT, $permissions))
             <li>
-              <a href="{{ route('report.index') }}" class="@php echo in_array(route_name(), ['report.index']) ? 'bg-graydark dark:bg-meta-4' : '' @endphp group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4">
+              <a href="{{ route('report.index') }}" class="@php echo in_array(route_name(), ['report.index']) ? 'bg-graydark dark:bg-meta-4' : '' @endphp group relative flex items-center gap-2.5 rounded-sm py-2 px-4 text-sm text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4">
                 <svg class="fill-current" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g clip-path="url(#clip0_130_9801)">
                     <path d="M10.8563 0.55835C10.5188 0.55835 10.2095 0.8396 10.2095 1.20522V6.83022C10.2095 7.16773 10.4907 7.4771 10.8563 7.4771H16.8751C17.0438 7.4771 17.2126 7.39272 17.3251 7.28022C17.4376 7.1396 17.4938 6.97085 17.4938 6.8021C17.2688 3.28647 14.3438 0.55835 10.8563 0.55835ZM11.4751 6.15522V1.8521C13.8095 2.13335 15.6938 3.8771 16.1438 6.18335H11.4751V6.15522Z" fill="" />
@@ -171,7 +171,7 @@
             <!-- Menu Item Chart -->
             <!-- Menu Item Ui Elements -->
             <li>
-              <a class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4" href="#" @click.prevent="selected = (selected === 'UiElements' ? '':'UiElements')" :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'UiElements') || (page === 'alerts' || page === 'buttons' || page === 'card' || page === 'tabs' || page === 'modals') }">
+              <a class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 text-sm text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4" href="#" @click.prevent="selected = (selected === 'UiElements' ? '':'UiElements')" :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'UiElements') || (page === 'alerts' || page === 'buttons' || page === 'card' || page === 'tabs' || page === 'modals') }">
                 <svg class="fill-current" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g clip-path="url(#clip0_130_9807)">
                     <path d="M15.7501 0.55835H2.2501C1.29385 0.55835 0.506348 1.34585 0.506348 2.3021V7.53335C0.506348 8.4896 1.29385 9.2771 2.2501 9.2771H15.7501C16.7063 9.2771 17.4938 8.4896 17.4938 7.53335V2.3021C17.4938 1.34585 16.7063 0.55835 15.7501 0.55835ZM16.2563 7.53335C16.2563 7.8146 16.0313 8.0396 15.7501 8.0396H2.2501C1.96885 8.0396 1.74385 7.8146 1.74385 7.53335V2.3021C1.74385 2.02085 1.96885 1.79585 2.2501 1.79585H15.7501C16.0313 1.79585 16.2563 2.02085 16.2563 2.3021V7.53335Z" fill="" />
@@ -192,22 +192,22 @@
                 <ul class="mt-4 mb-3 flex flex-col gap-2 pl-6">
 					@if(in_array(App\Constant\Permission::CAN_VIEW_TRANSACTION_TYPE, $permissions))
 						<li>
-							<a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white @php echo in_array(route_name(), ['transaction.type.index', 'transaction.type.create.form', 'transaction.type.update.form']) ? 'text-white' : '' @endphp" href="{{ route('transaction.type.index') }}">Jenis Transaksi</a>
+							<a class="group relative flex items-center gap-2.5 rounded-md px-4 text-sm text-bodydark2 duration-300 ease-in-out hover:text-white @php echo in_array(route_name(), ['transaction.type.index', 'transaction.type.create.form', 'transaction.type.update.form']) ? 'text-white' : '' @endphp" href="{{ route('transaction.type.index') }}">Jenis Transaksi</a>
 						</li>
 					@endif
 					@if(in_array(App\Constant\Permission::CAN_VIEW_PAYMENT, $permissions))
 						<li>
-							<a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white @php echo in_array(route_name(), ['payment.index', 'payment.create.form', 'payment.update.form']) ? 'text-white' : '' @endphp" href="{{ route('payment.index') }}">Jenis Pembayaran</a>
+							<a class="group relative flex items-center gap-2.5 rounded-md px-4 text-sm text-bodydark2 duration-300 ease-in-out hover:text-white @php echo in_array(route_name(), ['payment.index', 'payment.create.form', 'payment.update.form']) ? 'text-white' : '' @endphp" href="{{ route('payment.index') }}">Jenis Pembayaran</a>
 						</li>
 				 	 @endif
 					@if(in_array(App\Constant\Permission::CAN_VIEW_TRANSACTION, $permissions))
 						<li>
-							<a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white @php echo in_array(route_name(), ['transaction.index', 'transaction.create.form', 'transaction.update.form']) ? 'text-white' : '' @endphp"  href="{{ route('transaction.index') }}">Transaksi Masuk</a>
+							<a class="group relative flex items-center gap-2.5 rounded-md px-4 text-sm text-bodydark2 duration-300 ease-in-out hover:text-white @php echo in_array(route_name(), ['transaction.index', 'transaction.create.form', 'transaction.update.form']) ? 'text-white' : '' @endphp"  href="{{ route('transaction.index') }}">Transaksi Masuk</a>
 						</li>
 					@endif
 					@if(in_array(App\Constant\Permission::CAN_VIEW_DISTRIBUTION, $permissions))
 						<li>
-							<a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white @php echo in_array(route_name(), ['distribution.index', 'distribution.create.form', 'distribution.update.form']) ? 'text-white' : '' @endphp"  href="{{ route('distribution.index') }}">Distribusi Dana</a>
+							<a class="group relative flex items-center gap-2.5 rounded-md px-4 text-sm text-bodydark2 duration-300 ease-in-out hover:text-white @php echo in_array(route_name(), ['distribution.index', 'distribution.create.form', 'distribution.update.form']) ? 'text-white' : '' @endphp"  href="{{ route('distribution.index') }}">Distribusi Dana</a>
 						</li>
 					@endif
                 </ul>
@@ -217,7 +217,7 @@
             <!-- Menu Item Auth Pages -->
 			@if(in_array(App\Constant\Permission::CAN_VIEW_BENEFICIARY, $permissions))
 			<li>
-				<a href="{{ route('beneficiary.index') }}" class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 @php echo in_array(route_name(), ['beneficiary.index', 'beneficiary.create.form', 'beneficiary.update.form']) ? 'bg-graydark dark:bg-meta-4' : '' @endphp" >
+				<a href="{{ route('beneficiary.index') }}" class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 text-sm text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 @php echo in_array(route_name(), ['beneficiary.index', 'beneficiary.create.form', 'beneficiary.update.form']) ? 'bg-graydark dark:bg-meta-4' : '' @endphp" >
 					<svg class="fill-current" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path d="M16.8749 7.44902C16.5374 7.44902 16.228 7.73027 16.228 8.0959V13.3834C16.228 14.4803 15.4124 15.3521 14.3999 15.3521H3.5999C2.55928 15.3521 1.77178 14.4803 1.77178 13.3834V8.06777C1.77178 7.73027 1.49053 7.4209 1.1249 7.4209C0.759277 7.4209 0.478027 7.70215 0.478027 8.06777V13.3553C0.478027 15.1271 1.85615 16.5896 3.57178 16.5896H14.3999C16.1155 16.5896 17.4937 15.1553 17.4937 13.3553V8.06777C17.5218 7.73027 17.2124 7.44902 16.8749 7.44902Z" fill=""></path>
 						<path d="M8.5498 11.6396C8.6623 11.7521 8.83105 11.8365 8.9998 11.8365C9.16855 11.8365 9.30918 11.7803 9.4498 11.6396L12.8811 8.23652C13.1342 7.9834 13.1342 7.58965 12.8811 7.33652C12.6279 7.0834 12.2342 7.0834 11.9811 7.33652L9.64668 9.64277V2.16152C9.64668 1.82402 9.36543 1.51465 8.9998 1.51465C8.6623 1.51465 8.35293 1.7959 8.35293 2.16152V9.69902L6.01855 7.36465C5.76543 7.11152 5.37168 7.11152 5.11855 7.36465C4.86543 7.61777 4.86543 8.01152 5.11855 8.26465L8.5498 11.6396Z" fill=""></path>
@@ -230,7 +230,7 @@
         </div> 
     </nav>
     <!-- Sidebar Menu -->
-	<div class="mx-auto mb-10 w-full max-w-60 text-center">
+	<div class="mx-auto mb-10 w-full max-w-60 text-center px-4">
 		<a href="{{ route('logout') }}" rel="nofollow" class="flex items-center justify-center rounded-md bg-primary p-2 text-white hover:bg-opacity-95">Keluar</a>
 	</div>
   </div>
