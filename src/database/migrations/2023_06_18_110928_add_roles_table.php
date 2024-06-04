@@ -16,7 +16,7 @@ class AddRolesTable extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100)->notNull();
-            $table->string('permission');
+            $table->string('permission')->notNull()->default('');
             $table->boolean('status');
             $table->timestamps();
         });
