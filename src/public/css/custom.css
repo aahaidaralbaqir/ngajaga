@@ -68,3 +68,7 @@ div.dropdown-menu {
 .btn-action button.btn-default:hover {
     background-color: #F0F0F0;
 }
+
+.text-muted-foreground {
+	color: hsl(240 3.8% 46.1%);
+  }

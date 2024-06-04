@@ -22,7 +22,9 @@ class PermissionController extends Controller
     {
         $user_profile = $this->initProfile();
 		$data = array_merge(array(), $user_profile);
-		$data['item'] = NULL; 
+		$data['item'] = NULL;
+		$data['permissions'] = Permission::where('id_parent', 0)->get();
+		$data['methods'] = CommonUtil::getHttpVerbOptions();
 		return view('admin.permission.form', $data); 
     }
 
@@ -30,11 +32,11 @@ class PermissionController extends Controller
     {
         $user_input_field_rules = [
 			'name' => 'required',
-			'alias' => 'required',
-			'url' => 'required',
+			'method' => 'required|in:' . implode(',', CommonUtil::getHttpVerbOptions()),
 		];
-		$user_input = $request->only('name', 'alias', 'url', 'icon');
-
+		$user_input = $request->only('name', 'method', 'id_parent');
+		if ($request->has('id_parent') && empty($request->input('id_parent')))
+			$user_input['id_parent'] = 0;
 		$validator = Validator::make($user_input, $user_input_field_rules);
 		if ($validator->fails())
 			return back()
@@ -44,7 +46,7 @@ class PermissionController extends Controller
 		Permission::create($user_input);
 		return redirect()
 					->route('permission.index')
-					->with(['success' => 'Berhasil menambahkan permission baru']);
+					->with(['success' => 'Berhasil menambahkan hak akses baru']);
     }
 
     public function updateForm(Request $request, $permissionId)
@@ -58,7 +60,8 @@ class PermissionController extends Controller
         $user_profile = $this->initProfile();
 		$data = array_merge(array(), $user_profile);
         $data['item'] = $current_record;
-		
+		$data['methods'] = CommonUtil::getHttpVerbOptions();
+		$data['permissions'] = Permission::where('id_parent', 0)->where('id', '!=', $permissionId)->get();
 		return view('admin.permission.form', $data); 
     }
 
@@ -71,10 +74,9 @@ class PermissionController extends Controller
 		
 		$user_input_field_rules = [
 			'name' => 'required',
-			'alias' => 'required',
-			'url' => 'required'
+			'method' => 'required|in:' . implode(',', CommonUtil::getHttpVerbOptions()),
 		];
-		$user_input = $request->only('name', 'alias', 'url', 'icon');
+		$user_input = $request->only('name', 'method', 'id_parent');
 
 		$validator = Validator::make($user_input, $user_input_field_rules);
 		if ($validator->fails())
@@ -87,7 +89,7 @@ class PermissionController extends Controller
 				->update($user_input);
 		return redirect()
 					->route('permission.index')
-					->with(['success' => 'Berhasil mengupdate permission']);
+					->with(['success' => 'Berhasil mengubah hak akses']);
     }
 
     public function deletePermission(Request $request, $permissionId)
@@ -102,6 +104,6 @@ class PermissionController extends Controller
 		Permission::where('id', $permissionId)->delete();
 		return redirect()
 					->route('permission.index')
-					->with(['success' => 'Berhasil menghapus permission']);	
+					->with(['success' => 'Berhasil menghapus hak akses']);	
 	}
 }

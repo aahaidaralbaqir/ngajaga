@@ -16,12 +16,7 @@
   @stack('styles')
 </head>
 
-<body
-  x-data="{ page: 'analytics', 'loaded': true, 'darkMode': true, 'stickyMenu': false, 'sidebarToggle': false, 'scrollTop': false }"
-  x-init="
-         darkMode = JSON.parse(localStorage.getItem('darkMode'));
-         $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
-  :class="{'dark text-bodydark bg-boxdark-2': darkMode === true}">
+<body class="bg-[#f4f4f0]">
   <!-- ===== Preloader Start ===== -->
   @include('partials.preloader')
   <!-- ===== Preloader End ===== -->

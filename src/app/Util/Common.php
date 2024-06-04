@@ -189,5 +189,17 @@ class Common {
 		},
 		range(strtotime($start) + ($start < $end ? 4000 : 8000), strtotime($end) + ($start < $end ? 8000 : 4000), 86400));
 	}
+
+	public static function getHttpVerbOptions()
+	{
+		return [
+			Constant::HTTP_VERB_DELETE,
+			Constant::HTTP_VERB_PATCH,
+			Constant::HTTP_VERB_PUT,
+			Constant::HTTP_VERB_GET,
+			Constant::HTTP_VERB_POST,
+			Constant::HTTP_VERB_HEAD
+		];
+	}
 		
 }

@@ -12,8 +12,7 @@ class Permission extends Model
 
     protected $fillable = [
         'name',
-        'url',
-        'alias',
-        'icon'
+        'method',
+        'id_parent'
     ];
 }
