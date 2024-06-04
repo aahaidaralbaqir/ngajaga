@@ -15,7 +15,8 @@ class CreateTablePermission extends Migration
     {
         Schema::create('permission', function (Blueprint $table) {
             $table->id();
-            $table->string('path', 100);
+            $table->string('name', 100);
+            $table->enum('method', ['GET', 'POST', 'DELETE', 'PUT', 'PATCH', 'TRACE', 'CONNECT', 'HEAD'])->nullable();
             $table->unsignedBigInteger('id_parent')->notNull()->default(0);
             $table->timestamps();
         });
