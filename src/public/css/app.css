@@ -686,6 +686,18 @@ video {
 .left-\[-1px\] {
   left: -1px;
 }
+.left-\[-5px\] {
+  left: -5px;
+}
+.left-\[-4px\] {
+  left: -4px;
+}
+.left-\[-0px\] {
+  left: -0px;
+}
+.left-\[0px\] {
+  left: 0px;
+}
 .-z-1 {
   z-index: -1;
 }
@@ -1056,6 +1068,12 @@ video {
 .w-screen {
   width: 100vw;
 }
+.w-\[200px\] {
+  width: 200px;
+}
+.w-\[220px\] {
+  width: 220px;
+}
 .min-w-47\.5 {
   min-width: 11.875rem;
 }
@@ -1367,6 +1385,9 @@ video {
 .border-dashed {
   border-style: dashed;
 }
+.border-none {
+  border-style: none;
+}
 .border-\[\#13C296\] {
   --tw-border-opacity: 1;
   border-color: rgb(19 194 150 / var(--tw-border-opacity));
@@ -1670,6 +1691,34 @@ video {
 .py-20 {
   padding-top: 5rem;
   padding-bottom: 5rem;
+}
+.py-\[2rem\] {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+.py-\[erem\] {
+  padding-top: erem;
+  padding-bottom: erem;
+}
+.py-\[3rem\] {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+.py-\[2\.5rem\] {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+.py-\[2\.6rem\] {
+  padding-top: 2.6rem;
+  padding-bottom: 2.6rem;
+}
+.py-\[2\.7rem\] {
+  padding-top: 2.7rem;
+  padding-bottom: 2.7rem;
+}
+.py-\[2\.8rem\] {
+  padding-top: 2.8rem;
+  padding-bottom: 2.8rem;
 }
 .pb-2 {
   padding-bottom: 0.5rem;
