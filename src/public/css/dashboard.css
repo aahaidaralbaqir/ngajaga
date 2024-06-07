@@ -119,3 +119,22 @@ table.retro thead tr th {
     -webkit-mask-position: 50% 50%;
     mask-position: 50% 50%;
 }
+
+input:not([type]), input[type=email], input[type=date], input[type=datetime-local], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=text], input[type=url], textarea, select, .input, .chosen-container .chosen-choices, .textarea {
+	font-family: inherit;
+    padding: .75rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    --line-height: 1.5rem;
+    border: solid .0625rem rgb(0 0 0 / 1);
+    border-radius: .25rem;
+    display: block;
+    width: 100%;
+    background-color: rgb(255 255 255);
+    color: rgb(0 0 0);
+    --active-bg: rgb(0 0 0/0.1);
+}
+
+input:not([type]):focus-within, input[type="email"]:focus-within, input[type="date"]:focus-within, input[type="datetime-local"]:focus-within, input[type="number"]:focus-within, input[type="password"]:focus-within, input[type="search"]:focus-within, input[type="tel"]:focus-within, input[type="text"]:focus-within, input[type="url"]:focus-within, textarea:focus-within, select:focus-within, .input:focus-within, .chosen-container .chosen-choices:focus-within, .textarea:focus-within {
+    outline: .125rem solid rgb(255 144 232);
+}

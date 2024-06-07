@@ -20,7 +20,7 @@
                         </svg> Dashboard </a>
                     </li>
                     <li class="border-t border-[#808080] px-5 py-4">
-                        <a class="group relative flex items-center gap-2.5 rounded-sm  hover:text-[#ff91e7] text-sm duration-300 ease-in-out   dark:hover:bg-meta-4 {{ in_array(route_name(), ['account.index']) ? 'text-[#ff91e7]' : 'text-bodydark1' }}" href="{{ route('account.index') }}">
+                        <a class="group relative flex items-center gap-2.5 rounded-sm  hover:text-[#ff91e7] text-sm duration-300 ease-in-out   dark:hover:bg-meta-4 {{ in_array(route_name(), ['account.index', 'account.create.form']) ? 'text-[#ff91e7]' : 'text-bodydark1' }}" href="{{ route('account.index') }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-text"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/><path d="M8 7h6"/><path d="M8 11h8"/></svg>
                             Buku Kas
                         </a>
@@ -97,6 +97,5 @@
             </div>
         </nav>
         <!-- Sidebar Menu -->
-       
     </div>
 </aside>

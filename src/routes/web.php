@@ -37,6 +37,10 @@ Route::get('/logout', [UserController::class, 'logout'])->name('logout')->middle
 
 Route::prefix('account')->group(function () {
 	Route::get('/', [AccountController::class, 'index'])->name('account.index')->middleware('auth');
+	Route::get('/create', [AccountController::class, 'createForm'])->name('account.create.form')->middleware('auth');
+	Route::post('/create', [AccountController::class, 'create'])->name('account.create')->middleware('auth');
+	Route::get('/{accountId}/edit', [AccountController::class, 'editForm'])->name('account.edit.form')->middleware('auth');
+	Route::post('/edit', [AccountController::class, 'edit'])->name('account.edit')->middleware('auth');
 });
 
 
