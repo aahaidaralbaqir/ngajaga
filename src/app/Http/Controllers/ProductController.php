@@ -42,4 +42,30 @@ class ProductController extends Controller
         $data['total_row'] = count($product_records);
         return view('admin.product.index', $data);
     }
+
+    public function category(Request $request)
+    {
+        $data['category'] = DB::table('category')
+                                ->select(['category.id', 'category.name', DB::raw('COUNT(products.id) AS total_product')])
+                                ->leftJoin('products', function($join) {
+                                    $join->on('products.category_id', '=', 'category.id');
+                                })
+                                ->groupBy('category.id', 'category.name')
+                                ->get();
+        $data['total_row'] = count($data['category']);
+        return view('admin.category.index', $data);
+    }
+
+    public function shelf(Request $request)
+    {
+        $data['shelf'] = DB::table('shelf')
+                                ->select(['shelf.id', 'shelf.name', DB::raw('COUNT(products.id) AS total_product')])
+                                ->leftJoin('products', function($join) {
+                                    $join->on('products.shelf_id', '=', 'shelf.id');
+                                })
+                                ->groupBy('shelf.id', 'shelf.name')
+                                ->get();
+        $data['total_row'] = count($data['shelf']);
+        return view('admin.shelf.index', $data);
+    }
 }

@@ -20,9 +20,9 @@
             </div>
         </div>
         <div class="tab">
-            <a href="{{ route('permission.index') }}" aria-selected="true" class="selected">Produk</a>
-            <a href="{{ route('roles.index') }}" aria-selected="true">Kategori</a>
-            <a href="{{ route('user.index') }}" aria-selected="true">Rak</a>
+            <a href="{{ route('product.index') }}" aria-selected="true" class="selected">Produk</a>
+            <a href="{{ route('category.index') }}" aria-selected="true">Kategori</a>
+            <a href="{{ route('shelf.index') }}" aria-selected="true">Rak</a>
         </div>
     </div>
 </div>

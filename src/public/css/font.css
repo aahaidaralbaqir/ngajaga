@@ -161,4 +161,56 @@
 	font-display: swap;
 	font-style: normal;
   }
+ 
+
+@font-face {
+	font-family: "Mabry Pro";
+	src: url("../fonts/mabry/MabryPro-Light.ttf") format("truetype");
+	font-weight: 300;
+	font-display: swap;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Mabry Pro";
+	src: url("../fonts/mabry/MabryPro-Black.ttf") format("truetype");
+	font-weight: 900;
+	font-display: swap;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Mabry Pro";
+	src: url("../fonts/mabry/MabryPro-Bold.ttf") format("truetype");
+	font-weight: bold;
+	font-display: swap;
+	font-style: normal;
+}
+  
+@font-face {
+	font-family: "Mabry Pro";
+	src: url("../fonts/mabry/MabryPro-Italic.ttf") format("truetype");
+	font-weight: normal;
+	font-display: swap;
+	font-style: normal;
+}
+ 
+@font-face {
+	font-family: "Mabry Pro";
+	src: url("../fonts/mabry/MabryPro-Medium.ttf") format("truetype");
+	font-weight: 500;
+	font-display: swap;
+	font-style: normal;
+}
+  
+ 
+@font-face {
+	font-family: "Mabry Pro";
+	src: url("../fonts/mabry/MabryPro-Regular.ttf") format("truetype");
+	font-weight: normal;
+	font-display: swap;
+	font-style: normal;
+}
+  
+  
   

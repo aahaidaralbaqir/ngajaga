@@ -44,6 +44,14 @@ Route::prefix('product')->group(function () {
 	Route::get('/', [ProductController::class, 'index'])->name('product.index')->middleware('auth');
 });
 
+Route::prefix('category')->group(function () {
+	Route::get('/', [ProductController::class, 'category'])->name('category.index')->middleware('auth');
+});
+
+Route::prefix('shelf')->group(function () {
+	Route::get('/', [ProductController::class, 'shelf'])->name('shelf.index')->middleware('auth');
+});
+
 
 Route::prefix('permission')->group(function () {
 	Route::get('/', [PermissionController::class, 'index'])->name('permission.index')->middleware('auth');
