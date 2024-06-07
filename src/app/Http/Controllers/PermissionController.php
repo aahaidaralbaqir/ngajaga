@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Constant\Constant;
 use Illuminate\Http\Request;
 use App\Models\Permission;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Util\Common as CommonUtil;
 use Illuminate\Support\Facades\Storage;
@@ -14,7 +16,33 @@ class PermissionController extends Controller
     {
         $user_profile = $this->initProfile();
 		$data = array_merge(array(), $user_profile);
-		$data['permission'] = Permission::all()->toArray();
+		$permissions = DB::table('permission')->get()->toArray();
+		$parent_permissions = array_filter($permissions, function($item) {
+			return $item->id_parent == Constant::PARENT_ATTENDEE;
+		});
+		$grouped_permission = [];
+		foreach ($permissions as $permission)
+		{
+			$parent_id = $permission->id_parent;
+			if ($parent_id == Constant::PARENT_ATTENDEE) {
+				continue;
+			}
+			if (array_key_exists($parent_id, $grouped_permission)) {
+				$grouped_permission[$parent_id][] = $permission;
+				continue;
+			}
+			$grouped_permission[$parent_id] = [$permission];
+		}
+		$parent_permissions = array_map(function ($item) use($grouped_permission) {
+			$childs = [];
+			if (array_key_exists($item->id, $grouped_permission)) {
+				$childs = $grouped_permission[$item->id];
+			}
+			$item->childs = $childs;
+			return $item;
+		}, $parent_permissions);
+		$data['permissions'] = $parent_permissions;
+		$data['total_row'] = count($permissions);
 		return view('admin.permission.index', $data);
     }
 

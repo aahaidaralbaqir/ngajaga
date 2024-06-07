@@ -1,171 +1,107 @@
 @extends('layout.dashboard')
 @section('content')
-<div class="max-w-screen-2xl mx-auto p-4 md:p-6 2xl:p-10">
-
-@include('partials.alert')
-@include('partials.breadcumb', ['title' => 'Hak Akses'])
-<div class="rounded-xl bg-white shadow">
-  <div class="flex flex-col gap-y-1.5 p-6">
-    <h3 class="font-semibold leading-none tracking-tight text-black">Products</h3>
-    <p class="text-sm "> Manage your products and view their sales performance. </p>
-  </div>
-  <div class="p-6 pt-0">
-    <div class="relative w-full overflow-auto ">
-      <table class="w-full caption-bottom text-sm">
-        <thead class="[&amp;_tr]:border-b">
-          <tr class="border-b border-[#e4e4e7] transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-            <th class="h-10 px-2 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden w-[100px] sm:table-cell">
-              <span class="sr-only">img</span>
-            </th>
-            <th class="h-10 px-2 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5">Name</th>
-            <th class="h-10 px-2 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5">Status</th>
-            <th class="h-10 px-2 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden md:table-cell"> Price </th>
-            <th class="h-10 px-2 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden md:table-cell"> Total Sales </th>
-            <th class="h-10 px-2 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden md:table-cell"> Created at </th>
-            <th class="h-10 px-2 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5">
-              <span class="sr-only">Actions</span>
-            </th>
-          </tr>
-        </thead>
-        <tbody class="[&amp;_tr:last-child]:border-0">
-          <tr class="border-b border-[#e4e4e7] text-black transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden sm:table-cell">
-              <img alt="Product image" class="aspect-square rounded-md object-cover" height="64" src="/placeholder.svg" width="64">
-            </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 font-medium"> Laser Lemonade Machine </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5">
-              <div class="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground"> Draft </div>
-            </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden md:table-cell"> $499.99 </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden md:table-cell"> 25 </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden md:table-cell"> 2023-07-12 10:42 AM </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5">
-              <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 outline-none" aria-haspopup="true" id="radix-vue-dropdown-menu-trigger-15" type="button" aria-expanded="false" data-state="closed">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-icon h-4 w-4">
-                  <circle cx="12" cy="12" r="1"></circle>
-                  <circle cx="19" cy="12" r="1"></circle>
-                  <circle cx="5" cy="12" r="1"></circle>
-                </svg>
-                <span class="sr-only">Toggle menu</span>
-              </button>
-            </td>
-          </tr>
-          <tr class="border-b border-[#e4e4e7] text-black transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden sm:table-cell">
-              <img alt="Product image" class="aspect-square rounded-md object-cover" height="64" src="/placeholder.svg" width="64">
-            </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 font-medium"> Hypernova Headphones </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5">
-              <div class="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground"> Active </div>
-            </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden md:table-cell"> $129.99 </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden md:table-cell"> 100 </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden md:table-cell"> 2023-10-18 03:21 PM </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5">
-              <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 outline-none" aria-haspopup="true" id="radix-vue-dropdown-menu-trigger-16" type="button" aria-expanded="false" data-state="closed">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-icon h-4 w-4">
-                  <circle cx="12" cy="12" r="1"></circle>
-                  <circle cx="19" cy="12" r="1"></circle>
-                  <circle cx="5" cy="12" r="1"></circle>
-                </svg>
-                <span class="sr-only">Toggle menu</span>
-              </button>
-            </td>
-          </tr>
-          <tr class="border-b border-[#e4e4e7] text-black  transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden sm:table-cell">
-              <img alt="Product image" class="aspect-square rounded-md object-cover" height="64" src="/placeholder.svg" width="64">
-            </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 font-medium"> AeroGlow Desk Lamp </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5">
-              <div class="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground"> Active </div>
-            </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden md:table-cell"> $39.99 </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden md:table-cell"> 50 </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden md:table-cell"> 2023-11-29 08:15 AM </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5">
-              <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 outline-none" aria-haspopup="true" id="radix-vue-dropdown-menu-trigger-17" type="button" aria-expanded="false" data-state="closed">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-icon h-4 w-4">
-                  <circle cx="12" cy="12" r="1"></circle>
-                  <circle cx="19" cy="12" r="1"></circle>
-                  <circle cx="5" cy="12" r="1"></circle>
-                </svg>
-                <span class="sr-only">Toggle menu</span>
-              </button>
-            </td>
-          </tr>
-          <tr class="border-b border-[#e4e4e7] text-black  transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden sm:table-cell">
-              <img alt="Product image" class="aspect-square rounded-md object-cover" height="64" src="/placeholder.svg" width="64">
-            </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 font-medium"> TechTonic Energy Drink </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5">
-              <div class="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80"> Draft </div>
-            </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden md:table-cell"> $2.99 </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden md:table-cell"> 0 </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden md:table-cell"> 2023-12-25 11:59 PM </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5">
-              <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 outline-none" aria-haspopup="true" id="radix-vue-dropdown-menu-trigger-18" type="button" aria-expanded="false" data-state="closed">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-icon h-4 w-4">
-                  <circle cx="12" cy="12" r="1"></circle>
-                  <circle cx="19" cy="12" r="1"></circle>
-                  <circle cx="5" cy="12" r="1"></circle>
-                </svg>
-                <span class="sr-only">Toggle menu</span>
-              </button>
-            </td>
-          </tr>
-          <tr class="border-b border-[#e4e4e7] text-black  transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden sm:table-cell">
-              <img alt="Product image" class="aspect-square rounded-md object-cover" height="64" src="/placeholder.svg" width="64">
-            </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 font-medium"> Gamer Gear Pro Controller </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5">
-              <div class="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground"> Active </div>
-            </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden md:table-cell"> $59.99 </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden md:table-cell"> 75 </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden md:table-cell"> 2024-01-01 12:00 AM </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5">
-              <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 outline-none" aria-haspopup="true" id="radix-vue-dropdown-menu-trigger-19" type="button" aria-expanded="false" data-state="closed">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-icon h-4 w-4">
-                  <circle cx="12" cy="12" r="1"></circle>
-                  <circle cx="19" cy="12" r="1"></circle>
-                  <circle cx="5" cy="12" r="1"></circle>
-                </svg>
-                <span class="sr-only">Toggle menu</span>
-              </button>
-            </td>
-          </tr>
-          <tr class="border-b border-[#e4e4e7] text-black  transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden sm:table-cell">
-              <img alt="Product image" class="aspect-square rounded-md object-cover" height="64" src="/placeholder.svg" width="64">
-            </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 font-medium"> Luminous VR Headset </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5">
-              <div class="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground"> Active </div>
-            </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden md:table-cell"> $199.99 </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden md:table-cell"> 30 </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5 hidden md:table-cell"> 2024-02-14 02:14 PM </td>
-            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-0.5">
-              <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 outline-none" aria-haspopup="true" id="radix-vue-dropdown-menu-trigger-20" type="button" aria-expanded="false" data-state="closed">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-icon h-4 w-4">
-                  <circle cx="12" cy="12" r="1"></circle>
-                  <circle cx="19" cy="12" r="1"></circle>
-                  <circle cx="5" cy="12" r="1"></circle>
-                </svg>
-                <span class="sr-only">Toggle menu</span>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+<div class="second-nav py-8 px-14 w-full">
+    <div class="w-4/5">
+        <div class="flex justify-between items-center">
+            <h1>
+                Akses Kontrol
+            </h1>
+            <div class="flex items-center justify-between gap-5 relative">
+                <button class="button text-base text-black p-3 rounded border border-black relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    <div class="menu top-14 left-[-1px] hidden">
+                        <div class="search flex justify-between items-center border border-black rounded-sm px-2 gap-2 m-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                            <input type="text" placeholder="cari produk" class="p-2 focus:outline-none">
+                        </div>
+                    </div>
+                </button>
+                <button class="button text-base bg-[#ff91e7] text-black p-3 rounded border border-black">Buat Hak Akses</button>
+            </div>
+        </div>
+        <div class="tab">
+            <a href="#" class="selected" aria-selected="true">Hak Akses</a>
+            <a href="#" aria-selected="true">Peran</a>
+            <a href="#" aria-selected="true">Pengguna</a>
+        </div>
     </div>
-  </div>
-  <div class="flex items-center p-6 pt-0">
-    <div class="text-xs text-muted-foreground"> Showing <strong>1-10</strong> of <strong>32</strong> products </div>
-  </div>
 </div>
+<main class="w-full py-14 px-14">
+    <section class="w-4/5">
+        <table class="w-full retro">
+            <caption class="text-2xl text-black [text-align:unset]">Hak Akses</caption>
+            <thead>
+                <tr>
+                    <th class="w-[5%]"></th>
+                    <th class="text-left">Nama</th>
+                    <th  class="w-[5%]"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($permissions as $permission)
+                    <tr>
+                        <td class="font-bold">
+                            @if (count($permission->childs) > 0)
+                                <a href="" class="font-extrabold" data-id="{{ $permission->id }}" data-name="table" role="dropdown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
+                                </a>
+                            @endif
+                        </td>
+                        <td>
+                            <span class="font-bold">{{ $permission->name }}</span>
+                            <br>
+                            @if (count($permission->childs) > 0)
+                                <span class="text-xs">
+                                    {{ count($permission->childs) }} Hak Akses
+                                </span>
+                            @endif
+                        </td>
+                        <td class="relative">
+                            <a href="" data-id="{{ $permission->id }}" data-name="action" class="dropdown" role="dropdown">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                            </a>
+                            <div class="menu hidden" data-id="{{ $permission->id }}" data-name="action" role="dropdown-content">
+                                <a href="" class="menu-item">
+                                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-pen"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z"/></svg>
+                                    Ubah
+                                </a>
+                                <a href="" class="menu-item text-red ">
+                                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                                    Hapus
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    @foreach($permission->childs as $child)
+                        <tr class="hidden" data-id="{{ $child->id_parent }}" data-name="table" role="dropdown-content">
+                            <td class="font-bold">
+                            </td>
+                            <td>{{ $child->name }}</td>
+                            <td class="relative">
+                                <a href="" data-id="{{ $child->id }}" data-name="action" class="dropdown" role="dropdown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                                </a>
+                                <div class="menu hidden" data-id="{{ $child->id }}" data-name="action" role="dropdown-content">
+                                    <a href="" class="menu-item">
+                                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-pen"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z"/></svg>
+                                        Ubah
+                                    </a>
+                                    <a href="" class="menu-item text-red ">
+                                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                                        Hapus
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                @endforeach
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4" class="font-bold">Total {{ $total_row }}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </section>
+</main>
 @endsection

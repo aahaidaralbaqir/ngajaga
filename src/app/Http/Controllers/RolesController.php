@@ -8,6 +8,7 @@ use App\Models\Permission;
 use Illuminate\Support\Facades\Validator;
 use App\Util\Common as CommonUtil;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class RolesController extends Controller
 {
@@ -15,13 +16,18 @@ class RolesController extends Controller
     {
         $user_profile = $this->initProfile();
 		$data = array_merge(array(), $user_profile);
-        $roles = Roles::all()->toArray();
+        $roles = DB::table('roles')->get();
         foreach($roles as $index => $role)
         {
-            $permissions_ids = explode(',', $role['permission']);
-            $roles[$index]['permissions'] = Permission::select('*')->whereIn('id', $permissions_ids)->get();
+            $permissions_ids = explode(',', $role->permission);
+			$query = DB::table('permission');
+			if ($role->id != env('ADMINISTRATOR_ROLE_ID')) {
+				$query->whereIn('id', $permissions_ids);
+			}
+            $roles[$index]->permissions = $query->get();
         }
 		$data['roles'] = $roles;
+		$data['total_row'] = count($roles);
 		return view('admin.roles.index', $data);
     }
 

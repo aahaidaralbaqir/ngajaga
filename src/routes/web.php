@@ -36,34 +36,31 @@ Route::prefix('report')->group(function () {
 	Route::get('/', [TransactionController::class, 'getReport'])->name('report.index')->middleware('auth');
 	Route::get('/download', [TransactionController::class, 'downloadReport'])->name('report.download')->middleware('auth');
 });
-Route::prefix('account')->group(function () {
-	Route::prefix('permission')->group(function () {
-		Route::get('/', [PermissionController::class, 'index'])->name('permission.index')->middleware('auth');
-		Route::get('/create', [PermissionController::class, 'createForm'])->name('permission.create.form')->middleware('auth');
-		Route::post('/create', [PermissionController::class, 'createPermission'])->name('permission.create')->middleware('auth');
-		Route::get('/update/{permissionId}', [PermissionController::class, 'updateForm'])->name('permission.update.form')->middleware('auth');
-		Route::get('/delete/{permissionId}', [PermissionController::class, 'deletePermission'])->name('permission.delete')->middleware('auth');
-		Route::post('/update', [PermissionController::class, 'updatePermission'])->name('permission.update')->middleware('auth');
-	});
 
-	Route::prefix('roles')->group(function () {
-		Route::get('/', [RolesController::class, 'index'])->name('roles.index')->middleware('auth');
-		Route::get('/create', [RolesController::class, 'createForm'])->name('roles.create.form')->middleware('auth');
-		Route::post('/create', [RolesController::class, 'createRole'])->name('roles.create')->middleware('auth');
-		Route::get('/update/{rolesId}', [RolesController::class, 'updateForm'])->name('roles.update.form')->middleware('auth');
-		Route::post('/update', [RolesController::class, 'updateRole'])->name('roles.update')->middleware('auth');
-	});
+Route::prefix('permission')->group(function () {
+	Route::get('/', [PermissionController::class, 'index'])->name('permission.index')->middleware('auth');
+	Route::get('/create', [PermissionController::class, 'createForm'])->name('permission.create.form')->middleware('auth');
+	Route::post('/create', [PermissionController::class, 'createPermission'])->name('permission.create')->middleware('auth');
+	Route::get('/update/{permissionId}', [PermissionController::class, 'updateForm'])->name('permission.update.form')->middleware('auth');
+	Route::get('/delete/{permissionId}', [PermissionController::class, 'deletePermission'])->name('permission.delete')->middleware('auth');
+	Route::post('/update', [PermissionController::class, 'updatePermission'])->name('permission.update')->middleware('auth');
+});
 
-	Route::prefix('user')->group(function () {
-		Route::get('/', [UserController::class, 'index'])->name('user.index')->middleware('auth');
-		Route::get('/create', [UserController::class, 'createForm'])->name('user.create.form')->middleware('auth');
-		Route::post('/create', [UserController::class, 'createUser'])->name('user.create')->middleware('auth');
-		Route::get('/update/{userId}', [UserController::class, 'updateForm'])->name('user.update.form')->middleware('auth');
-		Route::get('/delete/{userId}', [UserController::class, 'deleteUser'])->name('user.delete')->middleware('auth');
-		Route::post('/update', [UserController::class, 'updateUser'])->name('user.update')->middleware('auth');
-	});
+Route::prefix('roles')->group(function () {
+	Route::get('/', [RolesController::class, 'index'])->name('roles.index')->middleware('auth');
+	Route::get('/create', [RolesController::class, 'createForm'])->name('roles.create.form')->middleware('auth');
+	Route::post('/create', [RolesController::class, 'createRole'])->name('roles.create')->middleware('auth');
+	Route::get('/update/{rolesId}', [RolesController::class, 'updateForm'])->name('roles.update.form')->middleware('auth');
+	Route::post('/update', [RolesController::class, 'updateRole'])->name('roles.update')->middleware('auth');
+});
 
-	
+Route::prefix('user')->group(function () {
+	Route::get('/', [UserController::class, 'index'])->name('user.index')->middleware('auth');
+	Route::get('/create', [UserController::class, 'createForm'])->name('user.create.form')->middleware('auth');
+	Route::post('/create', [UserController::class, 'createUser'])->name('user.create')->middleware('auth');
+	Route::get('/update/{userId}', [UserController::class, 'updateForm'])->name('user.update.form')->middleware('auth');
+	Route::get('/delete/{userId}', [UserController::class, 'deleteUser'])->name('user.delete')->middleware('auth');
+	Route::post('/update', [UserController::class, 'updateUser'])->name('user.update')->middleware('auth');
 });
 
 Route::prefix('setting')->group(function () {

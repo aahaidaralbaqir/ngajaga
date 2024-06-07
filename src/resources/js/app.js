@@ -1,3 +1,2 @@
-require('./alpine');
 require('./bootstrap');
-require('./apex')
+require('./global')

@@ -17,10 +17,6 @@
 </head>
 
 <body class="bg-[#f4f4f0]">
-  <!-- ===== Preloader Start ===== -->
-  @include('partials.preloader')
-  <!-- ===== Preloader End ===== -->
-
   <!-- ===== Page Wrapper Start ===== -->
   <div class="flex h-screen overflow-hidden">
     <!-- ===== Sidebar Start ===== -->
@@ -33,9 +29,9 @@
       <!-- ===== Header End ===== -->
 
       <!-- ===== Main Content Start ===== -->
-      <main>
-		    @yield('content')
-      </main>
+        <main>
+            @yield('content')
+        </main>
       <!-- ===== Main Content End ===== -->
     </div>
     <!-- ===== Content Area End ===== -->
