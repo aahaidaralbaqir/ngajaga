@@ -20,9 +20,9 @@
             </div>
         </div>
         <div class="tab">
-            <a href="#" class="selected" aria-selected="true">Hak Akses</a>
-            <a href="#" aria-selected="true">Peran</a>
-            <a href="#" aria-selected="true">Pengguna</a>
+            <a href="{{ route('permission.index') }}" aria-selected="true" class="selected">Hak Akses</a>
+            <a href="{{ route('roles.index') }}" aria-selected="true">Peran</a>
+            <a href="{{ route('user.index') }}" aria-selected="true">Pengguna</a>
         </div>
     </div>
 </div>

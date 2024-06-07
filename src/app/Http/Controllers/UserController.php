@@ -19,7 +19,9 @@ class UserController extends Controller
 	{
 		$user_profile = $this->initProfile();
 		$data = array_merge(array(), $user_profile);
-		$data['users'] = User::with('roles')->get();
+		$user_record = User::with('roles')->get();
+		$data['users'] = $user_record;
+		$data['total_row'] = count($user_record);
 		return view('admin.user.index', $data);
 	}
 

@@ -22,7 +22,7 @@
         <div class="tab">
             <a href="{{ route('permission.index') }}" aria-selected="true">Hak Akses</a>
             <a href="{{ route('roles.index') }}" aria-selected="true" class="selected">Peran</a>
-            <a href="#" aria-selected="true">Pengguna</a>
+            <a href="{{ route('user.index') }}" aria-selected="true">Pengguna</a>
         </div>
     </div>
 </div>
