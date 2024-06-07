@@ -34,10 +34,6 @@ use App\Http\Controllers\TransactionTypeController;
 Route::post('/login', [UserController::class, 'login']);
 Route::get('/logout', [UserController::class, 'logout'])->name('logout')->middleware('auth');
 
-Route::prefix('report')->group(function () {
-	Route::get('/', [TransactionController::class, 'getReport'])->name('report.index')->middleware('auth');
-	Route::get('/download', [TransactionController::class, 'downloadReport'])->name('report.download')->middleware('auth');
-});
 
 Route::prefix('account')->group(function () {
 	Route::get('/', [AccountController::class, 'index'])->name('account.index')->middleware('auth');
@@ -82,14 +78,7 @@ Route::prefix('setting')->group(function () {
 	Route::get('/remove-avatar', [SettingController::class, 'removeAvatar'])->name('setting.avatar.remove')->middleware('auth');
 });
 
-Route::prefix('heroes')->group(function() {
-	Route::get('/', [HeroesController::class, 'index'])->name('heroes.index')->middleware('auth');
-	Route::get('/create', [HeroesController::class, 'showCreateForm'])->name('heroes.create.form')->middleware('auth');
-	Route::get('/update/{heroesId}', [HeroesController::class, 'showEditForm'])->name('heroes.update.form')->middleware('auth');
-	Route::post('/create', [HeroesController::class, 'createHeroes'])->name('heroes.create')->middleware('auth');
-	Route::post('/update', [HeroesController::class, 'updateHeroes'])->name('heroes.update')->middleware('auth');
-	Route::get('/order/{heroesId}', [HeroesController::class, 'updateOrder'])->name('heroes.order')->middleware('auth');
-});
+
 
 Route::prefix('post')->group(function () {
 	Route::get('/',  [PostController::class, 'index'])->name('post.index')->middleware('auth');
@@ -108,74 +97,9 @@ Route::prefix('structure')->group(function () {
 	Route::post('/update', [StructureController::class, 'updateStructure'])->name('structure.update')->middleware('auth');
 });
 
-Route::prefix('activity')->group(function () {
-	Route::prefix('type')->group(function () {
-		Route::get('/', [ActivityController::class, 'getActivityType'])->name('activity.type.index')->middleware('auth');
-		Route::get('/create', [ActivityController::class, 'showCreateActivityTypeForm'])->name('activity.type.create.form')->middleware('auth');
-		Route::prefix('documentation')->group(function () {
-			Route::get('/{id}', [ActivityController::class, 'showDocumentation'])->name('activity.type.documentation')->middleware('auth');
-			Route::get('/delete/{id}', [ActivityController::class, 'deleteDocumentation'])->name('activity.type.documentation.delete')->middleware('auth');
-			Route::post('/upload', [ActivityController::class, 'uploadDocumentation'])->name('activity.type.documentation.upload')->middleware('auth');
-		});
-		Route::get('/update/{id}', [ActivityController::class, 'showUpdateActivityTypeForm'])->name('activity.type.update.form')->middleware('auth');
-		Route::post('/create', [ActivityController::class, 'createActivityType'])->name('activity.type.create')->middleware('auth');
-		Route::post('/update', [ActivityController::class, 'updateActivityType'])->name('activity.type.update')->middleware('auth');
-	});
-
-	Route::prefix('schedule')->group(function () {
-		Route::get('/', [ActivityController::class, 'getSchedule'])->name('activity.schedule.index')->middleware('auth');
-	});
-});
-
-
-Route::prefix('transaction')->group(function () {
-	Route::prefix('type')->group(function () {
-		Route::get('/', [TransactionTypeController::class, 'index'])->name('transaction.type.index')->middleware('auth');
-		Route::get('/create', [TransactionTypeController::class, 'showCreateTransactionTypeForm'])->name('transaction.type.create.form')->middleware('auth');
-		Route::get('/update/{id}', [TransactionTypeController::class, 'showEditTransactionTypeForm'])->name('transaction.type.update.form')->middleware('auth');
-		Route::post('/create', [TransactionTypeController::class, 'createTransactionType'])->name('transaction.type.create')->middleware('auth');
-		Route::post('/update', [TransactionTypeController::class, 'updateTransactionType'])->name('transaction.type.update')->middleware('auth');
-	});
-	Route::get('/', [TransactionController::class, 'index'])->name('transaction.index')->middleware('auth'); 
-	Route::get('/sample', [TransactionController::class, 'sampleFile'])->name('transaction.sample')->middleware('auth');
-	Route::get('/upload', [TransactionController::class, 'showUploadTransactionform'])->name('transaction.upload.form')->middleware('auth');
-	Route::get('/create', [TransactionController::class, 'showCreateTransactionForm'])->name('transaction.create.form')->middleware('auth');
-	Route::get('/proof/{transactionId}', [TransactionController::class, 'proofTransactionForm'])->name('transaction.proof.form')->middleware('auth');
-	Route::post('/proof', [TransactionController::class, 'proofTransaction'])->name('transaction.proof')->middleware('auth');
-	Route::post('/create', [TransactionController::class, 'createTransaction'])->name('transaction.admin.create')->middleware('auth');
-	Route::get('/approve/{transactionId}', [TransactionController::class, 'approveTransaction'])->name('transaction.admin.approve')->middleware('auth');
-	Route::get('/update/{transactionId}', [TransactionController::class, 'showUpdateTransactionForm'])->name('transaction.update.form')->middleware('auth');
-	Route::post('/update', [TransactionController::class, 'updateTransaction'])->name('transaction.admin.update')->middleware('auth');
-	
-});
-
-Route::prefix('distribution')->group(function () {
-	Route::get('/', [DistributionController::class, 'index'])->name('distribution.index')->middleware('auth');	
-	Route::get('/create', [DistributionController::class, 'showCreateDistributionForm'])->name('distribution.create.form')->middleware('auth');
-	Route::post('/create', [DistributionController::class, 'createDistribution'])->name('distribution.create')->middleware('auth');
-	Route::get('/update/{transactionId}', [DistributionController::class, 'showUpdateDistributionForm'])->name('distribution.update.form')->middleware('auth');
-	Route::post('/update', [DistributionController::class, 'updateDistribution'])->name('distribution.update')->middleware('auth');
-});
 
 
 Route::get('/', [DashboardController::class, 'index'])->name('admin')->middleware('auth');
-
-Route::prefix('payment')->group(function () {
-	Route::get('/', [PaymentController::class, 'index'])->name('payment.index')->middleware('auth');
-	Route::get('/create', [PaymentController::class, 'createForm'])->name('payment.create.form')->middleware('auth');
-	Route::post('/create', [PaymentController::class, 'createPayment'])->name('payment.create')->middleware('auth');
-	Route::get('/update/{paymentId}', [PaymentController::class, 'updateForm'])->name('payment.update.form')->middleware('auth');
-	Route::post('/update', [PaymentController::class, 'updatePayment'])->name('payment.update')->middleware('auth');
-});
-
-Route::prefix('beneficiary')->group(function () {
-	Route::get('/', [BeneficiaryController::class, 'index'])->name('beneficiary.index')->middleware('auth');
-	Route::get('/create', [BeneficiaryController::class, 'createForm'])->name('beneficiary.create.form')->middleware('auth');
-	Route::post('/create', [BeneficiaryController::class, 'createBeneficiary'])->name('beneficiary.create')->middleware('auth');
-	Route::get('/update/{beneficiaryId}', [BeneficiaryController::class, 'updateForm'])->name('beneficiary.update.form')->middleware('auth');
-	Route::get('/delete/{beneficiaryId}', [BeneficiaryController::class, 'deleteBeneficiary'])->name('beneficiary.delete')->middleware('auth');
-	Route::post('/update', [BeneficiaryController::class, 'updateBeneficiary'])->name('beneficiary.update')->middleware('auth');
-});
 
 
 Route::get('/login', function () {

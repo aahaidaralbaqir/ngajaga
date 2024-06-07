@@ -58,7 +58,7 @@
                     </li>
                     <!-- Menu Item Chart -->
                     <li class="border-t border-[#808080] px-5 py-4">
-                        <a href="{{ route('report.index') }}" class="hover:text-[#ff91e7] @php echo in_array(route_name(), ['report.index']) ? 'bg-graydark dark:bg-meta-4' : '' @endphp group relative flex items-center gap-2.5 rounded-sm   text-sm text-bodydark1 duration-300 ease-in-out   dark:hover:bg-meta-4">
+                        <a href="" class="hover:text-[#ff91e7] group relative flex items-center gap-2.5 rounded-sm   text-sm text-bodydark1 duration-300 ease-in-out   dark:hover:bg-meta-4">
                             <svg class="fill-current" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clip-path="url(#clip0_130_9801)">
                                 <path d="M10.8563 0.55835C10.5188 0.55835 10.2095 0.8396 10.2095 1.20522V6.83022C10.2095 7.16773 10.4907 7.4771 10.8563 7.4771H16.8751C17.0438 7.4771 17.2126 7.39272 17.3251 7.28022C17.4376 7.1396 17.4938 6.97085 17.4938 6.8021C17.2688 3.28647 14.3438 0.55835 10.8563 0.55835ZM11.4751 6.15522V1.8521C13.8095 2.13335 15.6938 3.8771 16.1438 6.18335H11.4751V6.15522Z" fill="" />
@@ -91,24 +91,6 @@
                             </defs>
                             </svg> Transaksi
                         </a>
-                        <!-- Dropdown Menu Start -->
-                        <div class="overflow-hidden" :class="(selected === 'UiElements') ? 'block' :'hidden'">
-                            <ul class="mt-4 mb-3 flex flex-col gap-2 pl-6">
-                                <li>
-                                    <a class=" hover:text-[#ff91e7] group relative flex items-center gap-2.5 rounded-md px-4 text-sm text-bodydark2 duration-300 ease-in-out hover:text-white @php echo in_array(route_name(), ['transaction.type.index', 'transaction.type.create.form', 'transaction.type.update.form']) ? 'text-white' : '' @endphp" href="{{ route('transaction.type.index') }}">Jenis Transaksi</a>
-                                </li>
-                                <li>
-                                    <a class=" hover:text-[#ff91e7] group relative flex items-center gap-2.5 rounded-md px-4 text-sm text-bodydark2 duration-300 ease-in-out hover:text-white @php echo in_array(route_name(), ['payment.index', 'payment.create.form', 'payment.update.form']) ? 'text-white' : '' @endphp" href="{{ route('payment.index') }}">Jenis Pembayaran</a>
-                                </li>
-                                <li>
-                                    <a class=" hover:text-[#ff91e7] group relative flex items-center gap-2.5 rounded-md px-4 text-sm text-bodydark2 duration-300 ease-in-out hover:text-white @php echo in_array(route_name(), ['transaction.index', 'transaction.create.form', 'transaction.update.form']) ? 'text-white' : '' @endphp"  href="{{ route('transaction.index') }}">Transaksi Masuk</a>
-                                </li>
-                                <li>
-                                    <a class=" hover:text-[#ff91e7] group relative flex items-center gap-2.5 rounded-md px-4 text-sm text-bodydark2 duration-300 ease-in-out hover:text-white @php echo in_array(route_name(), ['distribution.index', 'distribution.create.form', 'distribution.update.form']) ? 'text-white' : '' @endphp"  href="{{ route('distribution.index') }}">Distribusi Dana</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- Dropdown Menu End -->
                     </li>
                     <!-- Menu Item Auth Pages -->
                 </ul>
