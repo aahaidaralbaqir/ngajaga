@@ -15,6 +15,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TransactionTypeController;
 
@@ -41,6 +42,12 @@ Route::prefix('report')->group(function () {
 Route::prefix('account')->group(function () {
 	Route::get('/', [AccountController::class, 'index'])->name('account.index')->middleware('auth');
 });
+
+
+Route::prefix('product')->group(function () {
+	Route::get('/', [ProductController::class, 'index'])->name('product.index')->middleware('auth');
+});
+
 
 Route::prefix('permission')->group(function () {
 	Route::get('/', [PermissionController::class, 'index'])->name('permission.index')->middleware('auth');
