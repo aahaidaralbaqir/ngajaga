@@ -53,6 +53,7 @@ class PermissionController extends Controller
 		$data['item'] = NULL;
 		$data['page_title'] = 'Menambahkan hak akses baru';
 		$data['target_route'] = 'permission.create';
+		$data['show_parent_dropdown'] = true;
 		$data['permissions'] = Permission::where('id_parent', 0)->get();
 		$data['methods'] = CommonUtil::getHttpVerbOptions();
 		return view('admin.permission.form', $data); 
