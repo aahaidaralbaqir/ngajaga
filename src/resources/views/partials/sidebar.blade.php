@@ -26,7 +26,7 @@
                         </a>
                     </li>
                     <li class="border-t border-[#808080] px-5 py-4">
-                        <a class="group relative flex items-center gap-2.5 rounded-sm  hover:text-[#ff91e7] text-sm  duration-300 ease-in-out dark:hover:bg-meta-4 {{ in_array(route_name(), ['permission.index', 'roles.index', 'user.index']) ? 'text-[#ff91e7]' : 'text-bodydark1' }}" href="{{ route('permission.index') }}">
+                        <a class="group relative flex items-center gap-2.5 rounded-sm  hover:text-[#ff91e7] text-sm  duration-300 ease-in-out dark:hover:bg-meta-4 {{ in_array(route_name(), ['permission.index', 'permission.create.form', 'permission.edit.form', 'roles.index', 'user.index']) ? 'text-[#ff91e7]' : 'text-bodydark1' }}" href="{{ route('permission.index') }}">
                             <svg class="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1.43425 7.5093H2.278C2.44675 7.5093 2.55925 7.3968 2.58737 7.31243L2.98112 6.32805H5.90612L6.27175 7.31243C6.328 7.48118 6.46862 7.5093 6.58112 7.5093H7.453C7.76237 7.48118 7.87487 7.25618 7.76237 7.03118L5.428 1.4343C5.37175 1.26555 5.3155 1.23743 5.14675 1.23743H3.88112C3.76862 1.23743 3.59987 1.29368 3.57175 1.4343L1.153 7.08743C1.0405 7.2843 1.20925 7.5093 1.43425 7.5093ZM4.47175 2.98118L5.3155 5.17493H3.59987L4.47175 2.98118Z" fill="" />
                             <path d="M10.1249 2.5031H16.8749C17.2124 2.5031 17.5218 2.22185 17.5218 1.85623C17.5218 1.4906 17.2405 1.20935 16.8749 1.20935H10.1249C9.7874 1.20935 9.47803 1.4906 9.47803 1.85623C9.47803 2.22185 9.75928 2.5031 10.1249 2.5031Z" fill="" />

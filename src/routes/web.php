@@ -61,7 +61,7 @@ Route::prefix('permission')->group(function () {
 	Route::get('/', [PermissionController::class, 'index'])->name('permission.index')->middleware('auth');
 	Route::get('/create', [PermissionController::class, 'createForm'])->name('permission.create.form')->middleware('auth');
 	Route::post('/create', [PermissionController::class, 'createPermission'])->name('permission.create')->middleware('auth');
-	Route::get('/update/{permissionId}', [PermissionController::class, 'updateForm'])->name('permission.update.form')->middleware('auth');
+	Route::get('/{permissionId}/edit', [PermissionController::class, 'updateForm'])->name('permission.edit.form')->middleware('auth');
 	Route::get('/delete/{permissionId}', [PermissionController::class, 'deletePermission'])->name('permission.delete')->middleware('auth');
 	Route::post('/update', [PermissionController::class, 'updatePermission'])->name('permission.update')->middleware('auth');
 });

@@ -77,6 +77,12 @@
     "/fonts/geist/GeistMono-UltraBlack.woff2": "/fonts/geist/GeistMono-UltraBlack.woff2",
     "/fonts/geist/GeistMono-UltraLight.woff": "/fonts/geist/GeistMono-UltraLight.woff",
     "/fonts/geist/GeistMono-UltraLight.woff2": "/fonts/geist/GeistMono-UltraLight.woff2",
+    "/fonts/mabry/MabryPro-Black.ttf": "/fonts/mabry/MabryPro-Black.ttf",
+    "/fonts/mabry/MabryPro-Bold.ttf": "/fonts/mabry/MabryPro-Bold.ttf",
+    "/fonts/mabry/MabryPro-Italic.ttf": "/fonts/mabry/MabryPro-Italic.ttf",
+    "/fonts/mabry/MabryPro-Light.ttf": "/fonts/mabry/MabryPro-Light.ttf",
+    "/fonts/mabry/MabryPro-Medium.ttf": "/fonts/mabry/MabryPro-Medium.ttf",
+    "/fonts/mabry/MabryPro-Regular.ttf": "/fonts/mabry/MabryPro-Regular.ttf",
     "/tinymce/icons/default/icons.js": "/tinymce/icons/default/icons.js",
     "/tinymce/icons/default/icons.min.js": "/tinymce/icons/default/icons.min.js",
     "/tinymce/icons/default/index.js": "/tinymce/icons/default/index.js",
@@ -286,11 +292,5 @@
     "/tinymce/themes/silver/theme.js": "/tinymce/themes/silver/theme.js",
     "/tinymce/themes/silver/theme.min.js": "/tinymce/themes/silver/theme.min.js",
     "/tinymce/tinymce.js": "/tinymce/tinymce.js",
-    "/tinymce/tinymce.min.js": "/tinymce/tinymce.min.js",
-    "/fonts/mabry/MabryPro-Black.ttf": "/fonts/mabry/MabryPro-Black.ttf",
-    "/fonts/mabry/MabryPro-Bold.ttf": "/fonts/mabry/MabryPro-Bold.ttf",
-    "/fonts/mabry/MabryPro-Italic.ttf": "/fonts/mabry/MabryPro-Italic.ttf",
-    "/fonts/mabry/MabryPro-Light.ttf": "/fonts/mabry/MabryPro-Light.ttf",
-    "/fonts/mabry/MabryPro-Medium.ttf": "/fonts/mabry/MabryPro-Medium.ttf",
-    "/fonts/mabry/MabryPro-Regular.ttf": "/fonts/mabry/MabryPro-Regular.ttf"
+    "/tinymce/tinymce.min.js": "/tinymce/tinymce.min.js"
 }
