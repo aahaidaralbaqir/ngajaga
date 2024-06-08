@@ -15,8 +15,8 @@ class Roles extends Model
         'status'
     ];
 
-    public function getStatusAttribute($value)
+    public function getPermissionAttribute($value)
     {
-        return $value == 1 ? 'Active' : 'Inactive';
+        return explode(',', $value);
     }
 }

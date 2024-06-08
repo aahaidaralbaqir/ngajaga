@@ -21,9 +21,7 @@ class Common {
 
 	public static function getStatus()
 	{
-		return [Constant::STATUS_DRAFT => Constant::STATUS_DRAFT_NAME,
-				Constant::STATUS_PUBLISHED => Constant::STATUS_PUBLISHED_NAME,
-				Constant::STATUS_ACTIVE => Constant::STATUS_ACTIVE_NAME,
+		return [Constant::STATUS_ACTIVE => Constant::STATUS_ACTIVE_NAME,
 				Constant::STATUS_INACTIVE => Constant::STATUS_INACTIVE_NAME];
 	}
 
@@ -201,5 +199,4 @@ class Common {
 			Constant::HTTP_VERB_HEAD
 		];
 	}
-		
 }

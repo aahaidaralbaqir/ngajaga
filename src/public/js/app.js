@@ -2125,6 +2125,16 @@ window.addEventListener('DOMContentLoaded', function () {
       });
     });
   });
+  var permission = document.querySelectorAll('#permission');
+  permission.forEach(function (item) {
+    item.addEventListener('change', function (event) {
+      var permissionId = event.target.value;
+      permission.forEach(function (elem) {
+        var parentId = elem.getAttribute('data-id-parent');
+        if (permissionId == parentId) {}
+      });
+    });
+  });
 });
 
 /***/ }),

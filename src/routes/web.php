@@ -71,6 +71,7 @@ Route::prefix('roles')->group(function () {
 	Route::get('/create', [RolesController::class, 'createForm'])->name('roles.create.form')->middleware('auth');
 	Route::post('/create', [RolesController::class, 'createRole'])->name('roles.create')->middleware('auth');
 	Route::get('/update/{rolesId}', [RolesController::class, 'updateForm'])->name('roles.update.form')->middleware('auth');
+	Route::get('/delete/{rolesId}', [RolesController::class, 'deleteRole'])->name('roles.delete')->middleware('auth');
 	Route::post('/update', [RolesController::class, 'updateRole'])->name('roles.update')->middleware('auth');
 });
 

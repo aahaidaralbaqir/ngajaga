@@ -20,7 +20,7 @@ class Controller extends BaseController
 		$current_user = Auth::user();
 
 		$user = User::where('id', $current_user->id)->with('roles')->first();
-		$current_permission = Permission::whereIn('id', explode(',', $current_user->roles->permission))
+		$current_permission = Permission::whereIn('id', $current_user->roles->permission)
 									->get();
 		$permission = [];
 		foreach ($current_permission as $permssion)

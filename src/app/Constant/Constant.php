@@ -46,8 +46,8 @@ class Constant {
 	const STATUS_INACTIVE = 4;
 	const STATUS_PUBLISHED_NAME = 'Published';
 	const STATUS_DRAFT_NAME = 'Draft';
-	const STATUS_ACTIVE_NAME = 'Active';
-	const STATUS_INACTIVE_NAME = 'Inactive';
+	const STATUS_ACTIVE_NAME = 'Aktif';
+	const STATUS_INACTIVE_NAME = 'Tidak Aktif';
 
 	const TRANSACTION_PENDING = 1;
 	const TRANSACTION_FAILED = 2;

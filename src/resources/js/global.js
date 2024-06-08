@@ -16,4 +16,16 @@ window.addEventListener('DOMContentLoaded', function () {
             })
         })
     })
+
+    const permission = document.querySelectorAll('#permission')
+    permission.forEach(function (item) {
+        item.addEventListener('change', function (event) {
+            const permissionId = event.target.value
+            permission.forEach((elem) => {
+                const parentId = elem.getAttribute('data-id-parent')
+                if (permissionId == parentId) {
+                }
+            })
+        })
+    })
 })
