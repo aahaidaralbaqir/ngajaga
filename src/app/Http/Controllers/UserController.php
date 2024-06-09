@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constant\Constant;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -29,30 +30,55 @@ class UserController extends Controller
 	{
 		$user_profile = $this->initProfile();
 		$data = array_merge(array(), $user_profile);
+		$data['target_route'] = 'user.create';
+		$data['page_title'] = 'Buat pengguna baru';
 		$data['item'] = NULL;
-		$data['roles'] = Roles::where('status', true)->get();	
+		$data['roles'] = Roles::where('status', Constant::STATUS_ACTIVE)->get();	
 		return view('admin.user.form', $data);
 	}
 
 	public function updateUser(Request $request)
 	{
+		$current_user = User::find($request->id);
+		if (!$current_user) {
+			return back()
+				->with(array (
+					'error' => 'User tidak ditemukan'
+				));
+		}
 		$user_input_field_rules = [
 			'name' => 'required',
 			'email' => 'required',
 			'role_id' => 'required',
 		];
+
+
 		$user_input = $request->only('name', 'email', 'role_id');
-		$current_user = User::find($request->id);
+		if (!empty($request->input('password'))) {
+			$user_input_field_rules['old_password'] = ['required', 
+				function ($attribute, $value, $fail) use ($current_user) {
+					if (!Hash::check($value, $current_user->password)) {
+						return $fail(_('The current password is incorrect '));
+					}
+				}];
+			$user_input['old_password'] = $request->input('old_password');
+		}
+
 		$validator = Validator::make($user_input, $user_input_field_rules);
 		if ($validator->fails())
 			return back()
 						->withErrors($validator)
 						->withInput();
-		
+	
+		if ($request->input('password') != '') {
+			unset($user_input['old_password']);
+			$user_input['password'] = Hash::make($request->input('password'));
+		}
+
 		User::where('id', $current_user->id)->update($user_input);
 		return redirect()
 					->route('user.index')
-					->with(['success' => 'Berhasil mengupdate pengguna']);	
+					->with(['success' => 'Pengguna berhasil dirubah']);	
 	}
 
 	public function updateForm(Request $request, $userId)
@@ -60,7 +86,9 @@ class UserController extends Controller
 		$user_profile = $this->initProfile();
 		$data = array_merge(array(), $user_profile);
 		$data['item'] = User::find($userId);
-		$data['roles'] = Roles::where('status', true)->get();	
+		$data['target_route'] = 'user.update';
+		$data['page_title'] = 'Mengubah pengguna';
+		$data['roles'] = Roles::where('status', Constant::STATUS_ACTIVE)->get();	
 		return view('admin.user.form', $data);
 	}
 
@@ -69,9 +97,10 @@ class UserController extends Controller
 		$user_input_field_rules = [
 			'name' => 'required',
 			'email' => 'required',
+			'password' => 'required',
 			'role_id' => 'required',
 		];
-		$user_input = $request->only('name', 'email', 'role_id');
+		$user_input = $request->only('name', 'email', 'role_id', 'password');
 
 		$validator = Validator::make($user_input, $user_input_field_rules);
 		if ($validator->fails())
@@ -80,8 +109,7 @@ class UserController extends Controller
 						->withInput();
 		
 		
-		$default_password = Hash::make('password123');
-		$user_input['password'] = $default_password;
+		$user_input['password'] = Hash::make($user_input['password']);
 	
 		User::create($user_input);
 		return redirect()
