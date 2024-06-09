@@ -200,3 +200,31 @@ input:not([type]):focus-within, input[type="email"]:focus-within, input[type="da
   .slider.round:before {
 	border-radius: 50%;
   }
+
+dialog {
+	background-color: rgb(255 255 255);
+    color: rgb(0 0 0);
+    --active-bg: rgb(0 0 0/0.1);
+    box-shadow: .5rem .5rem 0rem rgb(0 0 0);
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+    width: fit-content;
+    min-width: 20rem;
+    max-width: 43.75rem;
+    border: solid .0625rem rgb(0 0 0 / 1);
+    border-radius: 0.25rem;
+    padding: 2rem;
+}
+
+dialog::backdrop {
+	background: rgba(0, 0, 0, 0.5);
+}
+
+dialog:-internal-dialog-in-top-layer::backdrop {
+    position: fixed;
+    inset: 0px;
+}

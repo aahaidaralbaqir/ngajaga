@@ -2135,6 +2135,34 @@ window.addEventListener('DOMContentLoaded', function () {
       });
     });
   });
+  var deleteButtons = this.document.querySelectorAll('#delete-data');
+  console.log(deleteButtons);
+  deleteButtons.forEach(function (btn) {
+    btn.addEventListener('click', function (event) {
+      event.preventDefault();
+      var targetUrl = btn.getAttribute('href');
+      var needConfirm = btn.hasAttribute('show-confirm');
+      var title = btn.getAttribute('title');
+      if (!needConfirm) {
+        window.location = targetUrl;
+      }
+      var dialog = "\n                <dialog id=\"dialog\">\n                    <header>\n                        <h2 class=\"text-2xl\">".concat(title, "</h2>\n                        <div role=\"button\" class=\"close\" aria-label=\"Close\"></div>\n                    </header>\n                    <h4 class=\"font-bold mt-2\">Apakah kamu yakin ingin menghapus data ini?</h4>\n                    <footer class=\"mt-3\">\n                        <button id=\"confirm-no\" class=\"button text-base text-black p-3 rounded border border-black\">Batal</button>\n                        <button id=\"confirm-yes\" class=\"button text-base bg-[red] text-white p-3 rounded border border-black\">Hapus</button>\n                    </footer>\n                </dialog>\n            ");
+      var parentElement = btn.parentElement;
+      parentElement.insertAdjacentHTML('afterbegin', dialog);
+      var d = document.getElementById('dialog');
+      d.showModal();
+      var x = document.getElementById('confirm-no');
+      var y = document.getElementById('confirm-yes');
+      x.addEventListener('click', function (event) {
+        event.preventDefault();
+        d.remove();
+      });
+      y.addEventListener('click', function (event) {
+        event.preventDefault();
+        window.location = targetUrl;
+      });
+    });
+  });
 });
 
 /***/ }),

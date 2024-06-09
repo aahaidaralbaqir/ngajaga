@@ -28,4 +28,49 @@ window.addEventListener('DOMContentLoaded', function () {
             })
         })
     })
+
+    const deleteButtons = this.document.querySelectorAll('#delete-data')
+    console.log(deleteButtons)
+    deleteButtons.forEach(function (btn) {
+        btn.addEventListener('click', function(event) {
+            event.preventDefault();
+            const targetUrl = btn.getAttribute('href')
+            const needConfirm = btn.hasAttribute('show-confirm')
+            const title = btn.getAttribute('title')
+            if (!needConfirm) {
+                window.location = targetUrl
+            }
+
+            const dialog = `
+                <dialog id="dialog">
+                    <header>
+                        <h2 class="text-2xl">${title}</h2>
+                        <div role="button" class="close" aria-label="Close"></div>
+                    </header>
+                    <h4 class="font-bold mt-2">Apakah kamu yakin ingin menghapus data ini?</h4>
+                    <footer class="mt-3">
+                        <button id="confirm-no" class="button text-base text-black p-3 rounded border border-black">Batal</button>
+                        <button id="confirm-yes" class="button text-base bg-[red] text-white p-3 rounded border border-black">Hapus</button>
+                    </footer>
+                </dialog>
+            `
+            const parentElement = btn.parentElement
+            parentElement.insertAdjacentHTML('afterbegin', dialog)
+            const d = document.getElementById('dialog')
+            d.showModal()
+
+            const x = document.getElementById('confirm-no')
+            const y = document.getElementById('confirm-yes')
+
+            x.addEventListener('click', function(event) {
+                event.preventDefault()
+                d.remove()
+            })
+
+            y.addEventListener('click', function (event) {
+                event.preventDefault()
+                window.location = targetUrl
+            })
+        })
+    })
 })
