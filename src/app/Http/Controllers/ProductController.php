@@ -70,6 +70,100 @@ class ProductController extends Controller
         return view('admin.shelf.index', $data);
     }
 
+    public function createFormShelf()
+    {
+        $data['page_title'] = 'Buat Rak Baru';
+        $data['target_route'] = 'shelf.create';
+        return view('admin.shelf.form', $data);
+    }
+
+    public function createShelf(Request $request)
+    {
+        $user_input_field_rules = array (
+            'name' => 'required|min:5'
+        );
+        $user_input = $request->only('name');
+		$validator = Validator::make($user_input, $user_input_field_rules);
+		if ($validator->fails())
+			return back()
+						->withErrors($validator)
+						->withInput();
+		DB::table('shelf')->insert($user_input);
+		return redirect()
+					->route('shelf.index')
+					->with(['success' => 'Rak baru berhasil ditambahkan']);
+    } 
+
+
+    public function editFormShelf(Request $request, $shelfId)
+    {
+        $current_record = DB::table('shelf')->where('id', $shelfId)->first();
+        if (!$current_record) {
+            return redirect()
+                ->route('shelf.index')
+                ->with(array (
+                    'error' => 'Rak tidak ditemukan'
+                ));
+        }
+        $data['item'] = $current_record;
+        $data['page_title'] = 'Mengubah Rak';
+        $data['target_route'] = 'shelf.edit';
+        return view('admin.shelf.form', $data);
+    }
+
+    public function editShelf(Request $request)
+    {
+        $shelfId = $request->input('id');
+        $current_record = DB::table('shelf')->where('id', $shelfId)->first();
+        if (!$current_record) {
+            return redirect()
+                ->route('shelf.index')
+                ->with(array (
+                    'error' => 'Rak tidak ditemukan'
+                ));
+        }
+
+        $user_input_field_rules = array (
+            'name' => 'required|min:5'
+        );
+        $user_input = $request->only('name');
+		$validator = Validator::make($user_input, $user_input_field_rules);
+		if ($validator->fails())
+			return back()
+						->withErrors($validator)
+						->withInput();
+
+		DB::table('shelf')->where(array('id' => $shelfId))->update($user_input);
+		return redirect()
+					->route('shelf.index')
+					->with(['success' => 'Rak berhasil dirubah']); 
+    }
+
+    public function deleteShelf(Request $request, $shelfId) {
+        $current_record = DB::table('shelf')->where('id', $shelfId)->first();
+        if (!$current_record) {
+            return redirect()
+                ->route('shelf.index')
+                ->with(array (
+                    'error' => 'Rak tidak ditemukan'
+                ));
+        }
+
+        $product_shelf = DB::table('products')->where('shelf_id', $shelfId)->get();
+        if (count($product_shelf) > 0) {
+            return redirect()
+                ->route('shelf.index')
+                ->with(array (
+                    'error' => 'Rak tidak bisa dihapus, karena masih digunakan dibeberapa produk'
+                )); 
+        }
+
+        DB::table('shelf')->where(array ('id' => $shelfId))->delete();
+        return redirect()
+				->route('shelf.index')
+				->with(['success' => 'Rak baru berhasil hapus']);  
+    }
+
     public function createFormCategory()
     {
         $data['page_title'] = 'Buat Kategori';
