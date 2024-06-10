@@ -37,7 +37,7 @@
                                 <label for="name" class="text-[#000000] font-light">Pusat Peran</label>
                             </legend>
                             <select name="id_parent" class="mb-2 input border rounded-sm px-4 py-2 w-full">
-                                <option>Pilih pusat peran</option>
+                                <option value="0">Pilih pusat peran</option>
                                 @foreach ($permissions as $permission)
                                     <option 
                                         value="{{ $permission->id }}"

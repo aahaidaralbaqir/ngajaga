@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use App\Models\Roles;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -20,7 +21,7 @@ class UserController extends Controller
 	{
 		$user_profile = $this->initProfile();
 		$data = array_merge(array(), $user_profile);
-		$user_record = User::with('roles')->get();
+		$user_record = User::with('roles')->where('status', Constant::STATUS_ACTIVE)->get();
 		$data['users'] = $user_record;
 		$data['total_row'] = count($user_record);
 		return view('admin.user.index', $data);
@@ -83,9 +84,15 @@ class UserController extends Controller
 
 	public function updateForm(Request $request, $userId)
 	{
+		$current_user = User::find($userId);
+		if (!$current_user) {
+			return redirect()
+					->route('user.index')
+					->with(['error' => 'Pengguna tidak ditemukan']);
+		}
 		$user_profile = $this->initProfile();
 		$data = array_merge(array(), $user_profile);
-		$data['item'] = User::find($userId);
+		$data['item'] = $current_user;
 		$data['target_route'] = 'user.update';
 		$data['page_title'] = 'Mengubah pengguna';
 		$data['roles'] = Roles::where('status', Constant::STATUS_ACTIVE)->get();	
@@ -152,5 +159,22 @@ class UserController extends Controller
 		$request->session()->regenerateToken();
 		
 		return redirect('/login');
+	}
+
+	public function deleteUser(Request $request, $userId)
+	{
+		$current_user = User::find($userId);
+		if (!$current_user) {
+			return back()
+				->with(array (
+					'error' => 'User tidak ditemukan'
+				));
+		}
+
+		DB::table('users')->where('id', $userId)
+			->update(array('status' => Constant::STATUS_INACTIVE));
+		return redirect()
+					->route('user.index')
+					->with(['success' => 'Pengguna berhasil dihapus']);	
 	}
 }

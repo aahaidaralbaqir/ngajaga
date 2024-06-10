@@ -30,6 +30,7 @@
 
       <!-- ===== Main Content Start ===== -->
         <main>
+            @include('partials.alert')
             @yield('content')
         </main>
       <!-- ===== Main Content End ===== -->

@@ -29,7 +29,7 @@
 <main class="w-full py-14 px-14">
     <section class="w-4/5">
         <table class="w-full retro">
-            <caption class="text-2xl text-black [text-align:unset]">Peran</caption>
+            <caption class="text-2xl text-black [text-align:unset]">Pengguna</caption>
             <thead>
                 <tr>
                     <th class="w-[5%]"></th>

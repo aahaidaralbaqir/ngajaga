@@ -228,3 +228,59 @@ dialog:-internal-dialog-in-top-layer::backdrop {
     position: fixed;
     inset: 0px;
 }
+
+
+.toast  {
+	justify-content: center;
+	align-items: center;
+	top: 26px;
+	left: 50%;
+	color: black;
+	position: fixed;
+	width: fit-content;
+	z-index: 9999;
+	-webkit-transform: translate(-50%, 0);
+			transform: translate(-50%, 0);
+	
+	border-radius: 4px;
+	-webkit-animation: show_toast 0.2s ease forwards;
+	animation: show_toast 0.2s ease forwards;
+}
+
+.toast.toast-error {
+	background: #FFE2E0;
+	border: 1px solid #FF544A;
+}
+
+.toast.toast-success {
+	border: 1px solid  rgb(35 160 148);
+	background-color: rgb(35 160 148 / 0.2);
+}
+.toast .toast-error img {
+	width: 16px;
+	height: 16px;
+	margin-top: 2px;
+}
+
+
+@-webkit-keyframes show_toast {
+	0% {
+	  -webkit-transform: translate(-50%, -100%);
+			  transform: translate(-50%, -100%);
+	}
+	100% {
+	  -webkit-transform: translate(-50%, 16px);
+			  transform: translate(-50%, 16px);
+	}
+  }
+  
+  @keyframes show_toast {
+	0% {
+	  -webkit-transform: translate(-50%, -100%);
+			  transform: translate(-50%, -100%);
+	}
+	100% {
+	  -webkit-transform: translate(-50%, 16px);
+			  transform: translate(-50%, 16px);
+	}
+  }
