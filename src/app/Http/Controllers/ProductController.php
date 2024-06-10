@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -67,5 +68,99 @@ class ProductController extends Controller
                                 ->get();
         $data['total_row'] = count($data['shelf']);
         return view('admin.shelf.index', $data);
+    }
+
+    public function createFormCategory()
+    {
+        $data['page_title'] = 'Buat Kategori';
+        $data['target_route'] = 'category.create';
+        return view('admin.category.form', $data);
+    }
+
+    public function createCategory(Request $request)
+    {
+        $user_input_field_rules = array (
+            'name' => 'required|min:5'
+        );
+        $user_input = $request->only('name');
+		$validator = Validator::make($user_input, $user_input_field_rules);
+		if ($validator->fails())
+			return back()
+						->withErrors($validator)
+						->withInput();
+		DB::table('category')->insert($user_input);
+		return redirect()
+					->route('category.index')
+					->with(['success' => 'Kategori baru berhasil ditambahkan']);
+    } 
+
+
+    public function editFormCategory(Request $request, $categoryId)
+    {
+        $current_record = DB::table('category')->where('id', $categoryId)->first();
+        if (!$current_record) {
+            return redirect()
+                ->route('category.index')
+                ->with(array (
+                    'error' => 'Kategri tidak ditemukan'
+                ));
+        }
+        $data['item'] = $current_record;
+        $data['page_title'] = 'Mengubah kategori';
+        $data['target_route'] = 'category.edit';
+        return view('admin.category.form', $data);
+    }
+
+    public function editCategory(Request $request)
+    {
+        $categoryId = $request->input('id');
+        $current_record = DB::table('category')->where('id', $categoryId)->first();
+        if (!$current_record) {
+            return redirect()
+                ->route('category.index')
+                ->with(array (
+                    'error' => 'Kategri tidak ditemukan'
+                ));
+        }
+
+        $user_input_field_rules = array (
+            'name' => 'required|min:5'
+        );
+        $user_input = $request->only('name');
+		$validator = Validator::make($user_input, $user_input_field_rules);
+		if ($validator->fails())
+			return back()
+						->withErrors($validator)
+						->withInput();
+
+		DB::table('category')->where(array('id' => $categoryId))->update($user_input);
+		return redirect()
+					->route('category.index')
+					->with(['success' => 'Kategori baru berhasil dirubah']); 
+    }
+
+    public function deleteCategory(Request $request, $categoryId) {
+        $current_record = DB::table('category')->where('id', $categoryId)->first();
+        if (!$current_record) {
+            return redirect()
+                ->route('category.index')
+                ->with(array (
+                    'error' => 'Kategori tidak ditemukan'
+                ));
+        }
+
+        $product_category = DB::table('products')->where('category_id', $categoryId)->get();
+        if (count($product_category) > 0) {
+            return redirect()
+                ->route('category.index')
+                ->with(array (
+                    'error' => 'Kategori tidak bisa dihapus, karena masih digunakan dibeberapa produk'
+                )); 
+        }
+
+        DB::table('category')->where(array ('id' => $categoryId))->delete();
+        return redirect()
+				->route('category.index')
+				->with(['success' => 'Kategori baru berhasil hapus']);  
     }
 }

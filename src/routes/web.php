@@ -50,6 +50,11 @@ Route::prefix('product')->group(function () {
 
 Route::prefix('category')->group(function () {
 	Route::get('/', [ProductController::class, 'category'])->name('category.index')->middleware('auth');
+	Route::get('/create', [ProductController::class, 'createFormCategory'])->name('category.create.form')->middleware('auth');
+	Route::post('/create', [ProductController::class, 'createCategory'])->name('category.create')->middleware('auth');
+	Route::get('/{categoryId}/edit', [ProductController::class, 'editFormCategory'])->name('category.edit.form')->middleware('auth');
+	Route::get('/{categoryId}/delete', [ProductController::class, 'deleteCategory'])->name('category.delete')->middleware('auth');
+	Route::post('/edit', [ProductController::class, 'editCategory'])->name('category.edit')->middleware('auth');
 });
 
 Route::prefix('shelf')->group(function () {
