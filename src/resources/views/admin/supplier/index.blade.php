@@ -21,8 +21,8 @@
         </div>
         <div class="tab">
             <a href="{{ route('supplier.index') }}" aria-selected="true" class="selected">Supplier</a>
-            <a href="{{ route('product.index') }}" aria-selected="true">Pembelian</a>
-            <a href="{{ route('category.index') }}" aria-selected="true">Penerimaan</a>
+            <a href="{{ route('product.index') }}" aria-selected="true">Pembelian Stok</a>
+            <a href="{{ route('category.index') }}" aria-selected="true">Penerimaan Stok</a>
         </div>
     </div>
 </div>
