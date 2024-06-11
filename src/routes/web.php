@@ -16,6 +16,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TransactionTypeController;
 
@@ -52,6 +53,14 @@ Route::prefix('product')->group(function () {
 	Route::get('/{productId}/edit', [ProductController::class, 'editProductForm'])->name('product.edit.form')->middleware('auth');
 	Route::get('/{productId}/price', [ProductController::class, 'editPriceForm'])->name('product.price.form')->middleware('auth');
 	Route::post('/price', [ProductController::class, 'editPrice'])->name('product.price')->middleware('auth');
+});
+
+Route::prefix('supplier')->group(function () {
+	Route::get('/', [SupplierController::class, 'index'])->name('supplier.index')->middleware('auth');
+	Route::get('/create', [SupplierController::class, 'createForm'])->name('supplier.create.form')->middleware('auth');
+	Route::post('/create', [SupplierController::class, 'create'])->name('supplier.create')->middleware('auth');
+	Route::get('/{supplierId}/edit', [SupplierController::class, 'editForm'])->name('supplier.edit.form')->middleware('auth');
+	Route::post('/edit', [SupplierController::class, 'edit'])->name('supplier.edit')->middleware('auth');
 });
 
 Route::prefix('category')->group(function () {

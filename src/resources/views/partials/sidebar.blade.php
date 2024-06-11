@@ -44,7 +44,7 @@
                         </a>
                     </li>
                     <li class="border-t border-[#808080] px-5 py-4">
-                        <a class="hover:text-[#ff91e7] group relative flex items-center gap-2.5 rounded-sm   text-sm text-bodydark1 duration-300 ease-in-out   dark:hover:bg-meta-4" href="#" @click.prevent="selected = (selected === 'Inventori' ? '':'Inventori')">
+                        <a class="hover:text-[#ff91e7] group relative flex items-center gap-2.5 rounded-sm   text-sm duration-300 ease-in-out   dark:hover:bg-meta-4 {{ in_array(route_name(), ['supplier.index', 'supplier.create.form', 'supplier.edit.form']) ? 'text-[#ff91e7]' : 'text-bodydark1' }}" href="{{ route('supplier.index') }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
                                 Inventori 
                         </a>
