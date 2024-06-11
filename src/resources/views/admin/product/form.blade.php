@@ -1,11 +1,12 @@
 @extends('layout.dashboard')
 @section('content')
 {{ Form::open(['route' => $target_route, 'method' => 'POST', 'enctype' => 'multipart/form-data']) }}
-    <div class="second-nav py-[2.7rem] px-14 w-full">
+    <div class="second-nav  {{ empty($item) ? 'py-[2.7rem]' : 'py-8' }}  px-14 w-full">
         <div class="w-4/5">
             <div class="flex justify-between items-center">
                 <h1>
-                   Product apa yang akan kamu buat ? 
+                    
+                   {{ empty($item) ? $page_title : $item->name }}
                 </h1>
                 <div class="flex items-center justify-between gap-5 relative">
                     <a href="{{ route('product.index') }}" class="button text-base text-black p-3 rounded border border-black relative flex gap-2">
@@ -14,6 +15,10 @@
                     </a>
                     <button class="button text-base bg-[#ff91e7] text-black p-3 rounded border border-black">Lanjut</button>
                 </div>
+            </div>
+            <div class="tab">
+                <a href="{{ route('product.edit.form', ['productId' => $item->id]) }}" aria-selected="true" class="selected">Informasi Produk</a>
+                <a href="{{ route('roles.index') }}" aria-selected="true" >Konfigurasi Harga</a>
             </div>
         </div>
     </div>
@@ -51,8 +56,8 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
                                         Upload
                                     </button> 
-                                    <img src="" id="preview" class="absolute rounded-md w-full h-full hidden object-contain" />
-                                    <svg class="close hidden cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="red" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+                                    <img src="{{ empty($item) ? '' : $item->image }}" id="preview" class="absolute rounded-md w-full h-full object-contain {{ empty($item) ? 'hidden' : '' }}" />
+                                    <svg class="close cursor-pointer {{ empty($item) ? 'hidden' : '' }}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="red" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
                                 </div>
                                 <input type="file" name="image" class="hidden">
                                 <span class="text-sm text-black">Masuk gambar dari produk yang akan kamu buat</span>
@@ -179,14 +184,11 @@
                                     type="checkbox"
                                     name="use_price_mapping"
                                     value="{{ \App\Constant\Constant::OPTION_ENABLE }}"
-                                    @if (old('use_price_mapping', empty($item) ? '' : ($item->use_price_mapping == 1 || $item->use_price_mapping == 'on' ? 1 : '')) == \App\Constant\Constant::OPTION_ENABLE)
-                                        checked
-                                    @endif
                                 />
                                 <span class="slider round"></span>
                             </label>
                             <label for="notify_when_low_quota" class="text-[#000] font-light ml-1">Jika ini dinyalakan maka harga jual akan mengikuti konfigurasi di bawah ini</label>
-                            <div class="price-mapping-box box mt-4 relative {{ old('use_price_mapping', empty($item) ? '' : ($item->use_price_mapping == 1 || $item->use_price_mapping == 'on' ? 1 : '')) == \App\Constant\Constant::OPTION_ENABLE ? '' : 'hidden' }}">
+                            <div class="price-mapping-box box mt-4 relative ">
                                 <table class="w-full retro">
                                     <thead>
                                         <tr>

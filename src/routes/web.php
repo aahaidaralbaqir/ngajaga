@@ -48,6 +48,8 @@ Route::prefix('product')->group(function () {
 	Route::get('/', [ProductController::class, 'index'])->name('product.index')->middleware('auth');
 	Route::get('/create', [ProductController::class, 'createProductForm'])->name('product.create.form')->middleware('auth');
 	Route::post('/create', [ProductController::class, 'createProduct'])->name('product.create')->middleware('auth');
+	Route::post('/edit', [ProductController::class, 'editProduct'])->name('product.edit')->middleware('auth');
+	Route::get('/{productId}/edit', [ProductController::class, 'editProductForm'])->name('product.edit.form')->middleware('auth');
 });
 
 Route::prefix('category')->group(function () {

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -270,6 +271,7 @@ class ProductController extends Controller
         $data['categories'] = DB::table('category')->get();
         $data['shelfs'] = DB::table('shelf')->get();
         $data['target_route'] = 'product.create';
+        $data['page_title'] = 'Product apa yang akan kamu buat ?';
         $data['units'] = Common::getUnits();
         return view('admin.product.form', $data); 
     }
@@ -282,6 +284,7 @@ class ProductController extends Controller
             'shelf_id' => 'required',
         );
         $user_input = $request->only('name', 'selling_price', 'category_id', 'shelf_id', 'description');
+        $user_input['notify_when_low_quota'] = Constant::OPTION_DISABLE;
         if ($request->has('notify_when_low_quota')) {
             $user_input['notify_when_low_quota'] = Constant::OPTION_ENABLE;
             $user_input['min_qty'] = $request->input('min_qty');
@@ -321,5 +324,79 @@ class ProductController extends Controller
         return redirect()
 				->route('product.index')
 				->with(['success' => 'Produk berhasil ditambahkan']);
+    }
+
+    public function editProductForm(Request $request, $productId) {
+        $current_record = DB::table('products')->where('id', $productId)->first();
+        if (!$current_record) {
+            return redirect()
+                ->route('product.index')
+                ->with(array (
+                    'error' => 'Kategri tidak ditemukan'
+                ));
+        }
+        $current_record->image = Common::getStorage(Constant::STORAGE_PRODUCT, $current_record->image);
+        $data['units'] = Common::getUnits();
+        $data['categories'] = DB::table('category')->get();
+        $data['shelfs'] = DB::table('shelf')->get();
+        $data['item'] = $current_record;
+        $data['page_title'] = 'Mengubah Produk';
+        $data['target_route'] = 'product.edit';
+        return view('admin.product.form', $data); 
+    }
+    
+    public function editProduct(Request $request) {
+        $current_record = DB::table('products')
+                            ->where('id', $request->id)
+                            ->first();
+        if (!$current_record) {
+            return redirect()
+                    ->route('product.index')
+                    ->with(array (
+                        'error' => 'Produk tidak ditemukan'
+                    ));
+        }
+
+        $user_input_field_rules = array (
+            'name' => 'required',
+            'selling_price' => 'required',
+            'category_id' => 'required',
+            'shelf_id' => 'required',
+        );
+        $user_input['notify_when_low_quota'] = Constant::OPTION_DISABLE;
+        $user_input = $request->only('name', 'selling_price', 'category_id', 'shelf_id', 'description');
+        if ($request->has('notify_when_low_quota')) {
+            $user_input['notify_when_low_quota'] = Constant::OPTION_ENABLE;
+            $user_input['min_qty'] = $request->input('min_qty');
+            $user_input_field_rules['min_qty'] = 'required|lt:4|gt:1';
+        }
+        $validator = Validator::make($user_input, $user_input_field_rules);
+		if ($validator->fails())
+        {
+            return back()
+					->withErrors($validator)
+					->withInput();
+        }
+
+        if ($request->hasFile('image')) {
+            $file_location = 'public/products/' . $current_record->image;
+			Storage::delete($file_location);
+			$filename = time() . '.' . $request->file('image')->getClientOriginalExtension();
+			$path = $request->file('image')->storeAs('public/products', $filename);
+			if (empty($path))
+			{
+				return back()->withErrors(['image' => 'Gambar gagal diperbaharui'])
+							->withInput();
+			}
+			$user_input['image'] = $filename;
+        }
+
+        DB::table('products')
+            ->where('id', $current_record->id)
+            ->update($user_input);
+
+        return redirect()
+                ->route('product.index')
+                ->with(['success' => 'Produk berhasil diubah']); 
     }
 }
