@@ -396,7 +396,95 @@ class ProductController extends Controller
             ->update($user_input);
 
         return redirect()
+                ->route('product.price.form', ['productId' => $current_record->id]);
+    }
+
+    public function editPriceForm(Request $request, $productId) {
+        $current_record = DB::table('products')->where('id', $productId)->first();
+        if (!$current_record) {
+            return redirect()
                 ->route('product.index')
-                ->with(['success' => 'Produk berhasil diubah']); 
+                ->with(array (
+                    'error' => 'Kategri tidak ditemukan'
+                ));
+        }
+        $current_record->image = Common::getStorage(Constant::STORAGE_PRODUCT, $current_record->image);
+        $data['price_mapping'] = DB::table('price_mapping')->get();
+        $data['units'] = Common::getUnits();
+        $data['item'] = $current_record;
+        $data['page_title'] = 'Mengubah Konfigurasi Harga';
+        $data['target_route'] = 'product.price';
+        return view('admin.product.price', $data);  
+    }
+
+    public function editPrice(Request $request) {
+        $product_id = $request->input('id');
+        $current_record = DB::table('products')
+                            ->where('id', $product_id)
+                            ->first();
+        if (!$current_record) {
+            return redirect()
+                ->route('product.index')
+                ->with(array (
+                    'error' => 'Produk tidak ditemukan'
+                )); 
+        }
+        $user_input_field_rules = [
+            'unit' => 'array',
+            'price' => 'array',
+            'conversion' => 'array',
+            'quantity' => 'array',
+            'quantity.*' => 'required|gte:1',
+            'price.*' => 'required|gte:1',
+            'conversion.*' => 'required|gte:1',
+            'unit.*' => 'required|in:' . implode(',', array_keys(Common::getUnits())),
+        ];
+
+        if ($request->has('use_price_mapping') == FALSE) {
+            $updated_record = [
+                'use_price_mapping' => Constant::OPTION_DISABLE
+            ];
+            DB::table('products')->where('id', $product_id)->update($updated_record);
+            return redirect()
+                ->route('product.index')
+                ->with(array (
+                    'success' => 'Produk berhasil dirubah'
+                )); 
+        }
+
+        $user_input = [];
+        $user_input_length = count($request->input('unit'));
+        for ($sequence = 0; $sequence < $user_input_length - 1; $sequence++) {
+            $user_input[] = [
+                'product_id' => $product_id,
+                'unit' => $request->input('unit')[$sequence],
+                'conversion' => $request->input('conversion')[$sequence],
+                'price' => $request->input('price')[$sequence],
+                'qty' => $request->input('quantity')[$sequence],
+            ];
+        }
+        $validator = Validator::make($user_input, $user_input_field_rules);
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+				->withInput();
+        }
+
+        $updated_record = [
+            'use_price_mapping' => Constant::OPTION_ENABLE
+        ];
+        DB::table('products')->where('id', $product_id)->update($updated_record);
+
+        DB::table('price_mapping')->where('product_id', $product_id)->delete();
+        if (count($user_input) > 0) {
+            DB::table('price_mapping')
+                ->insert($user_input);
+        }
+       
+        return redirect()
+                ->route('product.index')
+                ->with(array (
+                    'success' => 'Produk berhasil dirubah'
+                )); 
     }
 }
