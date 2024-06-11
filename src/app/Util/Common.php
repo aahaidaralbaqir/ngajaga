@@ -2,6 +2,7 @@
 
 namespace App\Util;
 use App\Constant\Constant;
+use Illuminate\Support\Facades\DB;
 
 class Common {
 	
@@ -198,5 +199,34 @@ class Common {
 			Constant::HTTP_VERB_POST,
 			Constant::HTTP_VERB_HEAD
 		];
+	}
+
+	public static function getUnits()
+	{
+		return [
+			Constant::UNIT_BKS => 'Bungkus',
+			Constant::UNIT_PCS => 'Pcs',
+			Constant::UNIT_KG => 'Kilogram',
+			Constant::UNIT_LUSIN => 'Lusin'
+		];
+	}
+
+	public static function generateUniqueSku($length = 8) {
+		// Generate a random SKU
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $sku = '';
+        for ($i = 0; $i < $length; $i++) {
+            $sku .= $characters[rand(0, strlen($characters) - 1)];
+        }
+
+        // Check if SKU is unique
+        while (DB::table('products')->where('sku', $sku)->exists()) {
+            $sku = '';
+            for ($i = 0; $i < $length; $i++) {
+                $sku .= $characters[rand(0, strlen($characters) - 1)];
+            }
+        }
+
+        return $sku;
 	}
 }

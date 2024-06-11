@@ -16,6 +16,7 @@ class Constant {
 	const STORAGE_TRANSACTION = 'transaction';
 	const STORAGE_PAYMENT = 'payment_logo';
 	const STORAGE_DOCUMENTATION = 'documentation';
+	const STORAGE_PRODUCT = 'products';
 
 	const ORDER_UP = 'up';
 	const ORDER_DOWN = 'down';
@@ -74,4 +75,12 @@ class Constant {
 	CONST HTTP_VERB_HEAD = 'HEAD';
 
 	const PARENT_ATTENDEE = 0;
+
+	const UNIT_KG = 1;
+	const UNIT_LUSIN = 2;
+	const UNIT_PCS = 3;
+	const UNIT_BKS = 4;
+
+	const OPTION_ENABLE = 1;
+	const OPTION_DISABLE = 2;
 }

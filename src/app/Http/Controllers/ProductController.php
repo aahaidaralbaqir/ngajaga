@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Constant\Constant;
+use App\Util\Common;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
     public function index(Request $request)
     {
         $product_records = DB::table('products')
-                            ->select(['products.id', 'products.name', 'products.selling_price', DB::raw('category.name AS category_name'), DB::raw('shelf.name AS shelf_name')])
+                            ->select(['products.id', 'products.name', 'products.selling_price', 'products.image', DB::raw('category.name AS category_name'), DB::raw('shelf.name AS shelf_name')])
                             ->leftJoin('category', function ($join) {
                                 $join->on('category.id', '=', 'products.category_id');
                             })
@@ -21,7 +24,7 @@ class ProductController extends Controller
                             ->get()
                             ->toArray();
         $product_ids = array_map(function ($item) {
-            return $item['id'];
+            return $item->id;
         }, $product_records);
 
         $product_stocks = DB::table('stock')
@@ -37,7 +40,12 @@ class ProductController extends Controller
 
         foreach ($product_records as $index => $product_record) 
         {
-            $product_records[$index]->stock = $product_stocks_ids[$product_record->id];   
+            $stock = 0;
+            if (array_key_exists($product_record->id, $product_stocks_ids)) {
+                $stock = $product_stocks_ids[$product_record->id];  
+            }
+            $product_records[$index]->image = Common::getStorage(Constant::STORAGE_PRODUCT, $product_record->image);
+            $product_records[$index]->stock = $stock;
         }
         $data['products'] = $product_records;
         $data['total_row'] = count($product_records);
@@ -256,5 +264,62 @@ class ProductController extends Controller
         return redirect()
 				->route('category.index')
 				->with(['success' => 'Kategori baru berhasil hapus']);  
+    }
+
+    public function createProductForm(Request $request) {
+        $data['categories'] = DB::table('category')->get();
+        $data['shelfs'] = DB::table('shelf')->get();
+        $data['target_route'] = 'product.create';
+        $data['units'] = Common::getUnits();
+        return view('admin.product.form', $data); 
+    }
+
+    public function createProduct(Request $request) {
+        $user_input_field_rules = array (
+            'name' => 'required',
+            'selling_price' => 'required',
+            'category_id' => 'required',
+            'shelf_id' => 'required',
+        );
+        $user_input = $request->only('name', 'selling_price', 'category_id', 'shelf_id', 'description');
+        if ($request->has('notify_when_low_quota')) {
+            $user_input['notify_when_low_quota'] = Constant::OPTION_ENABLE;
+            $user_input['min_qty'] = $request->input('min_qty');
+            $user_input_field_rules['min_qty'] = 'required|lt:4|gt:1';
+        }
+        $validator = Validator::make($user_input, $user_input_field_rules);
+
+
+		if ($validator->fails())
+        {
+            return back()
+					->withErrors($validator)
+					->withInput();
+        }
+
+        if (!$request->hasFile('image')) {
+            return back()->withErrors(['image' => 'Gambar produk harus diisi'])
+						->withInput();
+        }
+
+        $filename = time() . '.' . $request->file('image')->getClientOriginalExtension();
+		$path = $request->file('image')->storeAs('public/products', $filename);
+		if (empty($path))
+		{
+			return back()->withErrors(['banner' => 'Gambar gagal di upload, silahkan ulangi kembali'])
+						->withInput();
+		}
+        $user_input['image'] = $filename;
+
+        if (empty($user_input['sku'])) {
+            $user_input['sku'] = Common::generateUniqueSku();
+        }
+
+        $user_input['buy_price'] = 0;
+        $user_input['updated_by'] = Auth::user()->id;
+        DB::table('products')->insert($user_input);
+        return redirect()
+				->route('product.index')
+				->with(['success' => 'Produk berhasil ditambahkan']);
     }
 }

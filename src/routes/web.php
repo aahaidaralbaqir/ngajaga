@@ -46,6 +46,8 @@ Route::prefix('account')->group(function () {
 
 Route::prefix('product')->group(function () {
 	Route::get('/', [ProductController::class, 'index'])->name('product.index')->middleware('auth');
+	Route::get('/create', [ProductController::class, 'createProductForm'])->name('product.create.form')->middleware('auth');
+	Route::post('/create', [ProductController::class, 'createProduct'])->name('product.create')->middleware('auth');
 });
 
 Route::prefix('category')->group(function () {

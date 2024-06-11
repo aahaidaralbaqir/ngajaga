@@ -16,7 +16,7 @@
                         </div>
                     </div>
                 </button>
-                <button class="button text-base bg-[#ff91e7] text-black p-3 rounded border border-black">Buat Produk</button>
+                <a href="{{ route('product.create.form') }}" class="button text-base bg-[#ff91e7] text-black p-3 rounded border border-black">Buat Produk</a>
             </div>
         </div>
         <div class="tab">
@@ -42,9 +42,11 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($products as $$product)
+                @foreach($products as $product)
                     <tr>
-                        <td></td>
+                        <td class="cell-image">
+                            <img src="{{ $product->image }}" alt="">
+                        </td>
                         <td class="font-bold">
                             {{ $product->name }}
                         </td>
@@ -63,10 +65,10 @@
                            </span>
                         </td>
                         <td class="relative">
-                            <a href="" data-id="{{ $role->id }}" data-name="action" class="dropdown" role="dropdown">
+                            <a href="" data-id="{{ $product->id }}" data-name="action" class="dropdown" role="dropdown">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
                             </a>
-                            <div class="menu hidden" data-id="{{ $role->id }}" data-name="action" role="dropdown-content">
+                            <div class="menu hidden" data-id="{{ $product->id }}" data-name="action" role="dropdown-content">
                                 <a href="" class="menu-item">
                                     <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-pen"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z"/></svg>
                                     Ubah
