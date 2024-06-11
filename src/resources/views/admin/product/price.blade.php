@@ -104,10 +104,10 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <input type="number" style="{{ $custom_quantity_style; }}" name="quantity[]" value="{{ old('quantity')[$index] }}" />
+                                                        <input type="number" style="<?php echo $custom_quantity_style; ?>" name="quantity[]" value="{{ old('quantity')[$index] }}" />
                                                     </td>
                                                     <td>
-                                                        <input type="number" name="conversion[]" value="{{ old('conversion')[$index] }}" style="{{ $custom_conversion_style; }}"  />
+                                                        <input type="number" name="conversion[]" value="{{ old('conversion')[$index] }}" style="<?php echo $custom_conversion_style; ?>"  />
                                                     </td>
                                                     <td>
                                                         <input type="text" name="price[]" value="{{ old('price')[$index] }}" style="{{ $custom_price_style; }}">
