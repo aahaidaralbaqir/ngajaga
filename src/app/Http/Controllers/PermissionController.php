@@ -55,7 +55,6 @@ class PermissionController extends Controller
 		$data['target_route'] = 'permission.create';
 		$data['show_parent_dropdown'] = true;
 		$data['permissions'] = Permission::where('id_parent', 0)->get();
-		$data['methods'] = CommonUtil::getHttpVerbOptions();
 		return view('admin.permission.form', $data); 
     }
 
@@ -63,9 +62,8 @@ class PermissionController extends Controller
     {
         $user_input_field_rules = [
 			'name' => 'required',
-			'method' => 'required|in:' . implode(',', CommonUtil::getHttpVerbOptions()),
 		];
-		$user_input = $request->only('name', 'method', 'id_parent');
+		$user_input = $request->only('name', 'id_parent');
 		$validator = Validator::make($user_input, $user_input_field_rules);
 		if ($validator->fails())
 			return back()
@@ -95,7 +93,6 @@ class PermissionController extends Controller
 							 ->get();
 		
 		$data['show_parent_dropdown'] = count($child_permission) <= 0;
-		$data['methods'] = CommonUtil::getHttpVerbOptions();
 		$data['permissions'] = Permission::where('id_parent', 0)->where('id', '!=', $permissionId)->get();
 		return view('admin.permission.form', $data); 
     }
@@ -109,9 +106,8 @@ class PermissionController extends Controller
 		
 		$user_input_field_rules = [
 			'name' => 'required',
-			'method' => 'required|in:' . implode(',', CommonUtil::getHttpVerbOptions()),
 		];
-		$user_input = $request->only('name', 'method', 'id_parent');
+		$user_input = $request->only('name', 'id_parent');
 
 		$validator = Validator::make($user_input, $user_input_field_rules);
 		if ($validator->fails())

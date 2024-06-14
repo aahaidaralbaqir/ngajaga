@@ -67,28 +67,6 @@
                                 <span class="text-sm text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-
-                        <div class="mt-4">
-                            <legend class="mb-2">
-                                <label for="name" class="text-[#000000] font-light">Jenis Aksi <span class="text-danger">*</span></label>
-                            </legend>
-                            <select name="method" class="mb-2 input border rounded-sm px-4 py-2 w-full">
-                                <option disabled>Pilih jenis aksi</option>
-                                @foreach ($methods as $method)
-                                    <option 
-                                        value="{{ $method }}"
-                                        @if (!empty($item) && $item->method == $method)
-                                            selected="selected"
-                                        @endif
-                                    >
-                                        {{ $method }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('method')
-                                <span class="text-sm text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
                     </fieldset>
                 </section>
         </section>
