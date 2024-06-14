@@ -1,8 +1,6 @@
 <aside :class="sidebarToggle ? 'translate-x-0' : '-translate-x-full'" class="absolute left-0 top-0 z-9999 flex h-screen w-55 flex-col overflow-y-hidden bg-[#000000] duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0" @click.outside="sidebarToggle = false">
-    <div class="flex items-center justify-center gap-2 px-7 py-12 ">
-        <a href="{{ route('admin') }}" class="text-2xl text-white">
-            NGAJAGA
-        </a>
+    <div class="flex items-center justify-center gap-2 px-8 py-13 ">
+        <img src="{{ asset('img/logo/logo-name.svg') }}" alt="Logo ngajaga">
     </div>
     <div class="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear h-full flex justify-between">
         <nav class="mt-2" x-data="{selected: 'Dashboard'}" x-init="
