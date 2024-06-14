@@ -87,7 +87,7 @@
                         <tr class="hidden" data-id="{{ $role->id }}" data-name="table" role="dropdown-content">
                             <td></td>
                             <td colspan="4">
-                                <div class="flex w-full gap-2">
+                                <div class="flex w-full gap-2 flex-wrap">
                                     @foreach ($role->permissions as $permission)
                                         <a href="" class="text-xs px-4 p-2 rounded-2xl border"> {{ $permission->name }} </a>
                                     @endforeach
