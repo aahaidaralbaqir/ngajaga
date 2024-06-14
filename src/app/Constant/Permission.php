@@ -2,8 +2,58 @@
 
 class Permission {
 	const VIEW_REPORT_SALE_SUMMARY = 2;
+	
 	const VIEW_CASH_ACCOUNT = 5;
 	const CREATE_CASH_ACCOUNT = 6;
 	const UPDATE_CASH_ACCOUNT = 7;
 	const CASHFLOW_HISTORY = 8;
+
+	const VIEW_PERMISSION = 10;
+	const CREATE_PERMISSION = 11;
+	const UPDATE_PERMISSION = 12;
+
+	const VIEW_ROLE = 14;
+	const CREATE_ROLE = 15;
+	const UPDATE_ROLE = 16;
+	const DELET_ROLE = 17;
+
+	const VIEW_USER = 0;
+	const CREATE_USER = 19;
+	const DELETE_USER = 20;
+	const UPDATE_USER = 21;
+
+	const VIEW_PRODUCT = 0;
+	const CREATE_PRODUCT = 0;
+	const UPDATE_PRODUCT = 0;
+
+	const VIEW_CATEGORY = 0;
+	const CREATE_CATEGORY = 0;
+	const UPDATE_CATEGORY = 0;
+
+	const VIEW_SHELF = 0;
+	const CREATE_SHELF = 0;
+	const UPDATE_SHELF = 0;
+
+	const VIEW_SUPPLIER = 0;
+	const CREATE_SUPPLIER = 0;
+	const UPDATE_SUPPLIER = 0;
+
+	const VIEW_ORDER_INVOICE = 0;
+	const CREATE_ORDER_INVOICE = 0;
+	const UPDATE_ORDER_INVOICE = 0;
+
+	const VIEW_PURCHASE_INVOICE = 0;
+	const CREATE_PURCHASE_INVOICE = 0;
+	const UPDATE_PURCHASE_INVOICE = 0;
+
+	const VIEW_CUSTOMER = 0;
+	const CREATE_CUSTOMER = 0;
+	const UPDATE_DELETE_CUSTOMER = 0;
+
+	const VIEW_TRANSACTION = 0;
+	const CREATE_TRANSACTION = 0;
+	const UPDATE_TRANSACTION = 0;
+
+	const VIEW_TRANSACTION_REPORT = 0;
+	const VIEW_ACCOUNT_REPORT = 0;
 }
