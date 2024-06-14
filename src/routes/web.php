@@ -147,7 +147,7 @@ Route::prefix('structure')->group(function () {
 
 
 
-Route::get('/', [DashboardController::class, 'index'])->name('admin')->middleware('auth');
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
 
 
 Route::get('/login', function () {
