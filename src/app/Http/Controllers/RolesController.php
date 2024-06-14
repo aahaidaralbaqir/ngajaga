@@ -59,13 +59,13 @@ class RolesController extends Controller
 		$data['page_title'] = 'Menambahkan peran baru';
 		$permissions = DB::table('permission')->get()->toArray();
 		$parent_permissions = array_filter($permissions, function($item) {
-			return $item->id_parent == Constant::PARENT_ATTENDEE;
+			return $item->id_parent == Constant::PARENT_RECORD;
 		});
 		$grouped_permission = [];
 		foreach ($permissions as $permission)
 		{
 			$parent_id = $permission->id_parent;
-			if ($parent_id == Constant::PARENT_ATTENDEE) {
+			if ($parent_id == Constant::PARENT_RECORD) {
 				continue;
 			}
 			if (array_key_exists($parent_id, $grouped_permission)) {
@@ -116,13 +116,13 @@ class RolesController extends Controller
 		$data['item'] = Roles::find($roleId);
 		$permissions = DB::table('permission')->get()->toArray();
 		$parent_permissions = array_filter($permissions, function($item) {
-			return $item->id_parent == Constant::PARENT_ATTENDEE;
+			return $item->id_parent == Constant::PARENT_RECORD;
 		});
 		$grouped_permission = [];
 		foreach ($permissions as $permission)
 		{
 			$parent_id = $permission->id_parent;
-			if ($parent_id == Constant::PARENT_ATTENDEE) {
+			if ($parent_id == Constant::PARENT_RECORD) {
 				continue;
 			}
 			if (array_key_exists($parent_id, $grouped_permission)) {

@@ -37,4 +37,5 @@ class Constant {
 	const PURCHASE_ORDER_DRAFT = 1;
 	const PURCHASE_ORDER_WAITING = 2;
 	const PURCHASE_ORDER_COMPLETED = 3;
+	const PARENT_RECORD = 0;
 }

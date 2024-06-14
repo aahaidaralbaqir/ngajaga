@@ -49,13 +49,4 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Roles::class, 'role_id', 'id');
     }
-
-    public function getAvatarAttribute($value)
-    {
-        if ($value == "")
-        {
-            return CommonUtil::getDefaultAvatar();
-        } 
-        return CommonUtil::getStorage(Constant::STORAGE_AVATAR, $value);
-    }
 }

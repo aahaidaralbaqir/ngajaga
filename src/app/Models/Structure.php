@@ -18,9 +18,4 @@ class Structure extends Model
         'avatar',
         'id_parent'];
     
-    public function getAvatarAttribute($value)
-    {
-        return CommonUtil::getStorage(Constant::STORAGE_AVATAR, $value);
-    }
-    
 }
