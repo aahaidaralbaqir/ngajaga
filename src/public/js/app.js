@@ -2140,7 +2140,6 @@ window.addEventListener('DOMContentLoaded', function () {
     });
   });
   var deleteButtons = this.document.querySelectorAll('#delete-data');
-  console.log(deleteButtons);
   deleteButtons.forEach(function (btn) {
     btn.addEventListener('click', function (event) {
       event.preventDefault();

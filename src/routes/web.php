@@ -16,6 +16,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TransactionTypeController;
@@ -61,6 +62,15 @@ Route::prefix('supplier')->group(function () {
 	Route::post('/create', [SupplierController::class, 'create'])->name('supplier.create')->middleware('auth');
 	Route::get('/{supplierId}/edit', [SupplierController::class, 'editForm'])->name('supplier.edit.form')->middleware('auth');
 	Route::post('/edit', [SupplierController::class, 'edit'])->name('supplier.edit')->middleware('auth');
+});
+
+
+Route::prefix('purchase')->group(function () {
+	Route::get('/', [PurchaseController::class, 'index'])->name('purchase.index')->middleware('auth');
+	Route::get('/create', [PurchaseController::class, 'createPurchaseForm'])->name('purchase.create.form')->middleware('auth');
+	Route::post('/create', [PurchaseController::class, 'createPurchaseOrder'])->name('purchase.create')->middleware('auth');
+	Route::get('/{purchaseOrderId}/edit', [PurchaseController::class, 'editPurchaseForm'])->name('purchase.edit.form')->middleware('auth');
+	Route::post('/edit', [PurchaseController::class, 'editPurchaseOrder'])->name('purchase.edit')->middleware('auth');
 });
 
 Route::prefix('category')->group(function () {

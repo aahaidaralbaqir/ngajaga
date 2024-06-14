@@ -97,4 +97,9 @@ class SupplierController extends Controller
                 'success' => 'Berhasil menambahkan supplier'
             ]);
     }
+
+    public static function getSuppliers() {
+        return DB::table('suppliers')
+            ->get();
+    }
 }

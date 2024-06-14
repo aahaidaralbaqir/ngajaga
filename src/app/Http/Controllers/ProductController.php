@@ -487,4 +487,15 @@ class ProductController extends Controller
                     'success' => 'Produk berhasil dirubah'
                 )); 
     }
+
+    public static function getProducts() {
+        return DB::table('products')
+            ->get();
+    }
+
+    public static function getUnitByProductsIds($product_ids) {
+        return DB::table('price_mapping')
+            ->whereIn('product_id', $product_ids)
+            ->get();
+    }
 }

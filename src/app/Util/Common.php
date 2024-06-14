@@ -2,15 +2,11 @@
 
 namespace App\Util;
 use App\Constant\Constant;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class Common {
 	
-	public static function getRole()
-	{
-		return [Constant::ROLE_HOKAGE => 'hokage',
-				Constant::ROLE_RAIKAGE => 'raikage'];
-	}
 
 	public static function getStatusExcept($statuses = array())
 	{
@@ -32,48 +28,6 @@ class Common {
 		if (!array_key_exists($id, $available_status))
 			return 'Unknow status';
 		return $available_status[$id];	
-	}
-
-	public static function getCategories()
-	{
-		return [Constant::CATEGORY_TAFSIR 	=> Constant::CATEGORY_TAFSIR_NAME,
-				Constant::CATEGORY_KHUTBAH 	=> Constant::CATEGORY_KHUTBAH_NAME,
-				Constant::CATEGORY_HADIST 	=> Constant::CATEGORY_HADIST_NAME,
-				Constant::CATEGORY_TASAWUF 	=> Constant::CATEGORY_TASAWUF_NAME,
-				Constant::CATEGORY_FIQIH 	=> Constant::CATEGORY_FIQIH_NAME,
-				Constant::CATEGORY_ZAKAT => Constant::CATEGORY_ZAKAT_NAME,
-				Constant::CATEGORY_INFAQ => Constant::CATEGORY_INFAQ_NAME,
-				Constant::CATEGORY_SEDEKAH => Constant::CATEGORY_SEDEKAH_NAME,
-				Constant::CATEGORY_QURBAN => Constant::CATEGORY_QURBAN_NAME];
-	}
-
-	public static function getPrograms()
-	{
-		return [Constant::CATEGORY_ZAKAT => Constant::CATEGORY_ZAKAT_NAME,
-				Constant::CATEGORY_INFAQ => Constant::CATEGORY_INFAQ_NAME,
-				Constant::CATEGORY_SEDEKAH => Constant::CATEGORY_SEDEKAH_NAME,
-				Constant::CATEGORY_QURBAN => Constant::CATEGORY_QURBAN_NAME];
-	}
-
-	public static function getCategoriesById(int $id)
-	{
-		$available_categories = self::getCategories();
-		if (!array_key_exists($id, $available_categories))
-			return 'Unknow categories';
-		return $available_categories[$id];	
-	}
-
-	public static function getRoleNameById(int $id)
-	{
-		$available_role = self::getRole();
-		if (!array_key_exists($id, $available_role))
-			return 'Unknow role';
-		return $available_role[$id];
-	}
-
-	public static function getDefaultAvatar() 
-	{
-		return '/img/user/user-01.png';
 	}
 
 	public static function getStorage($storage_name, $filename) 
@@ -228,5 +182,24 @@ class Common {
         }
 
         return $sku;
+	}
+
+	public static function formatTime($unix_timestamp, $layout = 'd F Y') {
+		Carbon::setLocale('id');
+
+		$date = Carbon::createFromTimestamp($unix_timestamp);
+
+		$formated_date = $date->translatedFormat($layout);
+
+		return $formated_date;
+	}
+
+	public static function getPurchaseOrderStatuses() {
+		return [
+			Constant::PURCHASE_ORDER_VOID => 'Void',
+			Constant::PURCHASE_ORDER_DRAFT => 'Draft',
+			Constant::PURCHASE_ORDER_WAITING => 'Waiting',
+			Constant::PURCHASE_ORDER_COMPLETED => 'Completed'
+		];
 	}
 }

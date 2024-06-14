@@ -35,4 +35,8 @@ class Controller extends BaseController
 		
 		return $data;
 	}
+
+	protected function getUserId() {
+		return Auth::user()->id;
+	}
 }

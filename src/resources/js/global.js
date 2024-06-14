@@ -30,7 +30,6 @@ window.addEventListener('DOMContentLoaded', function () {
     })
 
     const deleteButtons = this.document.querySelectorAll('#delete-data')
-    console.log(deleteButtons)
     deleteButtons.forEach(function (btn) {
         btn.addEventListener('click', function(event) {
             event.preventDefault();

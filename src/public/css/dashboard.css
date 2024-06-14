@@ -315,3 +315,32 @@ dialog:-internal-dialog-in-top-layer::backdrop {
 .uploader image:hover > .close {
 	display: block;
 }
+
+ul.inline > li:not(:last-child)::after {
+    content: " · ";
+}
+
+ul.inline > li {
+    display: inline;
+}
+.boxitem {
+	border-radius: 0px;
+	border-bottom: 0px;
+}
+.box-w > .boxitem:first-of-type {
+	border-top-left-radius: 0.375rem;
+	border-top-right-radius: 0.375rem;
+}
+
+.box-w > .boxitem:last-of-type{
+	border-bottom: 1px solid black;
+	border-bottom-left-radius: 0.375rem;
+	border-bottom-right-radius: 0.375rem;
+}
+.boxitem .box-b {
+	display: flex;
+}
+
+.boxitem .box-b.active {
+	display: none;
+}

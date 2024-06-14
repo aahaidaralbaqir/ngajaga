@@ -4,7 +4,7 @@
     <div class="w-4/5">
         <div class="flex justify-between items-center">
             <h1>
-              Supplier 
+              Pemasok 
             </h1>
             <div class="flex items-center justify-between gap-5 relative">
                 <button class="button text-base text-black p-3 rounded border border-black relative">
@@ -20,8 +20,8 @@
             </div>
         </div>
         <div class="tab">
-            <a href="{{ route('supplier.index') }}" aria-selected="true" class="selected">Supplier</a>
-            <a href="{{ route('product.index') }}" aria-selected="true">Pembelian Stok</a>
+            <a href="{{ route('supplier.index') }}" aria-selected="true" class="selected">Pemasok</a>
+            <a href="{{ route('purchase.index') }}" aria-selected="true">Pemesanan Stok</a>
             <a href="{{ route('category.index') }}" aria-selected="true">Penerimaan Stok</a>
         </div>
     </div>
