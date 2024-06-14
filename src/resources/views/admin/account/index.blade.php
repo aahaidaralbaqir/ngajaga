@@ -16,7 +16,9 @@
                         </div>
                     </div>
                 </button>
-                <a class="button text-base bg-[#ff91e7] text-black p-3 rounded border border-black" href="{{ route('account.create.form') }}">Buat Kas Baru</a>
+                @if (in_array(\App\Constant\Permission::CREATE_CASH_ACCOUNT, $user['permission']))
+                    <a class="button text-base bg-[#ff91e7] text-black p-3 rounded border border-black" href="{{ route('account.create.form') }}">Buat Kas Baru</a>
+                @endif
             </div>
         </div>
     </div>
@@ -48,19 +50,25 @@
                             {{ \App\Util\Common::formatAmount(\App\Constant\Constant::UNIT_NAME_RUPIAH, $account->current_balance) }}
                         </td>
                         <td class="relative">
-                            <a href="" data-id="{{ $account->id }}" data-name="action" class="dropdown" role="dropdown">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
-                            </a>
-                            <div class="menu hidden w-[220px] left-[0px]" data-id="{{ $account->id }}" data-name="action" role="dropdown-content">
-                                <a href="{{ route('account.edit.form', ['accountId' => $account->id]) }}" class="menu-item">
-                                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-pen"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z"/></svg>
-                                    Ubah
+                            @if (in_array(\App\Constant\Permission::UPDATE_CASH_ACCOUNT, $user['permission']) || in_array(\App\Constant\Permission::CASHFLOW_HISTORY, $user['permission'])) 
+                                <a href="" data-id="{{ $account->id }}" data-name="action" class="dropdown" role="dropdown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
                                 </a>
-                                <a href="" class="menu-item">
-                                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-history"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>
-                                    Lihat Arus Keuangan
-                                </a>
-                            </div>
+                                <div class="menu hidden w-[220px] left-[0px]" data-id="{{ $account->id }}" data-name="action" role="dropdown-content">
+                                    @if (in_array(\App\Constant\Permission::UPDATE_CASH_ACCOUNT, $user['permission']))
+                                    <a href="{{ route('account.edit.form', ['accountId' => $account->id]) }}" class="menu-item">
+                                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-pen"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z"/></svg>
+                                        Ubah
+                                    </a>
+                                    @endif
+                                    @if (in_array(\App\Constant\Permission::CASHFLOW_HISTORY, $user['permission']))
+                                    <a href="" class="menu-item">
+                                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-history"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>
+                                        Lihat Arus Keuangan
+                                    </a>
+                                    @endif
+                                </div>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

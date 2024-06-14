@@ -19,7 +19,7 @@ class UserController extends Controller
 
 	public function index(Request $request)
 	{
-		$user_profile = $this->initProfile();
+		$user_profile = $this->getUser();
 		$data = array_merge(array(), $user_profile);
 		$user_record = User::with('roles')->where('status', Constant::STATUS_ACTIVE)->get();
 		$data['users'] = $user_record;
@@ -29,7 +29,7 @@ class UserController extends Controller
 
 	public function createForm(Request $request)
 	{
-		$user_profile = $this->initProfile();
+		$user_profile = $this->getUser();
 		$data = array_merge(array(), $user_profile);
 		$data['target_route'] = 'user.create';
 		$data['page_title'] = 'Buat pengguna baru';
@@ -90,7 +90,7 @@ class UserController extends Controller
 					->route('user.index')
 					->with(['error' => 'Pengguna tidak ditemukan']);
 		}
-		$user_profile = $this->initProfile();
+		$user_profile = $this->getUser();
 		$data = array_merge(array(), $user_profile);
 		$data['item'] = $current_user;
 		$data['target_route'] = 'user.update';

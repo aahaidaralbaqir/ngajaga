@@ -12,7 +12,7 @@ class StructureController extends Controller
 {
     public function index(Request $request)
     {
-        $user_profile = $this->initProfile();
+        $user_profile = $this->getUser();
 		$data = array_merge(array(), $user_profile);
 		$data['structures'] = Structure::all();
 		return view('admin.structure.index', $data);
@@ -20,7 +20,7 @@ class StructureController extends Controller
 
     public function showCreateStructureForm(Request $request)
     {
-        $user_profile = $this->initProfile();
+        $user_profile = $this->getUser();
 		$data = array_merge(array(), $user_profile);
         $data['item'] = NULL;
         $data['structures'] = Structure::all();
@@ -69,7 +69,7 @@ class StructureController extends Controller
            return back()
                     ->with(['error' => 'Entitas tidak ditemukan']);
         }
-        $user_profile = $this->initProfile();
+        $user_profile = $this->getUser();
 		$data = array_merge(array(), $user_profile);
         $data['item'] = $current_record;
 		$structures = Structure::all()->toArray();

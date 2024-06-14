@@ -18,6 +18,8 @@ class AccountController extends Controller
                                 ->groupBy('accounts.id', 'accounts.name')
                                 ->get();
         $data['accounts'] = $account_records;
+        $user_profile = parent::getUser();
+		$data['user'] = $user_profile;
 		$data['total_row'] = count($account_records);
 		return view('admin.account.index', $data);
     }
@@ -25,6 +27,8 @@ class AccountController extends Controller
     public function createForm(Request $request) 
     {
         $data['target_route'] = 'account.create';
+        $user_profile = parent::getUser();
+		$data['user'] = $user_profile;
         return view('admin.account.form', $data);
     }
 
@@ -37,6 +41,8 @@ class AccountController extends Controller
         }
         $data['target_route'] = 'account.edit';
         $data['item'] = $account_record;
+        $user_profile = parent::getUser();
+		$data['user'] = $user_profile;
         return view('admin.account.form', $data);
     }
 

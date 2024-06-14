@@ -8,8 +8,8 @@ class DashboardController extends Controller
 {
 	public function index(Request $request)
 	{
-		$user_profile = $this->initProfile();
-		$data = array_merge(array(), $user_profile);
+		$user_profile = parent::getUser();
+		$data['user'] = $user_profile;
 		return view('admin.index', $data);
 	}
 }

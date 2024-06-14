@@ -13,6 +13,8 @@ class SupplierController extends Controller
         $suppliers = DB::table('suppliers')->get();
         $data['suppliers'] = $suppliers;
         $data['total_row'] = count($suppliers);
+        $user_profile = parent::getUser();
+		$data['user'] = $user_profile;
         $data['suppliers'] = DB::table('suppliers')->get();
         return view('admin.supplier.index', $data);
     }
@@ -20,6 +22,8 @@ class SupplierController extends Controller
     public function createForm(Request $request) {
         $data['page_title'] = 'Menambahkan Supplier';
         $data['target_route'] = 'supplier.create';
+        $user_profile = parent::getUser();
+		$data['user'] = $user_profile;
         $data['item'] = NULL;
         return view('admin.supplier.form', $data);
     }
@@ -33,6 +37,8 @@ class SupplierController extends Controller
                     'error' => 'Supplier tidak ditemukan'
                 ]);
         }
+        $user_profile = parent::getUser();
+		$data['user'] = $user_profile;
         $data['target_route'] = 'supplier.edit';
         $data['item'] = $current_record;
         return view('admin.supplier.form', $data);

@@ -14,8 +14,8 @@ class PermissionController extends Controller
 {
     public function index(Request $request) 
     {
-        $user_profile = $this->initProfile();
-		$data = array_merge(array(), $user_profile);
+		$user_profile = parent::getUser();
+		$data['user'] = $user_profile;
 		$permissions = DB::table('permission')->get()->toArray();
 		$parent_permissions = array_filter($permissions, function($item) {
 			return $item->id_parent == Constant::PARENT_RECORD;
@@ -48,8 +48,8 @@ class PermissionController extends Controller
 
     public function createForm(Request $request)
     {
-        $user_profile = $this->initProfile();
-		$data = array_merge(array(), $user_profile);
+		$user_profile = parent::getUser();
+		$data['user'] = $user_profile;
 		$data['item'] = NULL;
 		$data['page_title'] = 'Menambahkan hak akses baru';
 		$data['target_route'] = 'permission.create';
@@ -86,6 +86,8 @@ class PermissionController extends Controller
         }
 		$data['page_title'] = 'Mengubah hak akses';
 		$data['target_route'] = 'permission.update';
+		$user_profile = parent::getUser();
+		$data['user'] = $user_profile;
         $data['item'] = $current_record;
 
 		$child_permission = DB::table('permission')

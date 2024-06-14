@@ -14,7 +14,7 @@ class SettingController extends Controller
 {
     public function index(Request $request)
 	{
-		$user_profile = $this->initProfile();
+		$user_profile = $this->getUser();
 		$data = array_merge(array(), $user_profile);
 		return view('admin.setting.form', $data);
 	}

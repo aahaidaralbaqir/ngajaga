@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Buku Kas',
-                'childs' => ['Lihat Kas', 'Tambah Kas', 'Ubah Kas'],
+                'childs' => ['Lihat Kas', 'Tambah Kas', 'Ubah Kas', 'Lihat Cashflow Account'],
             ],
             [
                 'name' => 'Hak Akses',

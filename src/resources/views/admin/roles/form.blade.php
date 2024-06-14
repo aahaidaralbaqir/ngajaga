@@ -107,9 +107,6 @@
                                                         @if (!empty($item) && in_array($permission->id, $item->permission))
                                                             checked
                                                         @endif
-                                                        @if (!empty($item) && $item->id == env('ADMINISTRATOR_ROLE_ID'))
-                                                            checked asd
-                                                        @endif
                                                     />
                                                     <span class="slider round"></span>
                                                 </label>
@@ -129,10 +126,6 @@
                                                         id="permission"
                                                         data-id-parent="{{ $child->id_parent }}"
                                                         @if (!empty($item) && in_array($child->id, $item->permission))
-                                                            checked
-                                                        @endif
-
-                                                        @if (!empty($item) && $item->id == env('ADMINISTRATOR_ROLE_ID'))
                                                             checked
                                                         @endif
                                                     />

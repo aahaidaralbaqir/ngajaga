@@ -16,7 +16,7 @@ class PostController extends Controller
 	public function index(Request $request)
 	{
 		$search_query = $request->input('query');
-		$user_profile = $this->initProfile();
+		$user_profile = $this->getUser();
         $data = array_merge(array(), $user_profile);
 		if ($request->has('query'))
 		{
@@ -32,7 +32,7 @@ class PostController extends Controller
 
     public function showCreateForm(Request $request) 
     {
-        $user_profile = $this->initProfile();
+        $user_profile = $this->getUser();
         $data = array_merge(array(), $user_profile);
 		$data['item'] = NULL;
         $data['categories'] = CommonUtil::getCategories(); 
@@ -46,7 +46,7 @@ class PostController extends Controller
 				->route('post.index')
 				->with(['error' => 'Gagal mengupdate banner, id diperlukan']);
 	
-		$user_profile = $this->initProfile();
+		$user_profile = $this->getUser();
         $data = array_merge(array(), $user_profile);
 			
 		$record = Post::find($postId);

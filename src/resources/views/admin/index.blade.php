@@ -11,7 +11,8 @@
 </div>
 <main class="w-full py-14 px-14">
     <section class="w-4/5">
-		<h2 class="text-black font-normal text-2xl">Laporan Penjualan</h2>
+		@if (in_array(\App\Constant\Permission::VIEW_REPORT_SALE_SUMMARY, $user['permission']))
+			<h2 class="text-black font-normal text-2xl">Laporan Penjualan</h2>
 			<div class="box border-black mt-4">
 				<div class="flex gap-2 items-center justify-between">
 					<div class="flex gap-2">
@@ -74,6 +75,7 @@
 					</tbody>
 				</table>
 			</div>
+		@endif
     </section>
 </main>
 @endsection

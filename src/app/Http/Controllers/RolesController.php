@@ -14,16 +14,14 @@ class RolesController extends Controller
 {
     public function index()
     {
-        $user_profile = $this->initProfile();
-		$data = array_merge(array(), $user_profile);
+		$user_profile = parent::getUser();
+		$data['user'] = $user_profile;
         $roles = DB::table('roles')->get();
         foreach($roles as $index => $role)
         {
             $permissions_ids = explode(',', $role->permission);
 			$query = DB::table('permission');
-			if ($role->id != env('ADMINISTRATOR_ROLE_ID')) {
-				$query->whereIn('id', $permissions_ids);
-			}
+			$query->whereIn('id', $permissions_ids);
             $roles[$index]->permissions = $query->get();
         }
 		$role_ids = array_map(function ($item) {
@@ -53,8 +51,8 @@ class RolesController extends Controller
 
     public function createForm(Request $request)
     {
-        $user_profile = $this->initProfile();
-		$data = array_merge(array(), $user_profile);
+		$user_profile = parent::getUser();
+		$data['user'] = $user_profile;
 		$data['target_route'] = 'roles.create';
 		$data['page_title'] = 'Menambahkan peran baru';
 		$permissions = DB::table('permission')->get()->toArray();
@@ -111,6 +109,8 @@ class RolesController extends Controller
 
     public function updateForm(Request $request, $roleId)
     {
+		$user_profile = parent::getUser();
+		$data['user'] = $user_profile;
 		$data['page_title'] = 'Mengubah peran';
 		$data['target_route'] = 'roles.update';
 		$data['item'] = Roles::find($roleId);

@@ -11,27 +11,22 @@ use App\Util\Common as CommonUtil;
 use App\Constant\Constant;
 use App\Models\User;
 use App\Models\Permission;
+use stdClass;
+
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-	protected function initProfile()
+	protected function getUser()
 	{
 		$current_user = Auth::user();
 
 		$user = User::where('id', $current_user->id)->with('roles')->first();
-		$current_permission = Permission::whereIn('id', $current_user->roles->permission)
-									->get();
-		$permission = [];
-		foreach ($current_permission as $permssion)
-		{
-			$permission[] = $permssion->alias;
-		}
 		$data = ['name' => $user->name, 
 				'email' => $user->email,
 				'role_name' => $user->roles->name,
-				'permissions' => $permission, 
-				'avatar' => $user->avatar];
+				'permission' => $user->roles->permission
+			];
 		
 		return $data;
 	}

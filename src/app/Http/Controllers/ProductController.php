@@ -48,6 +48,8 @@ class ProductController extends Controller
             $product_records[$index]->image = Common::getStorage(Constant::STORAGE_PRODUCT, $product_record->image);
             $product_records[$index]->stock = $stock;
         }
+        $user_profile = parent::getUser();
+		$data['user'] = $user_profile;
         $data['products'] = $product_records;
         $data['total_row'] = count($product_records);
         return view('admin.product.index', $data);
@@ -63,6 +65,8 @@ class ProductController extends Controller
                                 ->groupBy('category.id', 'category.name')
                                 ->get();
         $data['total_row'] = count($data['category']);
+        $user_profile = parent::getUser();
+		$data['user'] = $user_profile;
         return view('admin.category.index', $data);
     }
 
@@ -76,6 +80,8 @@ class ProductController extends Controller
                                 ->groupBy('shelf.id', 'shelf.name')
                                 ->get();
         $data['total_row'] = count($data['shelf']);
+        $user_profile = parent::getUser();
+		$data['user'] = $user_profile;
         return view('admin.shelf.index', $data);
     }
 
@@ -83,6 +89,8 @@ class ProductController extends Controller
     {
         $data['page_title'] = 'Buat Rak Baru';
         $data['target_route'] = 'shelf.create';
+        $user_profile = parent::getUser();
+		$data['user'] = $user_profile;
         return view('admin.shelf.form', $data);
     }
 
@@ -117,6 +125,8 @@ class ProductController extends Controller
         $data['item'] = $current_record;
         $data['page_title'] = 'Mengubah Rak';
         $data['target_route'] = 'shelf.edit';
+        $user_profile = parent::getUser();
+		$data['user'] = $user_profile;
         return view('admin.shelf.form', $data);
     }
 
@@ -177,6 +187,8 @@ class ProductController extends Controller
     {
         $data['page_title'] = 'Buat Kategori';
         $data['target_route'] = 'category.create';
+        $user_profile = parent::getUser();
+		$data['user'] = $user_profile;
         return view('admin.category.form', $data);
     }
 
@@ -211,6 +223,8 @@ class ProductController extends Controller
         $data['item'] = $current_record;
         $data['page_title'] = 'Mengubah kategori';
         $data['target_route'] = 'category.edit';
+        $user_profile = parent::getUser();
+		$data['user'] = $user_profile;
         return view('admin.category.form', $data);
     }
 
@@ -273,6 +287,8 @@ class ProductController extends Controller
         $data['target_route'] = 'product.create';
         $data['page_title'] = 'Product apa yang akan kamu buat ?';
         $data['units'] = Common::getUnits();
+        $user_profile = parent::getUser();
+		$data['user'] = $user_profile;
         return view('admin.product.form', $data); 
     }
 
@@ -342,6 +358,8 @@ class ProductController extends Controller
         $data['item'] = $current_record;
         $data['page_title'] = 'Mengubah Produk';
         $data['target_route'] = 'product.edit';
+        $user_profile = parent::getUser();
+		$data['user'] = $user_profile;
         return view('admin.product.form', $data); 
     }
     
@@ -414,6 +432,8 @@ class ProductController extends Controller
         $data['item'] = $current_record;
         $data['page_title'] = 'Mengubah Konfigurasi Harga';
         $data['target_route'] = 'product.price';
+        $user_profile = parent::getUser();
+		$data['user'] = $user_profile;
         return view('admin.product.price', $data);  
     }
 
