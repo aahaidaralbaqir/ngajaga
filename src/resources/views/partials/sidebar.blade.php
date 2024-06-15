@@ -34,7 +34,7 @@
                             $target_route = 'permission.index';
                             if (!in_array(\App\Constant\Permission::VIEW_PERMISSION, $user['permission'])) 
                                 $target_route = 'roles.index';
-                            if (!in_array(\App\Constant\Permission::VIEW_ROLE, $user['permission']))
+                            if (!in_array(\App\Constant\Permission::VIEW_ROLE, $user['permission']) && !in_array(\App\Constant\Permission::VIEW_PERMISSION, $user['permission']))
                                 $target_route = 'user.inedex';
                         @endphp
                         <a class="group relative flex items-center gap-2.5 rounded-sm  hover:text-[#ff91e7] text-sm  duration-300 ease-in-out dark:hover:bg-meta-4 {{ in_array(route_name(), ['permission.index', 'permission.create.form', 'permission.edit.form', 'roles.index', 'roles.create.form', 'roles.update.form', 'user.index', 'user.create.form', 'user.update.form']) ? 'text-[#ff91e7]' : 'text-bodydark1' }}" href="{{ route($target_route) }}">
@@ -54,7 +54,7 @@
                             $target_route = 'product.index';
                             if (!in_array(\App\Constant\Permission::VIEW_PRODUCT, $user['permission'])) 
                                 $target_route = 'category.index';
-                            if (!in_array(\App\Constant\Permission::VIEW_CATEGORY, $user['permission']))
+                            if (!in_array(\App\Constant\Permission::VIEW_CATEGORY, $user['permission']) && !in_array(\App\Constant\Permission::VIEW_PRODUCT, $user['permission']))
                                 $target_route = 'shelf.index';
                         @endphp
                         <li class="border-t border-[#808080] px-5 py-4">
