@@ -165,6 +165,18 @@ class Common {
 		];
 	}
 
+	public static function getUnitByIds($unit_ids) {
+		$units = self::getUnits();
+		$data = [];
+		foreach ($unit_ids as $unit_id) {
+			$data[] = [
+				'id' => $unit_id,
+				'name' => $units[$unit_id]
+			]; 
+		}
+		return $data;
+	}
+
 	public static function generateUniqueSku($length = 8) {
 		// Generate a random SKU
         $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';

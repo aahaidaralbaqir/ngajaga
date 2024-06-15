@@ -18,16 +18,6 @@ class AuthApi
     const ACCESS_FORBIDDEN_HTTP_STATUS = 403;
     public function handle(Request $request, Closure $next)
     {
-        if (auth('api')->check()) {
-            return $next($request);
-        }
-
-        return response()->json(
-            array (
-                'status' => FALSE,
-                'message' => 'Akses tidak sah'
-            ),
-            self::ACCESS_FORBIDDEN_HTTP_STATUS
-        );
+        return $next($request);
     }
 }

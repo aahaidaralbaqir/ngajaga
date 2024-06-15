@@ -49,6 +49,7 @@ class PurchaseController extends Controller
     public function createPurchaseForm() {
         $data['page_title'] = 'Produk apa yang akan kamu beli ?';
         $data['target_route'] = 'purchase.create';
+        $data['user'] = parent::getUser();
         $data['item'] = NULL;
         $product_records = ProductController::getProducts();
         $data['suppliers'] = SupplierController::getSuppliers();
@@ -164,6 +165,31 @@ class PurchaseController extends Controller
         $product_records = DB::table('products')
             ->select(['products.id', 'products.name'])
             ->get();
+        $product_ids = array_map(function ($item) {
+            return $item->id;
+        }, $product_records->toArray());
+
+        $price_mapping = DB::table('price_mapping')
+            ->whereIn('product_id', $product_ids)
+            ->get();
+
+        $grouped_price_mapping = [];
+        foreach ($price_mapping as $pm) {
+            if (array_key_exists($pm->product_id, $grouped_price_mapping)) {
+                $grouped_price_mapping[$pm->product_id][] = $pm->unit; 
+            } else {
+                $grouped_price_mapping[$pm->product_id] = [$pm->unit];
+            }
+        }
+
+        for ($s = 0; $s < count($product_records); $s++)  {
+            $product_record = $product_records[$s];
+            $product_record->units = Common::getUnitByIds(array_keys(Common::getUnits()));
+            if (array_key_exists($product_record->id, $grouped_price_mapping)) {
+                $product_record->units =  Common::getUnitByIds($grouped_price_mapping[$product_record->id]);
+            }
+            $product_records[$s] = $product_record;
+        }
         return response()->json(array (
             'status' => true,
             'products' => $product_records

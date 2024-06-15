@@ -147,7 +147,7 @@ class UserController extends Controller
 			return redirect()->route('dashboard');
 		}
 
-		return back()->withErrors($validator)
+		return back()->withErrors(['password' => 'Invalid username or password'])
 					->withInput();
 	}
 
