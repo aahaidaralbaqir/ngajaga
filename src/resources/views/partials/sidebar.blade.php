@@ -69,7 +69,7 @@
                             $target_route = 'supplier.index';
                             if (!in_array(\App\Constant\Permission::VIEW_SUPPLIER, $user['permission'])) 
                                 $target_route = 'purchase.index';
-                            if (!in_array(\App\Constant\Permission::VIEW_ORDER_INVOICE, $user['permission']))
+                            if (!in_array(\App\Constant\Permission::VIEW_ORDER_INVOICE, $user['permission']) && !in_array(\App\Constant\Permission::VIEW_SUPPLIER, $user['permission']))
                                 $target_route = 'invoice.index';
                         @endphp
                         <li class="border-t border-[#808080] px-5 py-4">
