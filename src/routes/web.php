@@ -119,7 +119,9 @@ Route::prefix('user')->group(function () {
 
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
-
+Route::get('/unauthorized', function () {
+	return view('admin.unauthorized');
+})->name('unauthorized');
 
 Route::get('/login', function () {
 	return view('login');

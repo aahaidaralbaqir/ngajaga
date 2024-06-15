@@ -27,7 +27,7 @@ class RoleBasedAccessControl
         $permission_ids = explode(',', $role_record->permission);
         $has_access = in_array($permission_id, $permission_ids);
         if (!$has_access) {
-           return route('unauthorized'); 
+           return redirect()->route('unauthorized'); 
         }
         return $next($request);
     }
