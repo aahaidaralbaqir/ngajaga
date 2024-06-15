@@ -15,6 +15,7 @@ class PurchaseController extends Controller
     public function index() {
         $purchase_orders = PurchaseController::transformPurchaseOrders($this->getPurchaseOrders());
         $data['purchase_orders'] = $purchase_orders;
+        $data['user'] = parent::getUser();
         $data['total_row'] = count($purchase_orders);
         return view('admin.purchase.index', $data);
     }
