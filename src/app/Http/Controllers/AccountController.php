@@ -53,7 +53,7 @@ class AccountController extends Controller
             return Response::backWithErrors($validator);
 
 		AccountRepository::createAccount($user_input);
-        Response::redirectWithSuccess(
+        return Response::redirectWithSuccess(
             'account.index', 
             'Akun baru berhasil dibuat');
     }
