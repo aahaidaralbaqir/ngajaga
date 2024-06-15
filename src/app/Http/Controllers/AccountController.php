@@ -2,89 +2,79 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\AccountRepository;
+use App\Util\Response;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class AccountController extends Controller
 {
+    const ACCOUNT_CREATE_ROUTE = 'account.create';
+    const ACCOUNT_UPDATE_ROUTE = 'account.edit';
+
     public function index()
     {
-        $account_records = DB::table('accounts')
-                                ->select(['accounts.id', 'accounts.name', DB::raw('SUM(cashflows.amount) AS current_balance')])
-                                ->leftJoin('cashflows', function ($join) {
-                                    $join->on('cashflows.account_id', '=', 'accounts.id');
-                                })
-                                ->groupBy('accounts.id', 'accounts.name')
-                                ->get();
-        $data['accounts'] = $account_records;
-        $user_profile = parent::getUser();
-		$data['user'] = $user_profile;
-		$data['total_row'] = count($account_records);
-		return view('admin.account.index', $data);
+        $user = parent::getUser();
+        $account_records = AccountRepository::getAccountsWithBalance(); 
+
+		return view('admin.account.index')
+            ->with('user', $user)
+            ->with('accounts', $account_records);
     }
 
-    public function createForm(Request $request) 
+    public function createForm() 
     {
-        $data['target_route'] = 'account.create';
-        $user_profile = parent::getUser();
-		$data['user'] = $user_profile;
-        return view('admin.account.form', $data);
+        return view('admin.account.form')
+            ->with('target_route', self::ACCOUNT_CREATE_ROUTE)
+            ->with('user', parent::getUser());
     }
 
     public function editForm(Request $request, $accountId) 
     {
-        $account_record = DB::table('accounts')->where('id', $accountId)->first();
-        if (!$account_record)
-        {
-            return back()>with(['error' => 'Akun tidak ditemukan']);
-        }
-        $data['target_route'] = 'account.edit';
-        $data['item'] = $account_record;
         $user_profile = parent::getUser();
-		$data['user'] = $user_profile;
-        return view('admin.account.form', $data);
+        $account_record = AccountRepository::getAccountById($accountId); 
+        if (!$account_record)
+            return Response::backWithError('Akun tidak ditemukan');
+
+        return view('admin.account.form')
+            ->with('user', $user_profile)
+            ->with('item', $account_record)
+            ->with('target_route', self::ACCOUNT_UPDATE_ROUTE);
     }
 
     public function create(Request $request)
     {
         $user_input_field_rules = [
 			'name' => 'required'
-		];
+        ];
 		$user_input = $request->only('name');
 		$validator = Validator::make($user_input, $user_input_field_rules);
 		if ($validator->fails())
-			return back()
-						->withErrors($validator)
-						->withInput();
+            return Response::backWithErrors($validator);
 
-		DB::table('accounts')
-            ->insert($user_input);
-		return redirect()
-					->route('account.index')
-					->with(['success' => 'Akun berhasil ditambahkan']);
+		AccountRepository::createAccount($user_input);
+        Response::redirectWithSuccess(
+            'account.index', 
+            'Akun baru berhasil dibuat');
     }
 
     public function edit(Request $request)
     {
+        $account_id = $request->input('id');
+        $account_record = AccountRepository::getAccountById($account_id); 
+        if (!$account_record)
+            return Response::backWithError('Akun tidak ditemukan');
         $user_input_field_rules = [
 			'name' => 'required',
-            'id' => 'required'
-		];
-		$user_input = $request->only('name', 'id');
+        ];
+		$user_input = $request->only('name');
 		$validator = Validator::make($user_input, $user_input_field_rules);
 		if ($validator->fails())
-			return back()
-						->withErrors($validator)
-						->withInput();
+            return Response::backWithErrors($validator);
 
-		DB::table('accounts')
-            ->where('id', $user_input['id'])
-            ->update(array (
-                'name' => $user_input['name']
-            ));
-		return redirect()
-					->route('account.index')
-					->with(['success' => 'Akun berhasil dirubah']);   
+		AccountRepository::updateAccount($account_id, $user_input);
+        return Response::redirectWithSuccess(
+            'account.index', 
+            'Akun berhasil dirubah');   
     }
 }
