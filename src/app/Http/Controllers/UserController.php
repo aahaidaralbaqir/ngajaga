@@ -20,7 +20,7 @@ class UserController extends Controller
 	public function index(Request $request)
 	{
 		$user_profile = $this->getUser();
-		$data = array_merge(array(), $user_profile);
+		$data['user'] = $user_profile;
 		$user_record = User::with('roles')->where('status', Constant::STATUS_ACTIVE)->get();
 		$data['users'] = $user_record;
 		$data['total_row'] = count($user_record);
@@ -30,7 +30,7 @@ class UserController extends Controller
 	public function createForm(Request $request)
 	{
 		$user_profile = $this->getUser();
-		$data = array_merge(array(), $user_profile);
+		$data['user'] = $user_profile;
 		$data['target_route'] = 'user.create';
 		$data['page_title'] = 'Buat pengguna baru';
 		$data['item'] = NULL;
@@ -144,7 +144,7 @@ class UserController extends Controller
 			$request->session()
 					->regenerate();
 
-			return redirect()->route('admin');
+			return redirect()->route('dashboard');
 		}
 
 		return back()->withErrors($validator)

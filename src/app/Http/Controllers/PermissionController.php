@@ -69,7 +69,8 @@ class PermissionController extends Controller
 			return back()
 						->withErrors($validator)
 						->withInput();
-		
+	
+		$user_input['is_default'] = Constant::OPTION_FALSE;
 		Permission::create($user_input);
 		return redirect()
 					->route('permission.index')

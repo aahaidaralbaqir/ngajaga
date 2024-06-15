@@ -38,4 +38,7 @@ class Constant {
 	const PURCHASE_ORDER_WAITING = 2;
 	const PURCHASE_ORDER_COMPLETED = 3;
 	const PARENT_RECORD = 0;
+
+	const OPTION_TRUE = 1;
+	const OPTION_FALSE = 0;
 }

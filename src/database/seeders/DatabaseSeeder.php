@@ -36,43 +36,43 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Peran',
-                'childs' => ['Lihat Peran', 'Tambah Peran', 'Ubah Peran', 'Hapus Peran']
+                'childs' => ['Lihat Peran', 'Tambah Peran', 'Ubah Peran']
             ],
             [
                 'name' => 'Pengguna',
-                'childs' => ['Tambah Pengguna', 'Hapus Pengguna', 'Ubah Pengguna']
+                'childs' => ['Lihat Pengguna', 'Tambah Pengguna', 'Ubah Pengguna']
             ],
             [
                 'name' => 'Produk',
-                'childs' => ['Tambah Produk', 'Ubah Produk', 'Hapus Produk']
+                'childs' => ['Lihat Produk', 'Tambah Produk', 'Ubah Produk']
             ],
             [
                 'name' => 'Kategori',
-                'childs' => ['Tambah Kategori', 'Ubah Kategori', 'Hapus Kategori']
+                'childs' => ['Lihat Kategori', 'Tambah Kategori', 'Ubah Kategori']
             ],
             [
                 'name' => 'Rak',
-                'childs' => ['Tambah Rak', 'Ubah Rak', 'Hapus Rak']
+                'childs' => ['Lihat Rak', 'Tambah Rak', 'Ubah Rak']
             ],
             [
                 'name' => 'Pemasok',
-                'childs' => ['Tambab Pemasok', 'Ubah Pemasok', 'Hapus Pemasok']
+                'childs' => ['Lihat Pemasok', 'Tambab Pemasok', 'Ubah Pemasok']
             ],
             [
                 'name' => 'Pemesanan Stok',
-                'childs' => ['Tambah Pemesanan Stok', 'Ubah Pemesanan Stok', 'Hapus Pemesanan Stok']
+                'childs' => ['Lihat Pemesanan Stok', 'Tambah Pemesanan Stok', 'Ubah Pemesanan Stok', 'Hapus Pemesanan Stok']
             ],
             [
                 'name' => 'Penerimaan Stok',
-                'childs' => ['Tambah Penerimaan Stok', 'Ubah Penerimaan Stok', 'Hapus Penerimaan Stok']
+                'childs' => ['Lihat Penerimaan Stok', 'Tambah Penerimaan Stok', 'Ubah Penerimaan Stok', 'Hapus Penerimaan Stok']
             ],
             [
                 'name' => 'Pelanggan',
-                'childs' => ['Tambah Pelanggan', 'Ubah Pelanggan', 'Hapus Pelanggan'] 
+                'childs' => ['Lihat Pelanggaran', 'Tambah Pelanggan', 'Ubah Pelanggan'] 
             ],
             [
                 'name' => 'Transaksi',
-                'childs' => ['Tambah Transaksi', 'Ubah Transaksi']
+                'childs' => ['Lihat Transaksi', 'Tambah Transaksi', 'Ubah Transaksi']
             ],
             [
                 'name' => 'Laporan',
@@ -82,11 +82,11 @@ class DatabaseSeeder extends Seeder
         
         $permission_ids = [];
         foreach ($permission as $pp) {
-            $parent_id = DB::table('permission')->insertGetId(['name' => $pp['name']]);
+            $parent_id = DB::table('permission')->insertGetId(['name' => $pp['name'], 'is_default' => Constant::OPTION_TRUE]);
             $permission_ids[] = $parent_id;
             if (array_key_exists('childs', $pp)) {
                 foreach ($pp['childs'] as $kk) {
-                   $permission_ids[] = DB::table('permission')->insertGetId(['name' => $kk, 'id_parent' => $parent_id]);
+                   $permission_ids[] = DB::table('permission')->insertGetId(['name' => $kk, 'id_parent' => $parent_id, 'is_default' => Constant::OPTION_TRUE]);
                 }
             }
         }
