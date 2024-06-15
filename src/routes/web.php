@@ -1,5 +1,6 @@
 <?php
 
+use App\Constant\Permission;
 use App\Http\Controllers\AccountController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -38,112 +39,82 @@ Route::get('/logout', [UserController::class, 'logout'])->name('logout')->middle
 
 
 Route::prefix('account')->group(function () {
-	Route::get('/', [AccountController::class, 'index'])->name('account.index')->middleware('auth');
-	Route::get('/create', [AccountController::class, 'createForm'])->name('account.create.form')->middleware('auth');
-	Route::post('/create', [AccountController::class, 'create'])->name('account.create')->middleware('auth');
-	Route::get('/{accountId}/edit', [AccountController::class, 'editForm'])->name('account.edit.form')->middleware('auth');
-	Route::post('/edit', [AccountController::class, 'edit'])->name('account.edit')->middleware('auth');
+	Route::get('/', [AccountController::class, 'index'])->name('account.index')->middleware(['auth', 'rbac:' . Permission::VIEW_CASH_ACCOUNT]);
+	Route::get('/create', [AccountController::class, 'createForm'])->name('account.create.form')->middleware(['auth', 'rbac:' . Permission::CREATE_CASH_ACCOUNT]);
+	Route::post('/create', [AccountController::class, 'create'])->name('account.create')->middleware(['auth', 'rbac:' . Permission::CREATE_CASH_ACCOUNT]);
+	Route::get('/{accountId}/edit', [AccountController::class, 'editForm'])->name('account.edit.form')->middleware(['auth', 'rbac:' . Permission::UPDATE_CASH_ACCOUNT]);
+	Route::post('/edit', [AccountController::class, 'edit'])->name('account.edit')->middleware(['auth', 'rbac:' . Permission::UPDATE_CASH_ACCOUNT]);
 });
 
 
 Route::prefix('product')->group(function () {
-	Route::get('/', [ProductController::class, 'index'])->name('product.index')->middleware('auth');
-	Route::get('/create', [ProductController::class, 'createProductForm'])->name('product.create.form')->middleware('auth');
-	Route::post('/create', [ProductController::class, 'createProduct'])->name('product.create')->middleware('auth');
-	Route::post('/edit', [ProductController::class, 'editProduct'])->name('product.edit')->middleware('auth');
-	Route::get('/{productId}/edit', [ProductController::class, 'editProductForm'])->name('product.edit.form')->middleware('auth');
-	Route::get('/{productId}/price', [ProductController::class, 'editPriceForm'])->name('product.price.form')->middleware('auth');
-	Route::post('/price', [ProductController::class, 'editPrice'])->name('product.price')->middleware('auth');
+	Route::get('/', [ProductController::class, 'index'])->name('product.index')->middleware(['auth', 'rbac:' . Permission::VIEW_PRODUCT]);
+	Route::get('/create', [ProductController::class, 'createProductForm'])->name('product.create.form')->middleware(['auth', 'rbac:' . Permission::CREATE_PRODUCT]);
+	Route::post('/create', [ProductController::class, 'createProduct'])->name('product.create')->middleware('auth', 'rbac:' . Permission::CREATE_PRODUCT);
+	Route::post('/edit', [ProductController::class, 'editProduct'])->name('product.edit')->middleware(['auth', 'rbac:' . Permission::UPDATE_PRODUCT]);
+	Route::get('/{productId}/edit', [ProductController::class, 'editProductForm'])->name('product.edit.form')->middleware(['auth', 'rbac:' . Permission::UPDATE_PRODUCT]);
+	Route::get('/{productId}/price', [ProductController::class, 'editPriceForm'])->name('product.price.form')->middleware(['auth', 'rbac:' . Permission::UPDATE_PRODUCT]);
+	Route::post('/price', [ProductController::class, 'editPrice'])->name('product.price')->middleware(['auth', 'rbac:' . Permission::UPDATE_PRODUCT]);
 });
 
 Route::prefix('supplier')->group(function () {
-	Route::get('/', [SupplierController::class, 'index'])->name('supplier.index')->middleware('auth');
-	Route::get('/create', [SupplierController::class, 'createForm'])->name('supplier.create.form')->middleware('auth');
-	Route::post('/create', [SupplierController::class, 'create'])->name('supplier.create')->middleware('auth');
-	Route::get('/{supplierId}/edit', [SupplierController::class, 'editForm'])->name('supplier.edit.form')->middleware('auth');
-	Route::post('/edit', [SupplierController::class, 'edit'])->name('supplier.edit')->middleware('auth');
+	Route::get('/', [SupplierController::class, 'index'])->name('supplier.index')->middleware(['auth', 'rbac:' . Permission::VIEW_SUPPLIER]);
+	Route::get('/create', [SupplierController::class, 'createForm'])->name('supplier.create.form')->middleware(['auth', 'rbac:' . Permission::CREATE_SUPPLIER]);
+	Route::post('/create', [SupplierController::class, 'create'])->name('supplier.create')->middleware(['auth', 'rbac:' . Permission::CREATE_SUPPLIER]);
+	Route::get('/{supplierId}/edit', [SupplierController::class, 'editForm'])->name('supplier.edit.form')->middleware(['auth', 'rbac:' . Permission::UPDATE_SUPPLIER]);
+	Route::post('/edit', [SupplierController::class, 'edit'])->name('supplier.edit')->middleware(['auth', 'rbac:' . Permission::UPDATE_SUPPLIER]);
 });
 
 
 Route::prefix('purchase')->group(function () {
-	Route::get('/', [PurchaseController::class, 'index'])->name('purchase.index')->middleware('auth');
-	Route::get('/create', [PurchaseController::class, 'createPurchaseForm'])->name('purchase.create.form')->middleware('auth');
-	Route::post('/create', [PurchaseController::class, 'createPurchaseOrder'])->name('purchase.create')->middleware('auth');
-	Route::get('/{purchaseOrderId}/edit', [PurchaseController::class, 'editPurchaseForm'])->name('purchase.edit.form')->middleware('auth');
-	Route::post('/edit', [PurchaseController::class, 'editPurchaseOrder'])->name('purchase.edit')->middleware('auth');
+	Route::get('/', [PurchaseController::class, 'index'])->name('purchase.index')->middleware(['auth', 'rbac:' . Permission::VIEW_ORDER_INVOICE]);
+	Route::get('/create', [PurchaseController::class, 'createPurchaseForm'])->name('purchase.create.form')->middleware(['auth', 'rbac:' . Permission::CREATE_ORDER_INVOICE]);
+	Route::post('/create', [PurchaseController::class, 'createPurchaseOrder'])->name('purchase.create')->middleware(['auth', 'rbac:' . Permission::CREATE_ORDER_INVOICE]);
+	Route::get('/{purchaseOrderId}/edit', [PurchaseController::class, 'editPurchaseForm'])->name('purchase.edit.form')->middleware(['auth', 'rbac:' . Permission::UPDATE_ORDER_INVOICE]);
+	Route::post('/edit', [PurchaseController::class, 'editPurchaseOrder'])->name('purchase.edit')->middleware(['auth', 'rbac:' . Permission::UPDATE_ORDER_INVOICE]);
 });
 
 Route::prefix('category')->group(function () {
-	Route::get('/', [ProductController::class, 'category'])->name('category.index')->middleware('auth');
-	Route::get('/create', [ProductController::class, 'createFormCategory'])->name('category.create.form')->middleware('auth');
-	Route::post('/create', [ProductController::class, 'createCategory'])->name('category.create')->middleware('auth');
-	Route::get('/{categoryId}/edit', [ProductController::class, 'editFormCategory'])->name('category.edit.form')->middleware('auth');
-	Route::get('/{categoryId}/delete', [ProductController::class, 'deleteCategory'])->name('category.delete')->middleware('auth');
-	Route::post('/edit', [ProductController::class, 'editCategory'])->name('category.edit')->middleware('auth');
+	Route::get('/', [ProductController::class, 'category'])->name('category.index')->middleware(['auth', 'rbac:' . Permission::VIEW_CATEGORY]);
+	Route::get('/create', [ProductController::class, 'createFormCategory'])->name('category.create.form')->middleware(['auth', 'rbac:' . Permission::CREATE_CATEGORY]);
+	Route::post('/create', [ProductController::class, 'createCategory'])->name('category.create')->middleware(['auth'. 'rbac:' . Permission::CREATE_CATEGORY]);
+	Route::get('/{categoryId}/edit', [ProductController::class, 'editFormCategory'])->name('category.edit.form')->middleware(['auth', 'rbac:' . Permission::UPDATE_CATEGORY]);
+	Route::post('/edit', [ProductController::class, 'editCategory'])->name('category.edit')->middleware(['auth', 'rbac:' . Permission::UPDATE_CATEGORY]);
 });
 
 Route::prefix('shelf')->group(function () {
-	Route::get('/', [ProductController::class, 'shelf'])->name('shelf.index')->middleware('auth');
-	Route::get('/create', [ProductController::class, 'createFormShelf'])->name('shelf.create.form')->middleware('auth');
-	Route::post('/create', [ProductController::class, 'createShelf'])->name('shelf.create')->middleware('auth');
-	Route::get('/{shelfId}/edit', [ProductController::class, 'editFormShelf'])->name('shelf.edit.form')->middleware('auth');
-	Route::get('/{shelfId}/delete', [ProductController::class, 'deleteShelf'])->name('shelf.delete')->middleware('auth');
-	Route::post('/edit', [ProductController::class, 'editShelf'])->name('shelf.edit')->middleware('auth');
+	Route::get('/', [ProductController::class, 'shelf'])->name('shelf.index')->middleware(['auth', 'rbac:' . Permission::VIEW_SHELF]);
+	Route::get('/create', [ProductController::class, 'createFormShelf'])->name('shelf.create.form')->middleware(['auth', 'rbac:' . Permission::CREATE_SHELF]);
+	Route::post('/create', [ProductController::class, 'createShelf'])->name('shelf.create')->middleware(['auth', 'rbac:' . Permission::CREATE_SHELF]);
+	Route::get('/{shelfId}/edit', [ProductController::class, 'editFormShelf'])->name('shelf.edit.form')->middleware(['auth', 'rbac:' . Permission::UPDATE_SHELF]);
+	Route::post('/edit', [ProductController::class, 'editShelf'])->name('shelf.edit')->middleware(['auth', 'rbac:' . Permission::UPDATE_SHELF]);
 });
 
 
 Route::prefix('permission')->group(function () {
-	Route::get('/', [PermissionController::class, 'index'])->name('permission.index')->middleware('auth');
-	Route::get('/create', [PermissionController::class, 'createForm'])->name('permission.create.form')->middleware('auth');
-	Route::post('/create', [PermissionController::class, 'createPermission'])->name('permission.create')->middleware('auth');
-	Route::get('/{permissionId}/edit', [PermissionController::class, 'updateForm'])->name('permission.edit.form')->middleware('auth');
-	Route::get('/delete/{permissionId}', [PermissionController::class, 'deletePermission'])->name('permission.delete')->middleware('auth');
-	Route::post('/update', [PermissionController::class, 'updatePermission'])->name('permission.update')->middleware('auth');
+	Route::get('/', [PermissionController::class, 'index'])->name('permission.index')->middleware(['auth', 'rbac:' . Permission::VIEW_PERMISSION]);
+	Route::get('/create', [PermissionController::class, 'createForm'])->name('permission.create.form')->middleware(['auth', 'rbac:' . Permission::CREATE_PERMISSION]);
+	Route::post('/create', [PermissionController::class, 'createPermission'])->name('permission.create')->middleware(['auth', 'rbac:' . Permission::CREATE_PERMISSION]);
+	Route::get('/{permissionId}/edit', [PermissionController::class, 'updateForm'])->name('permission.edit.form')->middleware(['auth', 'rbac:' . Permission::UPDATE_PERMISSION]);
+	Route::post('/update', [PermissionController::class, 'updatePermission'])->name('permission.update')->middleware(['auth', 'rbac:' . Permission::UPDATE_PERMISSION]);
 });
 
 Route::prefix('roles')->group(function () {
-	Route::get('/', [RolesController::class, 'index'])->name('roles.index')->middleware('auth');
-	Route::get('/create', [RolesController::class, 'createForm'])->name('roles.create.form')->middleware('auth');
-	Route::post('/create', [RolesController::class, 'createRole'])->name('roles.create')->middleware('auth');
-	Route::get('/update/{rolesId}', [RolesController::class, 'updateForm'])->name('roles.update.form')->middleware('auth');
-	Route::get('/delete/{rolesId}', [RolesController::class, 'deleteRole'])->name('roles.delete')->middleware('auth');
-	Route::post('/update', [RolesController::class, 'updateRole'])->name('roles.update')->middleware('auth');
+	Route::get('/', [RolesController::class, 'index'])->name('roles.index')->middleware(['auth', 'rbac:' . Permission::VIEW_ROLE]);
+	Route::get('/create', [RolesController::class, 'createForm'])->name('roles.create.form')->middleware(['auth', 'rbac:' . Permission::CREATE_ROLE]);
+	Route::post('/create', [RolesController::class, 'createRole'])->name('roles.create')->middleware(['auth', 'rbac:'. Permission::CREATE_ROLE]);
+	Route::get('/update/{rolesId}', [RolesController::class, 'updateForm'])->name('roles.update.form')->middleware(['auth', 'rbac:' . Permission::UPDATE_ROLE]);
+	Route::post('/update', [RolesController::class, 'updateRole'])->name('roles.update')->middleware(['auth', 'rbac:' . Permission::UPDATE_ROLE]);
 });
 
 Route::prefix('user')->group(function () {
-	Route::get('/', [UserController::class, 'index'])->name('user.index')->middleware('auth');
-	Route::get('/create', [UserController::class, 'createForm'])->name('user.create.form')->middleware('auth');
-	Route::post('/create', [UserController::class, 'createUser'])->name('user.create')->middleware('auth');
-	Route::get('/update/{userId}', [UserController::class, 'updateForm'])->name('user.update.form')->middleware('auth');
-	Route::get('/delete/{userId}', [UserController::class, 'deleteUser'])->name('user.delete')->middleware('auth');
-	Route::post('/update', [UserController::class, 'updateUser'])->name('user.update')->middleware('auth');
+	Route::get('/', [UserController::class, 'index'])->name('user.index')->middleware(['auth', 'rbac:' . Permission::VIEW_USER]);
+	Route::get('/create', [UserController::class, 'createForm'])->name('user.create.form')->middleware(['auth', 'rbac:' . Permission::CREATE_USER]);
+	Route::post('/create', [UserController::class, 'createUser'])->name('user.create')->middleware(['auth', 'rbac:' . Permission::CREATE_USER]);
+	Route::get('/update/{userId}', [UserController::class, 'updateForm'])->name('user.update.form')->middleware(['auth', 'rbac:' . Permission::UPDATE_USER]);
+	Route::post('/update', [UserController::class, 'updateUser'])->name('user.update')->middleware(['auth', 'rbac:' . Permission::UPDATE_USER]);
 });
 
-Route::prefix('setting')->group(function () {
-	Route::get('/',	[SettingController::class, 'index'])->name('setting.index')->middleware('auth');
-	Route::post('/', [SettingController::class, 'updateProfile'])->name('setting.update')->middleware('auth');
-	Route::post('/update-avatar', [SettingController::class, 'updateAvatar'])->name('setting.avatar.update')->middleware('auth');
-	Route::get('/remove-avatar', [SettingController::class, 'removeAvatar'])->name('setting.avatar.remove')->middleware('auth');
-});
-
-
-
-Route::prefix('post')->group(function () {
-	Route::get('/',  [PostController::class, 'index'])->name('post.index')->middleware('auth');
-	Route::get('/create', [PostController::class, 'showCreateForm'])->name('post.create.form')->middleware('auth');
-	Route::post('/create', [PostController::class, 'createPost'])->name('post.create')->middleware('auth');
-	Route::get('/update/{postId}', [PostController::class, 'showUpdateForm'])->name('post.update.form')->middleware('auth');
-	Route::post('/update', [PostController::class, 'updatePost'])->name('post.update')->middleware('auth');
-});
-
-Route::prefix('structure')->group(function () {
-	Route::get('/', [StructureController::class, 'index'])->name('structure.index')->middleware('auth');
-	Route::get('/create', [StructureController::class, 'showCreateStructureForm'])->name('structure.create.form')->middleware('auth');
-	Route::post('/create', [StructureController::class, 'createStructure'])->name('structure.create')->middleware('auth');
-	Route::get('/update/{structureId}', [StructureController::class, 'showEditStructureForm'])->name('structure.update.form')->middleware('auth');
-	Route::get('/delete/{structureId}', [StructureController::class, 'deleteStructure'])->name('structure.delete')->middleware('auth');
-	Route::post('/update', [StructureController::class, 'updateStructure'])->name('structure.update')->middleware('auth');
-});
 
 
 
