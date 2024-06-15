@@ -16,7 +16,9 @@
                         </div>
                     </div>
                 </button>
-                <a class="button text-base bg-[#ff91e7] text-black p-3 rounded border border-black" href="{{ route('roles.create.form') }}">Buat Peran</a>
+                @if (in_array(\App\Constant\Permission::CREATE_ROLE, $user['permission']))
+                    <a class="button text-base bg-[#ff91e7] text-black p-3 rounded border border-black" href="{{ route('roles.create.form') }}">Buat Peran</a>
+                @endif
             </div>
         </div>
         <div class="tab">
@@ -74,19 +76,17 @@
                             </div>
                         </td>
                         <td class="relative">
-                            <a href="" data-id="{{ $role->id }}" data-name="action" class="dropdown" role="dropdown">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
-                            </a>
-                            <div class="menu hidden" data-id="{{ $role->id }}" data-name="action" role="dropdown-content">
-                                <a href="{{ route('roles.update.form', ['rolesId' => $role->id]) }}" class="menu-item">
-                                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-pen"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z"/></svg>
-                                    Ubah
+                            @if (in_array(\App\Constant\Permission::UPDATE_ROLE, $user['permission']))
+                                <a href="" data-id="{{ $role->id }}" data-name="action" class="dropdown" role="dropdown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
                                 </a>
-                                <a href="{{ route('roles.delete', ['rolesId' => $role->id]) }}" class="menu-item text-red ">
-                                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
-                                    Hapus
-                                </a>
-                            </div>
+                                <div class="menu hidden" data-id="{{ $role->id }}" data-name="action" role="dropdown-content">
+                                    <a href="{{ route('roles.update.form', ['rolesId' => $role->id]) }}" class="menu-item">
+                                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-pen"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z"/></svg>
+                                        Ubah
+                                    </a>
+                                </div>
+                            @endif
                         </td>
                     </tr>
                     @if(count($role->permissions) > 0)
