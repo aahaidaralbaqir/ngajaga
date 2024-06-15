@@ -16,13 +16,21 @@
                         </div>
                     </div>
                 </button>
-                <a href="{{ route('purchase.create.form') }}" class="button text-base bg-[#ff91e7] text-black p-3 rounded border border-black">Buat Pemesanan Stok</a>
+                @if(in_array(\App\Constant\Permission::CREATE_ORDER_INVOICE, $user['permission']))
+                    <a href="{{ route('purchase.create.form') }}" class="button text-base bg-[#ff91e7] text-black p-3 rounded border border-black">Buat Pemesanan Stok</a>
+                @endif
             </div>
         </div>
         <div class="tab">
-            <a href="{{ route('supplier.index') }}" aria-selected="true">Supplier</a>
-            <a href="{{ route('purchase.index') }}" aria-selected="true" class="selected">Pemesanan Stok</a>
-            <a href="{{ route('category.index') }}" aria-selected="true">Penerimaan Stok</a>
+            @if(in_array(\App\Constant\Permission::VIEW_SUPPLIER, $user['permission']))
+                <a href="{{ route('supplier.index') }}" aria-selected="true">Pemasok</a>
+            @endif
+            @if(in_array(\App\Constant\Permission::VIEW_ORDER_INVOICE, $user['permission']))
+                <a href="{{ route('purchase.index') }}" aria-selected="true" class="selected">Pemesanan Stok</a>
+            @endif
+            @if(in_array(\App\Constant\Permission::VIEW_PURCHASE_INVOICE, $user['permission']))
+                <a href="{{ route('category.index') }}" aria-selected="true">Penerimaan Stok</a>
+            @endif
         </div>
     </div>
 </div>
@@ -62,15 +70,25 @@
                             {{ $purchase->status_name }}
                         </td>
                         <td class="relative">
-                            <a href="" data-id="{{ $purchase->id }}" data-name="action" class="dropdown" role="dropdown">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
-                            </a>
-                            <div class="menu hidden" data-id="{{ $purchase->id }}" data-name="action" role="dropdown-content">
-                                <a href="" class="menu-item">
-                                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-pen"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z"/></svg>
-                                    Ubah
+                            @if(in_array(\App\Constant\Permission::UPDATE_ORDER_INVOICE, $user['permission']) || in_array(\App\Constant\Permission::DELETE_ORDER_INVOICE, $user['permission']))
+                                <a href="" data-id="{{ $purchase->id }}" data-name="action" class="dropdown" role="dropdown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
                                 </a>
-                            </div>
+                                <div class="menu hidden" data-id="{{ $purchase->id }}" data-name="action" role="dropdown-content">
+                                    @if(in_array(\App\Constant\Permission::UPDATE_ORDER_INVOICE, $user['permission']))
+                                        <a href="" class="menu-item">
+                                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-pen"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z"/></svg>
+                                            Ubah
+                                        </a>
+                                    @endif
+                                    @if(in_array(\App\Constant\Permission::DELETE_ORDER_INVOICE, $user['permission'])) 
+                                        <a href="" class="menu-item">
+                                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-pen"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z"/></svg>
+                                            Hapus
+                                        </a>
+                                    @endif
+                                </div>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
