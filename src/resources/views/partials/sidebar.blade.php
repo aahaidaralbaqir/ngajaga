@@ -28,8 +28,16 @@
                             </a>
                         </li>
                     @endif
+                    @if(in_array(\App\Constant\Permission::VIEW_PERMISSION, $user['permission']) || in_array(\App\Constant\Permission::VIEW_ROLE, $user['permission']) || in_array(\App\Constant\Permission::VIEW_USER, $user['permission']))
                     <li class="border-t border-[#808080] px-5 py-4">
-                        <a class="group relative flex items-center gap-2.5 rounded-sm  hover:text-[#ff91e7] text-sm  duration-300 ease-in-out dark:hover:bg-meta-4 {{ in_array(route_name(), ['permission.index', 'permission.create.form', 'permission.edit.form', 'roles.index', 'roles.create.form', 'roles.update.form', 'user.index', 'user.create.form', 'user.update.form']) ? 'text-[#ff91e7]' : 'text-bodydark1' }}" href="{{ route('permission.index') }}">
+                        @php
+                            $target_route = 'permission.index';
+                            if (!in_array(\App\Constant\Permission::VIEW_PERMISSION, $user['permission'])) 
+                                $target_route = 'roles.index';
+                            if (!in_array(\App\Constant\Permission::VIEW_ROLE, $user['permission']))
+                                $target_route = 'user.inedex';
+                        @endphp
+                        <a class="group relative flex items-center gap-2.5 rounded-sm  hover:text-[#ff91e7] text-sm  duration-300 ease-in-out dark:hover:bg-meta-4 {{ in_array(route_name(), ['permission.index', 'permission.create.form', 'permission.edit.form', 'roles.index', 'roles.create.form', 'roles.update.form', 'user.index', 'user.create.form', 'user.update.form']) ? 'text-[#ff91e7]' : 'text-bodydark1' }}" href="{{ route($target_route) }}">
                             <svg class="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1.43425 7.5093H2.278C2.44675 7.5093 2.55925 7.3968 2.58737 7.31243L2.98112 6.32805H5.90612L6.27175 7.31243C6.328 7.48118 6.46862 7.5093 6.58112 7.5093H7.453C7.76237 7.48118 7.87487 7.25618 7.76237 7.03118L5.428 1.4343C5.37175 1.26555 5.3155 1.23743 5.14675 1.23743H3.88112C3.76862 1.23743 3.59987 1.29368 3.57175 1.4343L1.153 7.08743C1.0405 7.2843 1.20925 7.5093 1.43425 7.5093ZM4.47175 2.98118L5.3155 5.17493H3.59987L4.47175 2.98118Z" fill="" />
                             <path d="M10.1249 2.5031H16.8749C17.2124 2.5031 17.5218 2.22185 17.5218 1.85623C17.5218 1.4906 17.2405 1.20935 16.8749 1.20935H10.1249C9.7874 1.20935 9.47803 1.4906 9.47803 1.85623C9.47803 2.22185 9.75928 2.5031 10.1249 2.5031Z" fill="" />
@@ -40,6 +48,7 @@
                             Akses Kontrol 
                         </a>
                     </li>
+                    @endif
                     <li class="border-t border-[#808080] px-5 py-4">
                         <a class="group relative flex items-center gap-2.5 rounded-sm  hover:text-[#ff91e7] text-sm duration-300 ease-in-out dark:hover:bg-meta-4 {{ in_array(route_name(), ['product.index', 'category.index', 'category.create.form', 'category.edit.form', 'shelf.index', 'shelf.create.form', 'shelf.edit.form', 'product.index', 'product.edit.form', 'product.price.form']) ? 'text-[#ff91e7]' : 'text-bodydark1' }}" href="{{ route('product.index') }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package-open"><path d="M12 22v-9"/><path d="M15.17 2.21a1.67 1.67 0 0 1 1.63 0L21 4.57a1.93 1.93 0 0 1 0 3.36L8.82 14.79a1.655 1.655 0 0 1-1.64 0L3 12.43a1.93 1.93 0 0 1 0-3.36z"/><path d="M20 13v3.87a2.06 2.06 0 0 1-1.11 1.83l-6 3.08a1.93 1.93 0 0 1-1.78 0l-6-3.08A2.06 2.06 0 0 1 4 16.87V13"/><path d="M21 12.43a1.93 1.93 0 0 0 0-3.36L8.83 2.2a1.64 1.64 0 0 0-1.63 0L3 4.57a1.93 1.93 0 0 0 0 3.36l12.18 6.86a1.636 1.636 0 0 0 1.63 0z"/></svg>
