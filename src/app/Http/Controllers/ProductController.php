@@ -15,7 +15,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $product_records = DB::table('products')
-                            ->select(['products.id', 'products.name', 'products.selling_price', 'products.image', DB::raw('category.name AS category_name'), DB::raw('shelf.name AS shelf_name')])
+                            ->select(['products.id', 'products.name', 'products.image', DB::raw('category.name AS category_name'), DB::raw('shelf.name AS shelf_name')])
                             ->leftJoin('category', function ($join) {
                                 $join->on('category.id', '=', 'products.category_id');
                             })
@@ -295,11 +295,10 @@ class ProductController extends Controller
     public function createProduct(Request $request) {
         $user_input_field_rules = array (
             'name' => 'required',
-            'selling_price' => 'required',
             'category_id' => 'required',
             'shelf_id' => 'required',
         );
-        $user_input = $request->only('name', 'selling_price', 'category_id', 'shelf_id', 'description');
+        $user_input = $request->only('name', 'category_id', 'shelf_id', 'description');
         $user_input['notify_when_low_quota'] = Constant::OPTION_DISABLE;
         if ($request->has('notify_when_low_quota')) {
             $user_input['notify_when_low_quota'] = Constant::OPTION_ENABLE;
@@ -334,7 +333,6 @@ class ProductController extends Controller
             $user_input['sku'] = Common::generateUniqueSku();
         }
 
-        $user_input['buy_price'] = 0;
         $user_input['updated_by'] = Auth::user()->id;
         DB::table('products')->insert($user_input);
         return redirect()
@@ -377,12 +375,11 @@ class ProductController extends Controller
 
         $user_input_field_rules = array (
             'name' => 'required',
-            'selling_price' => 'required',
             'category_id' => 'required',
             'shelf_id' => 'required',
         );
         $user_input['notify_when_low_quota'] = Constant::OPTION_DISABLE;
-        $user_input = $request->only('name', 'selling_price', 'category_id', 'shelf_id', 'description');
+        $user_input = $request->only('name', 'category_id', 'shelf_id', 'description');
         if ($request->has('notify_when_low_quota')) {
             $user_input['notify_when_low_quota'] = Constant::OPTION_ENABLE;
             $user_input['min_qty'] = $request->input('min_qty');

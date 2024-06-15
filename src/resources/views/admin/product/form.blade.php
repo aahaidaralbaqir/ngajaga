@@ -71,15 +71,6 @@
                             @enderror
                         </div>
 
-                        <div>
-                            <legend class="mb-2">
-                                <label for="selling_price" class="text-[#000000] font-light">Harga Jual <span class="text-danger">*</span></label>
-                            </legend>
-                            <input type="number" name="selling_price" class="mb-2 input border rounded-sm px-4 py-2 w-full" value="{{ old('selling_price', empty($item) ? '' : $item->selling_price) }}" />
-                            @error('selling_price')
-                                <span class="text-sm text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
 
                         <div class="mt-4">
                             <legend class="mb-2">
