@@ -49,12 +49,21 @@
                         </a>
                     </li>
                     @endif
-                    <li class="border-t border-[#808080] px-5 py-4">
-                        <a class="group relative flex items-center gap-2.5 rounded-sm  hover:text-[#ff91e7] text-sm duration-300 ease-in-out dark:hover:bg-meta-4 {{ in_array(route_name(), ['product.index', 'category.index', 'category.create.form', 'category.edit.form', 'shelf.index', 'shelf.create.form', 'shelf.edit.form', 'product.index', 'product.edit.form', 'product.price.form']) ? 'text-[#ff91e7]' : 'text-bodydark1' }}" href="{{ route('product.index') }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package-open"><path d="M12 22v-9"/><path d="M15.17 2.21a1.67 1.67 0 0 1 1.63 0L21 4.57a1.93 1.93 0 0 1 0 3.36L8.82 14.79a1.655 1.655 0 0 1-1.64 0L3 12.43a1.93 1.93 0 0 1 0-3.36z"/><path d="M20 13v3.87a2.06 2.06 0 0 1-1.11 1.83l-6 3.08a1.93 1.93 0 0 1-1.78 0l-6-3.08A2.06 2.06 0 0 1 4 16.87V13"/><path d="M21 12.43a1.93 1.93 0 0 0 0-3.36L8.83 2.2a1.64 1.64 0 0 0-1.63 0L3 4.57a1.93 1.93 0 0 0 0 3.36l12.18 6.86a1.636 1.636 0 0 0 1.63 0z"/></svg>
-                            Produk 
-                        </a>
-                    </li>
+                     @if(in_array(\App\Constant\Permission::VIEW_PRODUCT, $user['permission']) || in_array(\App\Constant\Permission::VIEW_CATEGORY, $user['permission']) || in_array(\App\Constant\Permission::VIEW_SHELF, $user['permission']))
+                        @php
+                            $target_route = 'product.index';
+                            if (!in_array(\App\Constant\Permission::VIEW_PRODUCT, $user['permission'])) 
+                                $target_route = 'category.index';
+                            if (!in_array(\App\Constant\Permission::VIEW_CATEGORY, $user['permission']))
+                                $target_route = 'shelf.index';
+                        @endphp
+                        <li class="border-t border-[#808080] px-5 py-4">
+                            <a class="group relative flex items-center gap-2.5 rounded-sm  hover:text-[#ff91e7] text-sm duration-300 ease-in-out dark:hover:bg-meta-4 {{ in_array(route_name(), ['product.index', 'category.index', 'category.create.form', 'category.edit.form', 'shelf.index', 'shelf.create.form', 'shelf.edit.form', 'product.index', 'product.edit.form', 'product.price.form']) ? 'text-[#ff91e7]' : 'text-bodydark1' }}" href="{{ route($target_route) }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package-open"><path d="M12 22v-9"/><path d="M15.17 2.21a1.67 1.67 0 0 1 1.63 0L21 4.57a1.93 1.93 0 0 1 0 3.36L8.82 14.79a1.655 1.655 0 0 1-1.64 0L3 12.43a1.93 1.93 0 0 1 0-3.36z"/><path d="M20 13v3.87a2.06 2.06 0 0 1-1.11 1.83l-6 3.08a1.93 1.93 0 0 1-1.78 0l-6-3.08A2.06 2.06 0 0 1 4 16.87V13"/><path d="M21 12.43a1.93 1.93 0 0 0 0-3.36L8.83 2.2a1.64 1.64 0 0 0-1.63 0L3 4.57a1.93 1.93 0 0 0 0 3.36l12.18 6.86a1.636 1.636 0 0 0 1.63 0z"/></svg>
+                                Produk 
+                            </a>
+                        </li>
+                    @endif
                     <li class="border-t border-[#808080] px-5 py-4">
                         <a class="hover:text-[#ff91e7] group relative flex items-center gap-2.5 rounded-sm   text-sm duration-300 ease-in-out   dark:hover:bg-meta-4 {{ in_array(route_name(), ['supplier.index', 'supplier.create.form', 'supplier.edit.form', 'purchase.index', 'purchase.create.form', 'purchase.edit.form']) ? 'text-[#ff91e7]' : 'text-bodydark1' }}" href="{{ route('supplier.index') }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
