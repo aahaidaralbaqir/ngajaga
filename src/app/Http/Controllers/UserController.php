@@ -118,7 +118,8 @@ class UserController extends Controller
 		
 		$user_input['password'] = Hash::make($user_input['password']);
 	
-		User::create($user_input);
+		$user = User::create($user_input);
+		$user->createToken('API Token of ' . $user->name, ['api_access']);
 		return redirect()
 					->route('user.index')
 					->with(['success' => 'Berhasil menambahkan user baru']);
