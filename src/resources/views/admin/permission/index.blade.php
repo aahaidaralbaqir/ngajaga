@@ -20,9 +20,15 @@
             </div>
         </div>
         <div class="tab">
-            <a href="{{ route('permission.index') }}" aria-selected="true" class="selected">Hak Akses</a>
-            <a href="{{ route('roles.index') }}" aria-selected="true">Peran</a>
-            <a href="{{ route('user.index') }}" aria-selected="true">Pengguna</a>
+            @if (in_array(\App\Constant\Permission::VIEW_PERMISSION, $user['permission']))
+                <a href="{{ route('permission.index') }}" aria-selected="true" class="selected">Hak Akses</a>
+            @endif
+            @if (in_array(\App\Constant\Permission::VIEW_ROLE, $user['permission']))
+                <a href="{{ route('roles.index') }}" aria-selected="true">Peran</a>
+            @endif
+            @if (in_array(\App\Constant\Permission::VIEW_USER, $user['permission']))
+                <a href="{{ route('user.index') }}" aria-selected="true">Pengguna</a>
+            @endif
         </div>
     </div>
 </div>
