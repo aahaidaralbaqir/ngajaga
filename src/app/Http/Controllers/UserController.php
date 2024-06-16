@@ -93,6 +93,7 @@ class UserController extends Controller
 		$user_profile = $this->getUser();
 		$data = array_merge(array(), $user_profile);
 		$data['item'] = $current_user;
+		$data['user'] = $user_profile;
 		$data['target_route'] = 'user.update';
 		$data['page_title'] = 'Mengubah pengguna';
 		$data['roles'] = Roles::where('status', Constant::STATUS_ACTIVE)->get();	
