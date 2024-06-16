@@ -95,7 +95,7 @@
                                                                 <option 
                                                                     value="{{ $unit_id }}"
                                                                     @if ($value == $unit_id)
-                                                                        checked
+                                                                        selected
                                                                     @endif
                                                                 >
                                                                     {{ $unit_name }}
@@ -126,7 +126,7 @@
                                                                 <option 
                                                                     value="{{ $unit_id }}"
                                                                     @if ($item->unit == $unit_id)
-                                                                        checked
+                                                                        selected
                                                                     @endif
                                                                 >
                                                                     {{ $unit_name }}

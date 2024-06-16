@@ -60,12 +60,12 @@ class ProductController extends Controller
     public function category(Request $request)
     {
         $data['category'] = DB::table('category')
-                                ->select(['category.id', 'category.name', DB::raw('COUNT(products.id) AS total_product')])
-                                ->leftJoin('products', function($join) {
-                                    $join->on('products.category_id', '=', 'category.id');
-                                })
-                                ->groupBy('category.id', 'category.name')
-                                ->get();
+            ->select(['category.id', 'category.name', DB::raw('COUNT(products.id) AS total_product')])
+            ->leftJoin('products', function($join) {
+                $join->on('products.category_id', '=', 'category.id');
+            })
+            ->groupBy('category.id', 'category.name')
+            ->get();
         $data['total_row'] = count($data['category']);
         $user_profile = parent::getUser();
 		$data['user'] = $user_profile;
@@ -75,12 +75,12 @@ class ProductController extends Controller
     public function shelf(Request $request)
     {
         $data['shelf'] = DB::table('shelf')
-                                ->select(['shelf.id', 'shelf.name', DB::raw('COUNT(products.id) AS total_product')])
-                                ->leftJoin('products', function($join) {
-                                    $join->on('products.shelf_id', '=', 'shelf.id');
-                                })
-                                ->groupBy('shelf.id', 'shelf.name')
-                                ->get();
+            ->select(['shelf.id', 'shelf.name', DB::raw('COUNT(products.id) AS total_product')])
+            ->leftJoin('products', function($join) {
+                $join->on('products.shelf_id', '=', 'shelf.id');
+            })
+            ->groupBy('shelf.id', 'shelf.name')
+            ->get();
         $data['total_row'] = count($data['shelf']);
         $user_profile = parent::getUser();
 		$data['user'] = $user_profile;
@@ -105,8 +105,8 @@ class ProductController extends Controller
 		$validator = Validator::make($user_input, $user_input_field_rules);
 		if ($validator->fails())
 			return back()
-						->withErrors($validator)
-						->withInput();
+				->withErrors($validator)
+			    ->withInput();
 		DB::table('shelf')->insert($user_input);
 		return redirect()
 					->route('shelf.index')
@@ -151,8 +151,8 @@ class ProductController extends Controller
 		$validator = Validator::make($user_input, $user_input_field_rules);
 		if ($validator->fails())
 			return back()
-						->withErrors($validator)
-						->withInput();
+				->withErrors($validator)
+			    ->withInput();
 
 		DB::table('shelf')->where(array('id' => $shelfId))->update($user_input);
 		return redirect()
