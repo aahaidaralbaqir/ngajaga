@@ -23,5 +23,25 @@ class RoleRepository {
         }
 
         return $role_records;
-   } 
+   }
+   
+   public static function createRole($user_input)
+   {
+        return DB::table('roles')
+            ->insertGetId($user_input);
+   }
+
+   public static function getById($role_id)
+   {
+        return DB::table('roles')
+            ->where('id', $role_id)
+            ->first();
+   }
+
+   public static function updateRole($role_id, $user_input)
+   {
+        return DB::table('roles')
+            ->where('id', $role_id)
+            ->update($user_input);
+   }
 }
