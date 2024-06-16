@@ -97,4 +97,13 @@ class PermissionRepository {
         return $query;
     }
 
+    public static function getPermissionByIds($permission_ids)
+    {
+        $query = DB::table('permission AS pe')
+            ->addSelect('pe.id')
+            ->addSelect('pe.name')
+            ->whereIn('pe.id', $permission_ids)
+            ->get();
+        return $query;
+    }
 }

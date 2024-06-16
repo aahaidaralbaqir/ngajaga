@@ -8,6 +8,7 @@ use App\Models\Permission;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Constant\Constant;
+use App\Repositories\RoleRepository;
 use App\Util\Common;
 
 class RolesController extends Controller
@@ -16,37 +17,12 @@ class RolesController extends Controller
     {
 		$user_profile = parent::getUser();
 		$data['user'] = $user_profile;
-        $roles = DB::table('roles')->get();
-        foreach($roles as $index => $role)
-        {
-            $permissions_ids = explode(',', $role->permission);
-			$query = DB::table('permission');
-			$query->whereIn('id', $permissions_ids);
-            $roles[$index]->permissions = $query->get();
-        }
-		$role_ids = array_map(function ($item) {
-			return $item->id;
-		}, $roles->toArray());
-		$user_records = DB::table('users')
-							->whereIn('users.role_id', $role_ids)
-							->get();
-		$grouped_users = [];
-		foreach ($user_records as $user_record) {
-			if (array_key_exists($user_record->id, $grouped_users)) {
-				$grouped_users[$user_record->id][] = $user_record;
-				continue;
-			}
-			$grouped_users[$user_record->id] = [$user_record];
-		}
-		$data['roles'] = array_map(function ($item) use($grouped_users) {
-			$item->users = [];
-			if (array_key_exists($item->id, $grouped_users)) {
-				$item->users = $grouped_users[$item->id];
-			}
-			return $item;
-		}, $roles->toArray());
+        $roles = RoleRepository::getRoles(); 
 		$data['total_row'] = count($roles);
-		return view('admin.roles.index', $data);
+		return view('admin.roles.index')
+			->with('user', parent::getUser())
+			->with('roles', $roles)
+			->with('total_row', count($roles));
     }
 
     public function createForm(Request $request)
