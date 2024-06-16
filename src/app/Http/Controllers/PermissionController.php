@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Constant\Constant;
 use Illuminate\Http\Request;
 use App\Models\Permission;
+use App\Repositories\PermissionRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Util\Common as CommonUtil;
+use App\Util\Response;
 use Illuminate\Support\Facades\Storage;
 
 class PermissionController extends Controller
@@ -15,47 +17,22 @@ class PermissionController extends Controller
     public function index(Request $request) 
     {
 		$user_profile = parent::getUser();
-		$data['user'] = $user_profile;
-		$permissions = DB::table('permission')->get()->toArray();
-		$parent_permissions = array_filter($permissions, function($item) {
-			return $item->id_parent == Constant::PARENT_RECORD;
-		});
-		$grouped_permission = [];
-		foreach ($permissions as $permission)
-		{
-			$parent_id = $permission->id_parent;
-			if ($parent_id == Constant::PARENT_RECORD) {
-				continue;
-			}
-			if (array_key_exists($parent_id, $grouped_permission)) {
-				$grouped_permission[$parent_id][] = $permission;
-				continue;
-			}
-			$grouped_permission[$parent_id] = [$permission];
-		}
-		$parent_permissions = array_map(function ($item) use($grouped_permission) {
-			$childs = [];
-			if (array_key_exists($item->id, $grouped_permission)) {
-				$childs = $grouped_permission[$item->id];
-			}
-			$item->childs = $childs;
-			return $item;
-		}, $parent_permissions);
-		$data['permissions'] = $parent_permissions;
-		$data['total_row'] = count($permissions);
-		return view('admin.permission.index', $data);
+		$permission_records = PermissionRepository::getPermissions();
+		return view('admin.permission.index')
+			->with('user', $user_profile)
+			->with('permissions', PermissionRepository::getGroupedPermissions($permission_records))
+			->with('total_row', PermissionRepository::getTotalPermission($permission_records));
     }
 
     public function createForm(Request $request)
     {
-		$user_profile = parent::getUser();
-		$data['user'] = $user_profile;
-		$data['item'] = NULL;
-		$data['page_title'] = 'Menambahkan hak akses baru';
-		$data['target_route'] = 'permission.create';
-		$data['show_parent_dropdown'] = true;
-		$data['permissions'] = Permission::where('id_parent', 0)->get();
-		return view('admin.permission.form', $data); 
+		return view('admin.permission.form')
+			->with('item', NULL)
+			->with('page_title', 'Menambahkan hak akses baru')
+			->with('target_route', 'permission.create')
+			->with('show_parent_dropdown', true)
+			->with('user', parent::getUser())
+			->with('permissions', PermissionRepository::getParentPermissions()); 
     }
 
     public function createPermission(Request $request)
@@ -65,48 +42,46 @@ class PermissionController extends Controller
 		];
 		$user_input = $request->only('name', 'id_parent');
 		$validator = Validator::make($user_input, $user_input_field_rules);
-		if ($validator->fails())
-			return back()
-						->withErrors($validator)
-						->withInput();
-	
+		if ($validator->fails()) 
+		{
+			return Response::backWithErrors($validator);
+		}
 		$user_input['is_default'] = Constant::OPTION_FALSE;
-		Permission::create($user_input);
-		return redirect()
-					->route('permission.index')
-					->with(['success' => 'Berhasil menambahkan hak akses baru']);
+		PermissionRepository::createPermission($user_input);
+		return Response::redirectWithSuccess(
+			'permission.index', 
+			'Berhasil menambahkan hak akses baru');
     }
 
     public function updateForm(Request $request, $permissionId)
     {
-        $current_record = Permission::find($permissionId);
+        $current_record = PermissionRepository::getById($permissionId);
         if (empty($current_record))
-        {
-           return back()
-                    ->with(['error' => 'Entitas tidak ditemukan']);
-        }
+			Response::backWithError('Hak akses tidak ditemukan');
+
 		$data['page_title'] = 'Mengubah hak akses';
 		$data['target_route'] = 'permission.update';
 		$user_profile = parent::getUser();
 		$data['user'] = $user_profile;
         $data['item'] = $current_record;
 
-		$child_permission = DB::table('permission')
-							 ->where('id_parent', $current_record->id)
-							 ->get();
-		
-		$data['show_parent_dropdown'] = count($child_permission) <= 0;
-		$data['permissions'] = Permission::where('id_parent', 0)->where('id', '!=', $permissionId)->get();
-		return view('admin.permission.form', $data); 
+		$child_permission = PermissionRepository::getChildPermissions($permissionId);		
+		$permission_records = PermissionRepository::getPermissionExcept($permissionId);
+		return view('admin.permission.form')
+			->with('page_title', 'Mengubak hak akses')
+			->with('target_route', 'permission.update')
+			->with('user', parent::getUser())
+			->with('item', $current_record)
+			->with('permissions', $permission_records)
+			->with('show_parent_dropdown', count($child_permission) <= 0); 
+
     }
 
     public function updatePermission(Request $request)
     {
-        $current_record = Permission::find($request->id);
+        $current_record = PermissionRepository::getById($request->id);
 		if (empty($current_record))
-			return back()
-					->with(['error' => 'Gagal mengupdate permission, entitas tidak ditemukan']);
-		
+			return Response::backWithError('Hak akses tidak ditemukan');	
 		$user_input_field_rules = [
 			'name' => 'required',
 		];
@@ -114,47 +89,16 @@ class PermissionController extends Controller
 
 		$validator = Validator::make($user_input, $user_input_field_rules);
 		if ($validator->fails())
-			return back()
-						->withErrors($validator)
-						->withInput();
+			return Response::backWithErrors($validator);
 		
-		$child_permission = DB::table('permission')
-							 ->where('id_parent', $current_record->id)
-							 ->get();
-		
-		$data['show_parent_dropdown'] = count($child_permission) <= 0;
+		$child_permission = PermissionRepository::getChildPermissions($request->id);
 		if ($request->has('id_parent') && $user_input['id_parent'] != $current_record->id_parent && count($child_permission) > 0)
-		{
-			return back()
-                    ->with(['error' => 'Hak akses yang berjenis parent tidak pusa di rubah']);
-		}
+			return Response::backWithError('Pusat hak akses hanya bisa dirubah untuk anakan');
 		
-		Permission::where('id', $current_record->id)
-				->update($user_input);
-		return redirect()
-					->route('permission.index')
-					->with(['success' => 'Berhasil mengubah hak akses']);
+		PermissionRepository::updatePermission($current_record->id, $user_input);
+		return Response::redirectWithSuccess(
+			'permission.index',
+			'Hak akses berhasil dirubah'
+		);
     }
-
-    public function deletePermission(Request $request, $permissionId)
-	{
-		$current_record = Permission::find($permissionId);
-        if (empty($current_record))
-        {
-           return back()
-                    ->with(['error' => 'Entitas tidak ditemukan']);
-        }
-		
-		$child_permission = DB::table('permission')
-								->where('id_parent', $permissionId)
-								->get();
-		if (count($child_permission) > 0) {
-			return back()
-					->with(['error' => 'Gagal mengahapus hak akases dikarenakan hak akses mempunyai anakan']);
-		}
-		Permission::where('id', $permissionId)->delete();
-		return redirect()
-					->route('permission.index')
-					->with(['success' => 'Berhasil menghapus hak akses']);	
-	}
 }
