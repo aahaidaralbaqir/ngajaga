@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Constant\Constant;
+use App\Repositories\ProductRepository;
 use App\Util\Common;
+use App\Util\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -424,7 +426,7 @@ class ProductController extends Controller
                 ));
         }
         $current_record->image = Common::getStorage(Constant::STORAGE_PRODUCT, $current_record->image);
-        $data['price_mapping'] = DB::table('price_mapping')->get();
+        $data['price_mapping'] = DB::table('price_mapping')->where('product_id', $productId)->get();
         $data['units'] = Common::getUnits();
         $data['item'] = $current_record;
         $data['page_title'] = 'Mengubah Konfigurasi Harga';
@@ -447,14 +449,10 @@ class ProductController extends Controller
                 )); 
         }
         $user_input_field_rules = [
-            'unit' => 'array',
-            'price' => 'array',
-            'conversion' => 'array',
-            'quantity' => 'array',
-            'quantity.*' => 'required|gte:1',
-            'price.*' => 'required|gte:1',
-            'conversion.*' => 'required|gte:1',
-            'unit.*' => 'required|in:' . implode(',', array_keys(Common::getUnits())),
+            '*.qty'         => 'required',
+            '*.price'       => 'required',
+            '*.conversion'  => 'required',
+            '*.unit'        => 'required|in:' . implode(',', array_keys(Common::getUnits())),
         ];
 
         if ($request->has('use_price_mapping') == FALSE) {
@@ -477,19 +475,39 @@ class ProductController extends Controller
                 'unit' => $request->input('unit')[$sequence],
                 'conversion' => $request->input('conversion')[$sequence],
                 'price' => $request->input('price')[$sequence],
-                'qty' => $request->input('quantity')[$sequence],
+                'qty' => $request->input('qty')[$sequence]
             ];
         }
+
+        $unit = [];
+        foreach ($user_input as $index => $input) 
+        {
+            if (array_key_exists($input['unit'], $unit)) {
+                return Response::backWithError('Satuan tidak boleh sama disetiap konfigurasinya'); 
+            }
+            $unit[$input['unit']] = true;
+            $fields = array_keys($input);
+            foreach ($fields as $field)
+            {
+                if (empty($input[$field]))
+                {
+                    $user_input[$index][$field] = 0;           
+                }
+            }
+        }
+
         $validator = Validator::make($user_input, $user_input_field_rules);
         if ($validator->fails()) {
             return back()
                 ->withErrors($validator)
 				->withInput();
         }
-
         $updated_record = [
             'use_price_mapping' => Constant::OPTION_ENABLE
         ];
+        if (count($user_input) <= 0) {
+            return Response::backWithError('Konfigurasi harga harus di isi minimal satu');
+        }
         DB::table('products')->where('id', $product_id)->update($updated_record);
 
         DB::table('price_mapping')->where('product_id', $product_id)->delete();
@@ -514,5 +532,32 @@ class ProductController extends Controller
         return DB::table('price_mapping')
             ->whereIn('product_id', $product_ids)
             ->get();
+    }
+
+    public function getUnits() {
+        $product_units = ProductRepository::getProductUnit();
+        $results = [
+            'status' => true,
+            'units' => $product_units];
+        return response()
+            ->json($results, 200);
+    }
+
+    public function getProductMappingByProductId(Request $request)
+    {
+        $product_id = $request->get('product_id');
+        $price_mapping_records = ProductRepository::getPriceMappingByProductId($product_id);
+        $units = Common::getUnits();
+        foreach ($price_mapping_records as $index => $price_mapping)
+        {
+            $price_mapping->unit_name = $units[$price_mapping->unit];
+            $price_mapping_records[$index] = $price_mapping;
+        }
+        $results = [
+            'status' => true,
+            'price_mapping' => $price_mapping_records
+        ];
+        return response()
+            ->json($results, 200);
     }
 }

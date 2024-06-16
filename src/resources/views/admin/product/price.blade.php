@@ -22,7 +22,7 @@
             </div>
         </div>
     </div>
-    <main class="w-full py-14 px-14">
+    <main class="w-full py-14 px-14" id="price">
         <section class="w-5/6">
                 @if(!empty($item))
                     <section class="flex gap-2 justify-between pt-10">
@@ -36,7 +36,7 @@
                                 <br>
                                 <br>
 
-                                Konfigurasi ini membantu kamu ketika bertransaksi dengan kuantitas pembelian yang dinamis
+                                Konfigurasi ini membantu kamu ketika bertransaksi dengan kuantitas pembelian yang dinamis,  harga dan satuan diurutkan berdasarkan satuan terkecil
                             </p>
                         </header>
                         <fieldset class="w-3/5">
@@ -67,8 +67,8 @@
                                         </tr>
                                     </thead>
                                     <tbody id="price-mapping">
-                                        @if (is_array(old('quantity')))
-                                            @foreach(old('quantity') as $index => $value)
+                                        @if (is_array(old('qty')))
+                                            @foreach(old('qty') as $index => $value)
                                                 @if ($index == count(old('unit')) - 1)
                                                     @continue
                                                 @endif
@@ -76,15 +76,15 @@
                                                     $custom_quantity_style = '';
                                                     $custom_conversion_style = '';
                                                     $custom_price_style = '';
-                                                    if ($errors->has('quantity.'.$index)) {
+                                                    if ($errors->has($index.'.qty')) {
                                                         $custom_quantity_style = 'border: 1px solid red;';
                                                     }
 
-                                                    if ($errors->has('conversion.'.$index)) {
+                                                    if ($errors->has($index.'.conversion')) {
                                                         $custom_conversion_style = 'border: 1px solid red;';
                                                     }
 
-                                                    if ($errors->has('price.'.$index)) {
+                                                    if ($errors->has($index.'.price')) {
                                                         $custom_price_style = 'border: 1px solid red;';
                                                     }
                                                 @endphp
@@ -104,13 +104,13 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <input type="number" style="<?php echo $custom_quantity_style; ?>" name="quantity[]" value="{{ old('quantity')[$index] }}" />
+                                                        <input type="number" style="<?php echo $custom_quantity_style; ?>" name="qty[]" value="{{ old('qty')[$index] }}" />
                                                     </td>
                                                     <td>
                                                         <input type="number" name="conversion[]" value="{{ old('conversion')[$index] }}" style="<?php echo $custom_conversion_style; ?>"  />
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="price[]" value="{{ old('price')[$index] }}" style="{{ $custom_price_style; }}">
+                                                        <input type="text" name="price[]" value="{{ old('price')[$index] }}" style="<?php echo $custom_price_style; ?>">
                                                     </td>
                                                     <td>
                                                         <a href="" class="text-base text-black p-3 rounded border border-black relative flex gap-2 delete-row">Hapus</a>
@@ -135,7 +135,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <input type="number" name="quantity[]" value="{{ old('quantity', $item->qty) }}" />
+                                                        <input type="number" name="qty[]" value="{{ old('qty', $item->qty) }}" />
                                                     </td>
                                                     <td>
                                                         <input type="number" name="conversion[]" value="{{ old('conversion', $item->conversion) }}" />
@@ -158,7 +158,7 @@
                                                 </select>
                                             </td>
                                             <td>
-                                                <input type="number" name="quantity[]"/>
+                                                <input type="number" name="qty[]"/>
                                             </td>
                                             <td>
                                                 <input type="number" name="conversion[]" />
@@ -170,7 +170,7 @@
                                                 <a href="" class="text-base text-black p-3 rounded border border-black relative flex gap-2 delete-row">Hapus</a>
                                             </td>
                                         </tr>
-                                        <tr class="nodata-row {{ empty(old('quantity')) && empty($price_mapping) ? '' : 'hidden' }}">
+                                        <tr class="nodata-row {{ empty(old('qty')) && empty($price_mapping) ? '' : 'hidden' }}">
                                                 <td colspan="5">
                                                     Tidak ada konfigurasi
                                                 </td>
@@ -191,6 +191,7 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.16"></script>
 <script type="text/javascript">
     window.addEventListener('DOMContentLoaded', function () {
         const togglePriceMapping = document.querySelector('input[name="use_price_mapping"]')
@@ -214,7 +215,7 @@
                 row.classList.remove('hidden')
                 row.classList.remove('sample-row')
                 row.classList.add('pr-item')
-                priceMapping.insertAdjacentElement('afterbegin', row)
+                priceMapping.appendChild(row)
                 resyncEventHandler()
             })
 

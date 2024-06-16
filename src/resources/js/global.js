@@ -80,7 +80,7 @@ window.addEventListener('DOMContentLoaded', function () {
     function createToastError(description) {
         const toast = document.createElement('div');
         toast.id = 'toast';
-        toast.className = 'flex w-full max-w-sm p-4 toast toast-error';
+        toast.className = 'flex w-full max-w-sm p-4 toast toast-error gap-2';
         toast.innerHTML = `
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" clip-rule="evenodd" d="M7.93389 12.1C7.38389 12.1 6.93389 11.65 6.93389 11.1C6.93389 10.539 7.38389 10.1 7.93389 10.1C8.48389 10.1 8.93389 10.539 8.93389 11.1C8.93389 11.65 8.48389 12.1 7.93389 12.1ZM7.05389 5.72003C7.05389 5.23003 7.44389 4.84003 7.93389 4.84003C8.41389 4.84003 8.80389 5.23003 8.80389 5.72003V8.22003C8.80389 8.70003 8.41389 9.09003 7.93389 9.09003C7.44389 9.09003 7.05389 8.70003 7.05389 8.22003V5.72003ZM14.0939 9.73003C13.6539 8.46003 13.0239 7.28003 12.3839 6.10003C11.5739 4.58003 10.5339 2.42003 8.67389 2.05003C8.51389 2.01003 8.35389 2.00003 8.19389 2.00003C6.02389 1.99003 4.63389 4.34003 3.63389 5.94003C2.88389 7.12003 2.13389 8.33003 1.72389 9.66103C1.52389 10.28 1.41389 10.95 1.58389 11.57C1.79389 12.289 2.36389 12.86 3.02389 13.2C3.68389 13.55 4.42389 13.7 5.16389 13.8C6.95389 14.05 8.77389 14.07 10.5739 13.87C11.3639 13.78 12.1739 13.64 12.8839 13.27C13.5839 12.9 14.1939 12.25 14.3339 11.46C14.4339 10.88 14.2839 10.289 14.0939 9.73003Z" fill="#DA160B"/>
@@ -95,7 +95,7 @@ window.addEventListener('DOMContentLoaded', function () {
     function createToastSuccess(description) {
         const toast = document.createElement('div');
         toast.id = 'toast';
-        toast.className = 'flex w-full max-w-sm p-4 toast toast-success';
+        toast.className = 'flex w-full max-w-sm p-4 toast toast-success gap-2';
         toast.innerHTML = `
             <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21.61a9.6 9.6 0 1 0 0-19.2 9.6 9.6 0 0 0 0 19.2Zm4.45-11.152a1.2 1.2 0 0 0-1.698-1.697l-3.951 3.952-1.552-1.552a1.2 1.2 0 0 0-1.697 1.697l2.4 2.4a1.2 1.2 0 0 0 1.697 0l4.8-4.8Z" fill="#23A094"/>

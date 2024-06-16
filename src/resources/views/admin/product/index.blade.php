@@ -44,7 +44,7 @@
                     <th class="text-left">Nama</th>
                     <th class="text-left">Kategori</th>
                     <th class="text-left">Rak</th>
-                    <th class="text-left">Harga Jual</th>
+                    <th class="text-left">Harga Jual Terendah</th>
                     <th class="text-left">Stok</th>
                     <th  class="w-[5%]"></th>
                 </tr>
@@ -59,7 +59,7 @@
                             {{ $product->name }}
                         </td>
                         <td>
-                            <span class="font-bold">{{ $product->category_name }}</span>
+                            <span>{{ $product->category_name }}</span>
                         </td>
                         <td>
                             <span>{{ $product->shelf_name }}</span>
