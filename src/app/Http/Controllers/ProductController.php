@@ -17,24 +17,24 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $product_records = DB::table('products')
-                            ->select(['products.id', 'products.name', 'products.image', DB::raw('category.name AS category_name'), DB::raw('shelf.name AS shelf_name')])
-                            ->leftJoin('category', function ($join) {
-                                $join->on('category.id', '=', 'products.category_id');
-                            })
-                            ->leftJoin('shelf', function ($join) {
-                                $join->on('shelf.id', '=', 'products.shelf_id');
-                            })
-                            ->get()
-                            ->toArray();
+            ->select(['products.id', 'products.name', 'products.image', DB::raw('category.name AS category_name'), DB::raw('shelf.name AS shelf_name')])
+            ->leftJoin('category', function ($join) {
+                $join->on('category.id', '=', 'products.category_id');
+            })
+            ->leftJoin('shelf', function ($join) {
+                $join->on('shelf.id', '=', 'products.shelf_id');
+            })
+            ->get()
+            ->toArray();
         $product_ids = array_map(function ($item) {
             return $item->id;
         }, $product_records);
 
         $product_stocks = DB::table('stock')
-                            ->select(['stock.id', DB::raw('SUM(stock.qty) AS total_stock')])
-                            ->whereIn('id', $product_ids)
-                            ->groupBy('stock.product_id', 'stock.id')
-                            ->get();
+            ->select(['stock.id', DB::raw('SUM(stock.qty) AS total_stock')])
+            ->whereIn('id', $product_ids)
+            ->groupBy('stock.product_id', 'stock.id')
+            ->get();
         $product_stocks_ids = array();
         foreach ($product_stocks as $product)
         {
@@ -279,8 +279,8 @@ class ProductController extends Controller
 
         DB::table('category')->where(array ('id' => $categoryId))->delete();
         return redirect()
-				->route('category.index')
-				->with(['success' => 'Kategori baru berhasil hapus']);  
+			->route('category.index')
+			->with(['success' => 'Kategori baru berhasil hapus']);  
     }
 
     public function createProductForm(Request $request) {
@@ -296,9 +296,9 @@ class ProductController extends Controller
 
     public function createProduct(Request $request) {
         $user_input_field_rules = array (
-            'name' => 'required',
-            'category_id' => 'required',
-            'shelf_id' => 'required',
+            'name'          => 'required',
+            'category_id'   => 'required',
+            'shelf_id'      => 'required',
         );
         $user_input = $request->only('name', 'category_id', 'shelf_id', 'description');
         $user_input['notify_when_low_quota'] = Constant::OPTION_DISABLE;
@@ -313,13 +313,14 @@ class ProductController extends Controller
 		if ($validator->fails())
         {
             return back()
-					->withErrors($validator)
-					->withInput();
+				->withErrors($validator)
+				->withInput();
         }
 
         if (!$request->hasFile('image')) {
-            return back()->withErrors(['image' => 'Gambar produk harus diisi'])
-						->withInput();
+            return back()
+                ->withErrors(['image' => 'Gambar produk harus diisi'])
+				->withInput();
         }
 
         $filename = time() . '.' . $request->file('image')->getClientOriginalExtension();
@@ -338,8 +339,8 @@ class ProductController extends Controller
         $user_input['updated_by'] = Auth::user()->id;
         DB::table('products')->insert($user_input);
         return redirect()
-				->route('product.index')
-				->with(['success' => 'Produk berhasil ditambahkan']);
+			->route('product.price.form')
+			->with(['success' => 'Produk berhasil ditambahkan']);
     }
 
     public function editProductForm(Request $request, $productId) {
