@@ -43,9 +43,9 @@
                     <th class="w-[5%]"></th>
                     <th class="text-left">No. Pemesanan Stok</th>
                     <th class="text-left">Tanggal</th>
-                    <th class="text-left">Pemasok</th>
-                    <th class="text-left">Dibuat Oleh</th>
                     <th class="text-left">Status</th>
+                    <th class="text-left">Dibuat Oleh</th>
+                    <th class="text-left">Pemasok</th>
                     <th  class="w-[5%]"></th>
                 </tr>
             </thead>
@@ -55,19 +55,20 @@
                         <td>
                         </td>
                         <td>
-                            <span>{{ $purchase->purchase_number }}</span>
+                            <span class="font-bold">{{ $purchase->purchase_number }}</span>
                         </td>
                         <td>
                             <span>{{ $purchase->purchase_date }}</span>
                         </td>
                         <td>
-                            <span>{{ $purchase->supplier_name }}</span>
+                            <span class="badge {{ \App\Util\Common::getBadgeByStatus($purchase->status) }}">{{ $purchase->status_name }}</span>
+                           
                         </td> 
                         <td>
-                            {{ $purchase->create_by_name }}
+                            {{ $purchase->created_by_name }}
                         </td>
                         <td>
-                            {{ $purchase->status_name }}
+                            <span>{{ $purchase->supplier_name }}</span>
                         </td>
                         <td class="relative">
                             @if(in_array(\App\Constant\Permission::UPDATE_ORDER_INVOICE, $user['permission']) || in_array(\App\Constant\Permission::DELETE_ORDER_INVOICE, $user['permission']))
@@ -76,7 +77,7 @@
                                 </a>
                                 <div class="menu hidden" data-id="{{ $purchase->id }}" data-name="action" role="dropdown-content">
                                     @if(in_array(\App\Constant\Permission::UPDATE_ORDER_INVOICE, $user['permission']))
-                                        <a href="" class="menu-item">
+                                        <a href="{{ route('purchase.edit.form', ['purchaseOrderId' => $purchase->id]) }}" class="menu-item">
                                             <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-pen"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z"/></svg>
                                             Ubah
                                         </a>

@@ -29,7 +29,7 @@
       <!-- ===== Header End ===== -->
 
       <!-- ===== Main Content Start ===== -->
-        <main>
+        <main id="app">
             @include('partials.alert')
             @yield('content')
         </main>

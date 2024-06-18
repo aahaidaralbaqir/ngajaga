@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Constant\Constant;
+use App\Repositories\PurchaseRepository;
 use App\Util\Common;
+use App\Util\Response;
+use Error;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class PurchaseController extends Controller
@@ -21,29 +25,63 @@ class PurchaseController extends Controller
     }
 
     public function createPurchaseOrder(Request $request) {
-        $user_input = $request->only('purchase_number', 'purchase_date', 'supplier_id');
-        $validator = Validator::make($user_input, $this->ruleValidations());
-        if ($validator->fails()) {
-            return redirect()
-                ->route('purchase.create.form')
-                ->withErrors($validator)
-                ->withInput();
-        }
+        DB::beginTransaction();
+        try {
+            $user_input = $request->only('purchase_number', 'purchase_date', 'supplier_id', 'items', 'created_by');
 
-        $purchase_order_record = $this->getPurchaseOrderByNumber($user_input);
-        if ($purchase_order_record) {
-            return redirect()
-                ->route('purchase.create.form')
-                ->withErrors(['purchase_number' => 'No.Pembelian telah digunakan'])
-                ->withInput();
-        }
+            $validator = Validator::make($user_input, $this->ruleValidations());
+            if ($validator->fails()) {
+                return response()
+                    ->json([
+                        'success' => FALSE,
+                        'errors' => $validator->errors()
+                    ], 400);
+            }
 
-        $user_input['status'] = Constant::PURCHASE_ORDER_DRAFT;
-        $user_input['created_by'] = $this->getUserId();
-        DB::table('purchase_orders')->insert($user_input);
-        return redirect()
-            ->route('purchase.index')
-            ->with(['success' => 'Pembelian stok berhasil dibuat']);
+            $purchase_order_record = $this->getPurchaseOrderByNumber($user_input['purchase_number']);
+            if ($purchase_order_record) {
+                Session::flash('error', 'No.Pembelian telah digunakan'); 
+                return response()
+                    ->json([
+                        'success' => FALSE,
+                        'error_message' => 'No.Pembelian telah digunakan silahkan ganti dengan yang lain'
+                    ], 400);
+            }
+
+
+            $create_purchase_order_inputs = $request->only('purchase_number', 'purchase_date', 'supplier_id', 'created_by');
+            foreach ($create_purchase_order_inputs as $field => $value) {
+                if ($field == 'purchase_date')
+                    $create_purchase_order_inputs[$field] = strtotime($value);
+            }
+            $create_purchase_order_inputs['status'] = Constant::PURCHASE_ORDER_WAITING;
+            $purchase_order_id = PurchaseRepository::createPurchaseOrder($create_purchase_order_inputs);
+            $order_items = $user_input['items'];
+            foreach ($order_items as $index => $order_item) 
+            {
+                $order_item['purchase_order_id'] = $purchase_order_id;
+                $order_item['total_price'] = intval($order_item['price']) * intval($order_item['qty']);
+                $order_item['received_qty'] = 0;
+                $order_item['received_price'] = 0;
+                $order_items[$index] = $order_item;
+            }
+            PurchaseRepository::createPurchaseOrderItem($order_items);
+            Session::flash('success', 'Pemesanan stok berhasil dibuat'); 
+            DB::commit();
+            return response()
+                ->json([
+                    'status' => TRUE,
+                    'message' => 'Pemesanan stok berhasil dibuat'
+                ], 200);
+        } catch (Error $error) {
+            DB::rollBack();
+            return response()
+            ->json([
+                'status' => false,
+                'message' => $error->getMessage()
+            ], 200);
+        }
+        
     }
 
     public function createPurchaseForm() {
@@ -51,53 +89,99 @@ class PurchaseController extends Controller
         $data['target_route'] = 'purchase.create';
         $data['user'] = parent::getUser();
         $data['item'] = NULL;
-        $product_records = ProductController::getProducts();
-        $data['suppliers'] = SupplierController::getSuppliers();
-        $data['products'] = $product_records;
-        $data['units'] = Common::getUnits();
+        $data['latest_purchase_order_id'] = PurchaseRepository::getLatestPurchaseOrder();
         return view('admin.purchase.form', $data);
     }
 
     public function editPurchaseOrder(Request $request) {
-        $purchase_order_id = $request->input('id');
-        $purchase_order_record = $this->getPurchaseOrderById($purchase_order_id);
-        if (!$purchase_order_record) {
-            return redirect()
-                ->route('purchase.index')
-                ->with(['error' => 'Pembelian stok tidak ditemukan']);
-        }
+        DB::beginTransaction();
+        try {
+            $purchase_order_id = $request->input('purchase_order_id');
+            $purchase_order_record = PurchaseRepository::getPurchaseOrderById($purchase_order_id);
+            if (!$purchase_order_record) {
+                return response()
+                    ->json([
+                        'status' => TRUE,
+                        'message' => 'Data tidak ditemukan '
+                    ], 404); 
+            }
+            
+            $user_input = $request->only('purchase_number', 'purchase_date', 'supplier_id', 'items', 'created_by', 'id');
+            $validator = Validator::make($user_input, $this->ruleValidations());
+            if ($validator->fails()) {
+                return response()
+                    ->json([
+                        'success' => FALSE,
+                        'errors' => $validator->errors()
+                    ], 400);
+            }
 
-        $user_input = $request->only('purchase_number', 'purchase_date', 'supplier_id');
-        $validator = Validator::make($user_input, $this->ruleValidations());
-        if ($validator->fails()) {
-            return redirect()
-                ->route('purchase.edit.form')
-                ->withErrors($validator)
-                ->withInput(); 
-        }
+            if ($purchase_order_record->purchase_number != $user_input['purchase_number'])
+            {
+                $order_by_number = $this->getPurchaseOrderByNumber($user_input['purchase_number']);
+                if ($order_by_number) {
+                    Session::flash('error', 'No.Pembelian telah digunakan'); 
+                    return response()
+                        ->json([
+                            'success' => FALSE,
+                            'error_message' => 'No.Pembelian telah digunakan silahkan ganti dengan yang lain'
+                        ], 400);
+                }
+            }
 
-        DB::table('purchase_orders')->where('id', $purchase_order_id)->update($user_input);
-        return redirect()
-            ->route('purchase.index')
-            ->with(['success' => 'Pembelian stok berhasil diubah']);
+            $update_purchase_order_inputs = $request->only('purchase_date', 'supplier_id', 'created_by');
+            foreach ($update_purchase_order_inputs as $field => $value) {
+                if ($field == 'purchase_date')
+                    $update_purchase_order_inputs   [$field] = strtotime($value);
+            }
+            PurchaseRepository::updatePurchaseOrder($purchase_order_id, $update_purchase_order_inputs);
+            $order_items = $user_input['items'];
+            foreach ($order_items as $index => $order_item) 
+            {
+                if (array_key_exists('id', $order_item) && $order_item['id'] !== 0) {
+                    $order_item_id = $order_item['id'];
+                    $order_item['total_price'] = intval($order_item['price']) * intval($order_item['qty']);
+                    $order_item['received_qty'] = 0;
+                    $order_item['received_price'] = 0;
+                    unset($order_item['id']);
+                    PurchaseRepository::updatePurchaseOrderItem($order_item_id, $order_item);
+                    continue;
+                }
+                $order_item['purchase_order_id'] = $purchase_order_id;
+                PurchaseRepository::createPurchaseOrderItem($order_item);
+            }
+            DB::commit();
+            Session::flash('success', 'Pemesanan stok berhasil dirubah'); 
+            return response()
+                ->json([
+                    'status' => TRUE,
+                    'message' => 'Pemesanan stok berhasil diubah'
+                ], 200);
+        } catch (Error $error) {
+            DB::rollBack();
+            return response()
+            ->json([
+                'status' => false,
+                'message' => $error->getMessage()
+            ], 200);
+        }
     }
 
-    public function editPurchaseOrderForm(Request $request, $purchaseOrderId) {
-        $purchase_order_record = $this->getPurchaseOrderById($purchaseOrderId);
+    public function editPurchaseForm(Request $request, $purchaseOrderId) {
+        $purchase_order_record = PurchaseRepository::getPurchaseOrderById($purchaseOrderId);
         if (!$purchase_order_record) {
-            return redirect()
-                ->route('purchase.index')
-                ->with(['error' => 'Pembelian stok tidak ditemukan']);
+            return Response::backWithError('Pembelian stok tidak ditemukan');
         }
-        $data['page_title'] = 'Informasi pembelian stok apa yang akan dirubah ?';
-        $data['target_route'] = 'purchase.edit';
-        $data['item'] = $purchase_order_record;
-        return view('admin.purchase.form', $data);
+        return view('admin.purchase.form')
+            ->with('page_title', 'Informasi pembelian stok apa yang akan dirubah ?')
+            ->with('latest_purchase_order_id', NULL)
+            ->with('user', parent::getUser())
+            ->with('item', $purchase_order_record);
     }
 
     private function getPurchaseOrders() {
         return DB::table('purchase_orders')
-            ->select(['purchase_orders.id', 'purchase_orders.purchase_date', DB::raw('suppliers.name AS supplier_name'), DB::raw('users.name AS created_by_name'), 'purchase_orders.status'])
+            ->select(['purchase_orders.id', 'purchase_orders.purchase_date', DB::raw('suppliers.name AS supplier_name'), DB::raw('users.name AS created_by_name'), 'purchase_orders.status', 'purchase_orders.purchase_number'])
             ->leftJoin('suppliers', function ($join) {
                 $join->on('suppliers.id', '=', 'purchase_orders.supplier_id');
             })
@@ -114,8 +198,11 @@ class PurchaseController extends Controller
             $item->id = $purchase_order->id;
             $item->purchase_date = Common::formatTime($purchase_order->purchase_date);
             $item->purchase_name = $purchase_order->supplier_name;
+            $item->purchase_number = $purchase_order->purchase_number;
+            $item->supplier_name = $purchase_order->supplier_name;
             $item->created_by_name = $purchase_order->created_by_name;
-            $item->status = $purchase_order_status[$purchase_order->status];
+            $item->status = $purchase_order->status; 
+            $item->status_name = $purchase_order_status[$purchase_order->status];
             $purchase_orders[$index] = $item;
         }
         return $purchase_orders;
@@ -136,8 +223,13 @@ class PurchaseController extends Controller
     private static function ruleValidations() {
         return [
             'purchase_number' => 'required',
-            'purchase_date' => 'required',
-            'supplier_id' => 'required'
+            'purchase_date' => 'required|date_format:Y-m-d',
+            'supplier_id' => 'required|integer|exists:suppliers,id',
+            'items.*' => 'required|array|min:1',
+            'items.*.price' => 'required|integer|min:1',
+            'items.*.product_id' => 'required|integer|exists:products,id',
+            'items.*.qty' => 'required|integer|min:1',
+            'items.*.unit' => 'required|integer|min:1',
         ];
     }
 
@@ -197,11 +289,36 @@ class PurchaseController extends Controller
     }
 
     public function getSupplier(Request $request) {
-        $supplier_records = DB::table('suppliers')
-            ->get();
+        $supplier_records = PurchaseRepository::getSuppliers();
         return response()->json(array (
             'status' => true,
             'suppliers' => $supplier_records
         ), 200);
+    }
+
+    public function getPurchaseOrderDetail(Request $request, $purchaseOrderId) 
+    {
+        $purchase_order_record = PurchaseRepository::getPurchaseOrderById($purchaseOrderId);
+        if (!$purchase_order_record)
+        {
+            return response()
+                ->json([
+                    'status' => false,
+                    'error_message' => 'Data pemesanan stok tidak ditemukan'
+                ], 404);
+        }
+
+        $purchase_order_item_records = PurchaseRepository::getPurchaseOrderItemByPurchaseOrderId($purchase_order_record->id);
+        $purchase_order_record->items = [];
+        if ($purchase_order_item_records) 
+        {
+            $purchase_order_record->items = $purchase_order_item_records;
+        }
+
+        return response()
+            ->json([
+                'status' => TRUE,
+                'purchase_order' => $purchase_order_record
+            ], 200);
     }
 }

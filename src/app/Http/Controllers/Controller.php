@@ -25,9 +25,11 @@ class Controller extends BaseController
 		$data = ['name' => $user->name, 
 				'email' => $user->email,
 				'role_name' => $user->roles->name,
-				'permission' => $user->roles->permission
+				'permission' => $user->roles->permission,
+				'id' => $user->id,
+				'token' => $current_user->tokens->first()->token
 			];
-		
+			
 		return $data;
 	}
 

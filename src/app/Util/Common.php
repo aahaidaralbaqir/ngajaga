@@ -214,4 +214,15 @@ class Common {
 			Constant::PURCHASE_ORDER_COMPLETED => 'Completed'
 		];
 	}
+
+	public static function getBadgeByStatus($status)
+	{
+		$badge = [
+			Constant::PURCHASE_ORDER_VOID => 'badge-danger',
+			Constant::PURCHASE_ORDER_WAITING => 'badge-warning',
+			Constant::PURCHASE_ORDER_COMPLETED => 'badge-success',
+		];
+
+		return $badge[$status];
+	}
 }

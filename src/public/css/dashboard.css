@@ -344,3 +344,24 @@ ul.inline > li {
 .boxitem .box-b.active {
 	display: none;
 }
+
+.badge {
+	font-size: 14px;
+    font-weight: bold;
+    display: block;
+    padding: 2px;
+    text-align: center;
+}
+
+
+.badge-danger {
+	background-color: #ff2a2a8c;
+}
+
+.badge-success {
+	background-color: #99e9ac;
+}
+
+.badge-warning {
+	background-color: #fbe8a4;
+}
