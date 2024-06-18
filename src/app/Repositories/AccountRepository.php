@@ -38,4 +38,10 @@ class AccountRepository {
             ->where('id', $account_id)
             ->update($user_input);
     }
+
+    public static function createCashflow($user_input)
+    {
+        return DB::table('cashflows')
+            ->insertGetId($user_input);
+    }
 }

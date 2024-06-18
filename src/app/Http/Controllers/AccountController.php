@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Repositories\AccountRepository;
 use App\Util\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class AccountController extends Controller
@@ -44,15 +45,23 @@ class AccountController extends Controller
 
     public function create(Request $request)
     {
+        DB::beginTransaction();
         $user_input_field_rules = [
-			'name' => 'required'
+			'name' => 'required',
         ];
 		$user_input = $request->only('name');
 		$validator = Validator::make($user_input, $user_input_field_rules);
 		if ($validator->fails())
             return Response::backWithErrors($validator);
-
-		AccountRepository::createAccount($user_input);
+		$account_id = AccountRepository::createAccount($user_input);
+        $initial_cashflow_record = [
+            'account_id'    => $account_id,
+            'amount'        => $request->input('initial_balance'),
+            'created_by'    => parent::getUserId(),
+            'description'   => 'Penambahan saldo awal untuk akun ' . $user_input['name']
+        ];
+        AccountRepository::createCashflow($initial_cashflow_record);
+        DB::commit();
         return Response::redirectWithSuccess(
             'account.index', 
             'Akun baru berhasil dibuat');

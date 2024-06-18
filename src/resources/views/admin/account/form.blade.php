@@ -31,17 +31,29 @@
                         </p>
                     </header>
                     <fieldset class="w-3/5">
-                        <legend class="mb-2">
-                            <label for="name" class="text-[#000000] font-light">Nama</label>
-                        </legend>
-                        @if (!empty($item))
-                            <input type="hidden" name="id" value="{{ $item->id }}">
-                        @endif
-                        <input type="text" name="name" class="mb-2 input border rounded-sm px-4 py-2 w-full" value="{{ empty($item) ? ''  : $item->name }}" />
-                        @error('name')
-                            <span class="text-sm text-danger">{{ $message }}</span>
-                        @enderror
+                        <div>
+                            <legend class="mb-2">
+                                <label for="name" class="text-[#000000] font-light">Nama</label>
+                            </legend>
+                            @if (!empty($item))
+                                <input type="hidden" name="id" value="{{ $item->id }}">
+                            @endif
+                            <input type="text" name="name" class="mb-2 input border rounded-sm px-4 py-2 w-full" value="{{ empty($item) ? ''  : $item->name }}" />
+                            @error('name')
+                                <span class="text-sm text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
+                        @if(empty($item))
+                            <div class="mt-4">
+                                <legend class="mb-2">
+                                    <label for="name" class="text-[#000000] font-light">Saldo Awal</label>
+                                </legend>
+                                <input type="number" name="initial_balance" class="mb-2 input border rounded-sm px-4 py-2 w-full" value="{{ empty($item) ? ''  : $item->name }}" />
+                                @error('initial_balance')
+                                    <span class="text-sm text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        @endif
                     </fieldset>
                 </section>
         </section>
