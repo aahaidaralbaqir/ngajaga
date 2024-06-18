@@ -107,7 +107,6 @@
             <section class="flex gap-2 justify-between pt-15 items-start">
                 <header class="text-[#000000] font-light flex-1">
                     <h1 class="text-2xl mb-2 font-lighter">Stok dan Produk</h1>
-                    @{{ order_items }}
                 </header>
                 <fieldset class="w-3/5 flex flex-col">
                     <div class="box-w">
