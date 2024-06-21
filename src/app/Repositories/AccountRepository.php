@@ -44,4 +44,25 @@ class AccountRepository {
         return DB::table('cashflows')
             ->insertGetId($user_input);
     }
+
+    public static function getAccountBalance($account_id) 
+    {
+        $query = DB::table('accounts AS ac')
+            ->addSelect('ac.id')
+            ->addSelect('ac.name')
+            ->addSelect(DB::raw('SUM(cf.amount) AS current_balance'))
+            ->leftJoin('cashflows AS cf', 'ac.id', '=', 'cf.account_id')
+            ->where('ac.id', $account_id)
+            ->groupBy('ac.id', 'ac.name')
+            ->first();
+        return $query->current_balance; 
+    }
+
+    public static function deleteCashflowByPurchaseInvoiceId($invoice_id) 
+    {
+        return DB::table('cashflows')
+            ->where('identifier', $invoice_id)
+            ->where('amount', '<=', 0)
+            ->delete();
+    }
 }

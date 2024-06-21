@@ -17,7 +17,10 @@ use Illuminate\Support\Facades\Validator;
 class PurchaseController extends Controller
 {
     public function index() {
-        $purchase_orders = PurchaseController::transformPurchaseOrders($this->getPurchaseOrders());
+        $user_query = [
+            'status' => [Constant::PURCHASE_ORDER_WAITING, Constant::PURCHASE_ORDER_COMPLETED]
+        ];
+        $purchase_orders = PurchaseController::transformPurchaseOrders(PurchaseRepository::getPurchaseOrders($user_query));
         $data['purchase_orders'] = $purchase_orders;
         $data['user'] = parent::getUser();
         $data['total_row'] = count($purchase_orders);
@@ -167,6 +170,24 @@ class PurchaseController extends Controller
         }
     }
 
+    public function cancelPurchaseOrder(Request $request, $purchaseOrderId)
+    {
+        $purchase_order_record = PurchaseRepository::getPurchaseOrderById($purchaseOrderId);
+        if (!$purchase_order_record) {
+            return Response::backWithError('Data pemesanan stok tidak ditemuakn');
+        }
+
+        if ($purchase_order_record->status == Constant::PURCHASE_ORDER_COMPLETED) {
+            return Response::backWithError('Data pemesanan yang berstatus selesai tidak bisa dibatalkan');
+        }
+
+        $updated_purchase_param = [
+            'status' => Constant::PURCHASE_ORDER_VOID
+        ];
+        PurchaseRepository::updatePurchaseOrder($purchaseOrderId, $updated_purchase_param);
+        return Response::redirectWithSuccess('purchase.index', 'Data pemesanan berhasil dibatalkan');
+    }
+
     public function editPurchaseForm(Request $request, $purchaseOrderId) {
         $purchase_order_record = PurchaseRepository::getPurchaseOrderById($purchaseOrderId);
         if (!$purchase_order_record) {
@@ -180,15 +201,7 @@ class PurchaseController extends Controller
     }
 
     private function getPurchaseOrders() {
-        return DB::table('purchase_orders')
-            ->select(['purchase_orders.id', 'purchase_orders.purchase_date', DB::raw('suppliers.name AS supplier_name'), DB::raw('users.name AS created_by_name'), 'purchase_orders.status', 'purchase_orders.purchase_number'])
-            ->leftJoin('suppliers', function ($join) {
-                $join->on('suppliers.id', '=', 'purchase_orders.supplier_id');
-            })
-            ->leftJoin('users', function ($join) {
-                $join->on('users.id', '=', 'purchase_orders.created_by');
-            })
-            ->get();
+        
     }
 
     public static function transformPurchaseOrders(Collection $purchase_orders): Collection {

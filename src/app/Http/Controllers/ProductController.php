@@ -16,45 +16,37 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $product_records = DB::table('products')
-            ->select(['products.id', 'products.name', 'products.image', DB::raw('category.name AS category_name'), DB::raw('shelf.name AS shelf_name')])
-            ->leftJoin('category', function ($join) {
-                $join->on('category.id', '=', 'products.category_id');
-            })
-            ->leftJoin('shelf', function ($join) {
-                $join->on('shelf.id', '=', 'products.shelf_id');
-            })
-            ->get()
-            ->toArray();
+        $product_records = ProductRepository::getProducts();
         $product_ids = array_map(function ($item) {
             return $item->id;
-        }, $product_records);
-
-        $product_stocks = DB::table('stock')
-            ->select(['stock.id', DB::raw('SUM(stock.qty) AS total_stock')])
-            ->whereIn('id', $product_ids)
-            ->groupBy('stock.product_id', 'stock.id')
-            ->get();
+        }, $product_records->toArray());
+        $product_stocks = ProductRepository::getProductStockByIdsProduct($product_ids);
         $product_stocks_ids = array();
         foreach ($product_stocks as $product)
         {
-            $product_stocks_ids[$product_stocks->id] = $product->total_stock;
+            $product_stocks_ids[$product->product_id] = $product->total_stock;
         }
+        $price_mapping_records = ProductRepository::getProductLowestPriceByIds($product_ids);
+        $price_mapping_ids = array();
+        foreach ($price_mapping_records as $price_mapping)
+            $price_mapping_ids[$price_mapping->product_id] = $price_mapping->lowest_price;
 
         foreach ($product_records as $index => $product_record) 
         {
             $stock = 0;
-            if (array_key_exists($product_record->id, $product_stocks_ids)) {
+            if (array_key_exists($product_record->id, $product_stocks_ids))
                 $stock = $product_stocks_ids[$product_record->id];  
-            }
+            $lowest_price = 0;
+            if (array_key_exists($product_record->id, $price_mapping_ids))
+                $lowest_price = $price_mapping_ids[$product_record->id];  
             $product_records[$index]->image = Common::getStorage(Constant::STORAGE_PRODUCT, $product_record->image);
             $product_records[$index]->stock = $stock;
+            $product_records[$index]->lowest_price = $lowest_price;
         }
-        $user_profile = parent::getUser();
-		$data['user'] = $user_profile;
-        $data['products'] = $product_records;
-        $data['total_row'] = count($product_records);
-        return view('admin.product.index', $data);
+        return view('admin.product.index')
+            ->with('user', parent::getUser())
+            ->with('products', $product_records)
+            ->with('total_row', count($product_records));
     }
 
     public function category(Request $request)
@@ -470,7 +462,7 @@ class ProductController extends Controller
 
         $user_input = [];
         $user_input_length = count($request->input('unit'));
-        for ($sequence = 0; $sequence < $user_input_length - 1; $sequence++) {
+        for ($sequence = 0; $sequence < $user_input_length; $sequence++) {
             $user_input[] = [
                 'product_id' => $product_id,
                 'unit' => $request->input('unit')[$sequence],
@@ -560,5 +552,13 @@ class ProductController extends Controller
         ];
         return response()
             ->json($results, 200);
+    }
+
+    public function getProductLowestPriceById($product_id) 
+    {
+        return DB::table('price_mapping')
+            ->where('product_id', $product_id)
+            ->orderBy('id', 'asc')
+            ->first();
     }
 }

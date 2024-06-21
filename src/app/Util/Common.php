@@ -208,10 +208,9 @@ class Common {
 
 	public static function getPurchaseOrderStatuses() {
 		return [
-			Constant::PURCHASE_ORDER_VOID => 'Void',
-			Constant::PURCHASE_ORDER_DRAFT => 'Draft',
-			Constant::PURCHASE_ORDER_WAITING => 'Waiting',
-			Constant::PURCHASE_ORDER_COMPLETED => 'Completed'
+			Constant::PURCHASE_ORDER_VOID => 'Dibatalkan',
+			Constant::PURCHASE_ORDER_WAITING => 'Menunggu',
+			Constant::PURCHASE_ORDER_COMPLETED => 'Selesai'
 		];
 	}
 

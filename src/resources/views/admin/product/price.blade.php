@@ -151,20 +151,20 @@
                                         @endif
                                         <tr class="hidden sample-row">
                                             <td>
-                                                <select class="w-40" name="unit[]">
+                                                <select class="w-40" name="unit[]" disabled>
                                                     @foreach ($units as $unit_id => $unit_name)
                                                         <option value="{{ $unit_id }}">{{ $unit_name }}</option>
                                                     @endforeach
                                                 </select>
                                             </td>
                                             <td>
-                                                <input type="number" name="qty[]"/>
+                                                <input type="number" name="qty[]" disabled />
                                             </td>
                                             <td>
-                                                <input type="number" name="conversion[]" />
+                                                <input type="number" name="conversion[]" disabled />
                                             </td>
                                             <td>
-                                                <input type="text" name="price[]">
+                                                <input type="text" name="price[]" disabled>
                                             </td>
                                             <td>
                                                 <a href="" class="text-base text-black p-3 rounded border border-black relative flex gap-2 delete-row">Hapus</a>
@@ -212,6 +212,16 @@
             addRowBtn.addEventListener('click', function (event) {
                 noData.classList.add('hidden')
                 const row = sampleRow.cloneNode(true)
+                const unitSelect = row.querySelector('select[name="unit[]"]');
+                const qtyInput = row.querySelector('input[name="qty[]"]');
+                const conversionInput = row.querySelector('input[name="conversion[]"]');
+                const priceInput = row.querySelector('input[name="price[]"]');
+
+                unitSelect.removeAttribute('disabled')
+                qtyInput.removeAttribute('disabled')
+                conversionInput.removeAttribute('disabled')
+                priceInput.removeAttribute('disabled')
+                
                 row.classList.remove('hidden')
                 row.classList.remove('sample-row')
                 row.classList.add('pr-item')

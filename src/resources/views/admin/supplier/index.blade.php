@@ -29,7 +29,7 @@
                 <a href="{{ route('purchase.index') }}" aria-selected="true">Pemesanan Stok</a>
             @endif
             @if(in_array(\App\Constant\Permission::VIEW_PURCHASE_INVOICE, $user['permission']))
-                <a href="{{ route('category.index') }}" aria-selected="true">Penerimaan Stok</a>
+                <a href="{{ route('invoice.index') }}" aria-selected="true">Penerimaan Stok</a>
             @endif
         </div>
     </div>

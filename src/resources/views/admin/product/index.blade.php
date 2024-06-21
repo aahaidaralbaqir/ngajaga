@@ -65,6 +65,7 @@
                             <span>{{ $product->shelf_name }}</span>
                         </td>
                         <td>
+                           {{ \App\Util\Common::formatAmount(\App\Constant\Constant::UNIT_NAME_RUPIAH, $product->lowest_price) }} 
                         </td> 
                         <td>
                            <span class="underline">

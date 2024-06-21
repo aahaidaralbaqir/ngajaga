@@ -1,6 +1,7 @@
 <?php
 namespace App\Repositories;
 
+use App\Constant\Constant;
 use App\Util\Common;
 use Illuminate\Support\Facades\DB;
 
@@ -80,6 +81,7 @@ class PurchaseRepository {
             ->addSelect('po.id')
             ->addSelect('po.purchase_number')
             ->addSelect('po.purchase_date')
+            ->addSelect('po.status')
             ->addSelect('po.supplier_id')
             ->where('po.id', $purchase_order_id)
             ->first();
@@ -105,6 +107,32 @@ class PurchaseRepository {
         return $order_item_records;
     }
 
+    public static function getPurchaserOrderItemDetailByPurchaseOrderId($purchase_order_id)
+    {
+        $order_item_records = DB::table('purchase_order_items AS poi')
+            ->addSelect('poi.id')
+            ->addSelect('poi.product_id')
+            ->addSelect('poi.qty')
+            ->addSelect('poi.price')
+            ->addSelect('poi.unit')
+            ->addSelect('poi.received_qty')
+            ->addSelect('poi.received_price')
+            ->addSelect('poi.total_price')
+            ->addSelect('poi.notes')
+            ->addSelect('poi.received_price')
+            ->addSelect(DB::raw('pr.name AS product_name'))
+            ->leftJoin('products AS pr', 'pr.id', '=', 'poi.product_id')
+            ->where('poi.purchase_order_id', $purchase_order_id)
+            ->get();
+        $product_units = Common::getUnits();
+        foreach ($order_item_records as $idx => $order_item)
+        {
+            $order_item->unit_name = $product_units[$order_item->unit];
+            $order_item_records[$idx] = $order_item;
+        }
+        return $order_item_records; 
+    }
+
     public static function updatePurchaseOrder($purchase_order_id, $user_input)
     {
         $query = DB::table('purchase_orders')
@@ -119,5 +147,28 @@ class PurchaseRepository {
             ->where('id', $order_item_id)
             ->update(($user_input));
         return $query;
+    }
+
+    public static function getPendingPurchaseOrders()
+    {
+        $query = DB::table('purchase_orders')
+            ->where('status', Constant::PURCHASE_ORDER_WAITING)
+            ->get();
+        return $query;
+    }
+
+    public static function getPurchaseOrders($user_param) {
+        $query = DB::table('purchase_orders')
+            ->select(['purchase_orders.id', 'purchase_orders.purchase_date', DB::raw('suppliers.name AS supplier_name'), DB::raw('users.name AS created_by_name'), 'purchase_orders.status', 'purchase_orders.purchase_number'])
+            ->leftJoin('suppliers', function ($join) {
+                $join->on('suppliers.id', '=', 'purchase_orders.supplier_id');
+            })
+            ->leftJoin('users', function ($join) {
+                $join->on('users.id', '=', 'purchase_orders.created_by');
+            });
+
+        if (array_key_exists('status', $user_param))
+            $query->whereIn('purchase_orders.status', $user_param['status']);
+        return $query->get();
     }
 }

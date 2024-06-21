@@ -16,6 +16,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SupplierController;
@@ -72,6 +73,7 @@ Route::prefix('purchase')->group(function () {
 	Route::post('/create', [PurchaseController::class, 'createPurchaseOrder'])->name('purchase.create')->middleware(['auth', 'rbac:' . Permission::CREATE_ORDER_INVOICE]);
 	Route::get('/{purchaseOrderId}/edit', [PurchaseController::class, 'editPurchaseForm'])->name('purchase.edit.form')->middleware(['auth', 'rbac:' . Permission::UPDATE_ORDER_INVOICE]);
 	Route::post('/edit', [PurchaseController::class, 'editPurchaseOrder'])->name('purchase.edit')->middleware(['auth', 'rbac:' . Permission::UPDATE_ORDER_INVOICE]);
+	Route::get('/{purchaseOrderId}/cancel', [PurchaseController::class, 'cancelPurchaseOrder'])->name('purchase.cancel')->middleware(['auth', 'rbac:' . Permission::UPDATE_ORDER_INVOICE]);
 });
 
 Route::prefix('category')->group(function () {
@@ -115,7 +117,13 @@ Route::prefix('user')->group(function () {
 	Route::post('/update', [UserController::class, 'updateUser'])->name('user.update')->middleware(['auth', 'rbac:' . Permission::UPDATE_USER]);
 });
 
-
+Route::prefix('invoice')->group(function () {
+	Route::get('/', [InvoiceController::class, 'getInvoices'])->name('invoice.index')->middleware(['auth', 'rbac:' . Permission::VIEW_PURCHASE_INVOICE]);
+	Route::get('/create', [InvoiceController::class, 'createInvoiceForm'])->name('invoice.create.form')->middleware(['auth', 'rbac:' . Permission::CREATE_PURCHASE_INVOICE]);
+	Route::post('/create', [InvoiceController::class, 'createInvoice'])->name('invoice.create')->middleware(['auth', 'rbac:' . Permission::CREATE_PURCHASE_INVOICE]);
+	Route::get('/edit/{invoiceId}', [InvoiceController::class, 'editInvoiceForm'])->name('invoice.edit.form')->middleware(['auth', 'rbac:' . Permission::UPDATE_PURCHASE_INVOICE]);
+	Route::post('/edit', [InvoiceController::class, 'editInvoice'])->name('invoice.edit')->middleware(['auth', 'rbac:' . Permission::UPDATE_PURCHASE_INVOICE]);
+});
 
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');

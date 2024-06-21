@@ -135,6 +135,10 @@ input:not([type]), input[type=email], input[type=date], input[type=datetime-loca
     --active-bg: rgb(0 0 0/0.1);
 }
 
+input:not([type]), input[type=email]:disabled, input[type=date]:disabled, input[type=datetime-local]:disabled, input[type=number]:disabled, input[type=password]:disabled, input[type=search]:disabled, input[type=tel]:disabled, input[type=text]:disabled, input[type=url]:disabled, textarea:disabled, select:disabled, .input:disabled, .chosen-container:disabled .chosen-choices:disabled, .textarea:disabled {
+    background-color: #f5f5f5;
+}
+
 input:not([type]):focus-within, input[type="email"]:focus-within, input[type="date"]:focus-within, input[type="datetime-local"]:focus-within, input[type="number"]:focus-within, input[type="password"]:focus-within, input[type="search"]:focus-within, input[type="tel"]:focus-within, input[type="text"]:focus-within, input[type="url"]:focus-within, textarea:focus-within, select:focus-within, .input:focus-within, .chosen-container .chosen-choices:focus-within, .textarea:focus-within {
     outline: .125rem solid rgb(255 144 232);
 }
