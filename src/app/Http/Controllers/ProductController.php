@@ -329,9 +329,9 @@ class ProductController extends Controller
         }
 
         $user_input['updated_by'] = Auth::user()->id;
-        DB::table('products')->insert($user_input);
+        $product_id = DB::table('products')->insertGetId($user_input);
         return redirect()
-			->route('product.price.form')
+			->route('product.price.form', ['productId', $product_id])
 			->with(['success' => 'Produk berhasil ditambahkan']);
     }
 

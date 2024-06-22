@@ -75,18 +75,32 @@
                                 <a href="" data-id="{{ $purchase->id }}" data-name="action" class="dropdown" role="dropdown">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
                                 </a>
-                                <div class="menu hidden w-[200px] ml-[-10px]" data-id="{{ $purchase->id }}" data-name="action" role="dropdown-content">
+                                <div class="menu hidden w-[250px] ml-[-20px]" data-id="{{ $purchase->id }}" data-name="action" role="dropdown-content">
+                                    @if ($purchase->status == \App\Constant\Constant::PURCHASE_ORDER_COMPLETED)
+                                        <a href="{{ route('invoice.edit.form', ['invoiceId' => $purchase->purchase_invoice_id, 'purchaseNumber' => $purchase->purchase_number]) }}" class="menu-item">
+                                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-plus"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M9 15h6"/><path d="M12 18v-6"/></svg>
+                                            Lihat penerimaan stok
+                                        </a>
+                                    @endif
                                     @if ($purchase->status == \App\Constant\Constant::PURCHASE_ORDER_WAITING)
                                         <a href="{{ route('invoice.create.form', ['purchaseNumber' => $purchase->purchase_number]) }}" class="menu-item">
                                             <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-plus"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M9 15h6"/><path d="M12 18v-6"/></svg>
                                             Buat penerimaan stok
                                         </a>
                                     @endif
-                                    @if(in_array(\App\Constant\Permission::UPDATE_ORDER_INVOICE, $user['permission']))
-                                        <a href="{{ route('purchase.edit.form', ['purchaseOrderId' => $purchase->id]) }}" class="menu-item">
-                                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-pen"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z"/></svg>
-                                            Ubah
-                                        </a>
+                                    @if ($purchase->status == \App\Constant\Constant::PURCHASE_ORDER_WAITING)
+                                    <a href="{{ route('purchase.print', ['purchaseOrderId' => $purchase->id]) }}" class="menu-item">
+                                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-printer"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>
+                                        Cetak Pemesanan Stok
+                                    </a>
+                                    @endif
+                                    @if ($purchase->status == \App\Constant\Constant::PURCHASE_ORDER_WAITING)
+                                        @if(in_array(\App\Constant\Permission::UPDATE_ORDER_INVOICE, $user['permission']))
+                                            <a href="{{ route('purchase.edit.form', ['purchaseOrderId' => $purchase->id]) }}" class="menu-item">
+                                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-pen"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z"/></svg>
+                                                Ubah
+                                            </a>
+                                        @endif
                                     @endif
                                     @if ($purchase->status == \App\Constant\Constant::PURCHASE_ORDER_WAITING)
                                         @if(in_array(\App\Constant\Permission::DELETE_ORDER_INVOICE, $user['permission'])) 

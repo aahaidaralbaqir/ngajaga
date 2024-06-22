@@ -72,6 +72,7 @@ Route::prefix('purchase')->group(function () {
 	Route::get('/create', [PurchaseController::class, 'createPurchaseForm'])->name('purchase.create.form')->middleware(['auth', 'rbac:' . Permission::CREATE_ORDER_INVOICE]);
 	Route::post('/create', [PurchaseController::class, 'createPurchaseOrder'])->name('purchase.create')->middleware(['auth', 'rbac:' . Permission::CREATE_ORDER_INVOICE]);
 	Route::get('/{purchaseOrderId}/edit', [PurchaseController::class, 'editPurchaseForm'])->name('purchase.edit.form')->middleware(['auth', 'rbac:' . Permission::UPDATE_ORDER_INVOICE]);
+	Route::get('/{purchaseOrderId}/print', [PurchaseController::class, 'printPurchase'])->name('purchase.print')->middleware(['auth']);
 	Route::post('/edit', [PurchaseController::class, 'editPurchaseOrder'])->name('purchase.edit')->middleware(['auth', 'rbac:' . Permission::UPDATE_ORDER_INVOICE]);
 	Route::get('/{purchaseOrderId}/cancel', [PurchaseController::class, 'cancelPurchaseOrder'])->name('purchase.cancel')->middleware(['auth', 'rbac:' . Permission::UPDATE_ORDER_INVOICE]);
 });
@@ -79,7 +80,7 @@ Route::prefix('purchase')->group(function () {
 Route::prefix('category')->group(function () {
 	Route::get('/', [ProductController::class, 'category'])->name('category.index')->middleware(['auth', 'rbac:' . Permission::VIEW_CATEGORY]);
 	Route::get('/create', [ProductController::class, 'createFormCategory'])->name('category.create.form')->middleware(['auth', 'rbac:' . Permission::CREATE_CATEGORY]);
-	Route::post('/create', [ProductController::class, 'createCategory'])->name('category.create')->middleware(['auth'. 'rbac:' . Permission::CREATE_CATEGORY]);
+	Route::post('/create', [ProductController::class, 'createCategory'])->name('category.create')->middleware(['auth', 'rbac:' . Permission::CREATE_CATEGORY]);
 	Route::get('/{categoryId}/edit', [ProductController::class, 'editFormCategory'])->name('category.edit.form')->middleware(['auth', 'rbac:' . Permission::UPDATE_CATEGORY]);
 	Route::post('/edit', [ProductController::class, 'editCategory'])->name('category.edit')->middleware(['auth', 'rbac:' . Permission::UPDATE_CATEGORY]);
 });

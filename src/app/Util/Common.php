@@ -161,8 +161,15 @@ class Common {
 			Constant::UNIT_BKS => 'Bungkus',
 			Constant::UNIT_PCS => 'Pcs',
 			Constant::UNIT_KG => 'Kilogram',
-			Constant::UNIT_LUSIN => 'Lusin'
+			Constant::UNIT_LUSIN => 'Lusin',
+			Constant::UNIT_LTR => 'Liter',
+			Constant::UNIT_PACK => 'paK'
 		];
+	}
+
+	public static function getUnitNameById($unit_id) {
+		$units = self::getUnits();
+		return $units[$unit_id];
 	}
 
 	public static function getUnitByIds($unit_ids) {

@@ -29,6 +29,8 @@ class Constant {
 	const UNIT_LUSIN = 2;
 	const UNIT_PCS = 3;
 	const UNIT_BKS = 4;
+	CONST UNIT_LTR = 5;
+	CONST UNIT_PACK = 6;
 
 	const OPTION_ENABLE = 1;
 	const OPTION_DISABLE = 2;

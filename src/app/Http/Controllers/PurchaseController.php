@@ -12,6 +12,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Validator;
 
 class PurchaseController extends Controller
@@ -216,6 +217,7 @@ class PurchaseController extends Controller
             $item->created_by_name = $purchase_order->created_by_name;
             $item->status = $purchase_order->status; 
             $item->status_name = $purchase_order_status[$purchase_order->status];
+            $item->purchase_invoice_id = $purchase_order->purchase_invoice_id;
             $purchase_orders[$index] = $item;
         }
         return $purchase_orders;
@@ -333,5 +335,18 @@ class PurchaseController extends Controller
                 'status' => TRUE,
                 'purchase_order' => $purchase_order_record
             ], 200);
+    }
+
+    public function printPurchase(Request $request, $purchaseOrderId)
+    {
+        $purchase_record = PurchaseRepository::getPurchaseOrderById($purchaseOrderId);
+        if (!$purchase_record) {
+            return Response::backWithError('Data pemesanan tidak ditemukan');
+        }
+        $purchase_record->order_items = PurchaseRepository::getPurchaserOrderItemDetailByPurchaseOrderId($purchaseOrderId);
+        $data =  ['item' => $purchase_record, 'user' => parent::getUser()];
+        $pdf = Pdf::loadView('admin.purchase.print', $data);
+        $file_name = 'Pemesanan Stok - ' . $purchase_record->purchase_number . '.pdf';
+        return $pdf->download($file_name);
     }
 }

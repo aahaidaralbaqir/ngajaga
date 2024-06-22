@@ -85,8 +85,12 @@ class PurchaseRepository {
             ->addSelect('po.supplier_id')
             ->where('po.id', $purchase_order_id)
             ->first();
-        
-        $query->purchase_date = date('Y-m-d', $query->purchase_date);
+        if ($query) {
+            $query->purchase_date = date('Y-m-d', $query->purchase_date);
+            $query->supplier = DB::table('suppliers')
+                ->where('id', $query->supplier_id)
+                ->first();
+        }
         return $query;
     }
     
@@ -159,10 +163,11 @@ class PurchaseRepository {
 
     public static function getPurchaseOrders($user_param) {
         $query = DB::table('purchase_orders')
-            ->select(['purchase_orders.id', 'purchase_orders.purchase_date', DB::raw('suppliers.name AS supplier_name'), DB::raw('users.name AS created_by_name'), 'purchase_orders.status', 'purchase_orders.purchase_number'])
+            ->select(['purchase_orders.id', 'purchase_orders.purchase_date', DB::raw('suppliers.name AS supplier_name'), DB::raw('users.name AS created_by_name'), 'purchase_orders.status', 'purchase_orders.purchase_number', DB::raw('pi.id AS purchase_invoice_id')])
             ->leftJoin('suppliers', function ($join) {
                 $join->on('suppliers.id', '=', 'purchase_orders.supplier_id');
             })
+            ->leftJoin('purchase_invoices AS pi', 'pi.purchase_order_id', '=','purchase_orders.id')
             ->leftJoin('users', function ($join) {
                 $join->on('users.id', '=', 'purchase_orders.created_by');
             });
