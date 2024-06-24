@@ -1,6 +1,7 @@
 <?php
 namespace App\Repositories;
 
+use App\Constant\Constant;
 use App\Util\Common;
 use Illuminate\Support\Facades\DB;
 
@@ -21,7 +22,6 @@ class ProductRepository {
         return DB::table('price_mapping AS pm')
             ->addSelect('pm.id')
             ->addSelect('pm.product_id')
-            ->addSelect(DB::raw('p.name AS product_name'))
             ->addSelect('pm.unit')
             ->addSelect('pm.conversion')
             ->addSelect('pm.price')
@@ -29,24 +29,29 @@ class ProductRepository {
             ->get();
     }
 
-    public static function createStockIn($user_input) 
+    public static function createStock($user_input) 
     {
         return DB::table('stock')
             ->insertGetId($user_input);
     }
 
-    public static function getProducts()
+    public static function getProducts($user_input_params = array())
     {
-        $records = DB::table('products')
+        $query = DB::table('products')
             ->select(['products.id', 'products.name', 'products.image', DB::raw('category.name AS category_name'), DB::raw('shelf.name AS shelf_name')])
             ->leftJoin('category', function ($join) {
                 $join->on('category.id', '=', 'products.category_id');
             })
             ->leftJoin('shelf', function ($join) {
                 $join->on('shelf.id', '=', 'products.shelf_id');
-            })
-            ->get();
-        return $records;
+            });
+        foreach ($user_input_params as $key => $value) {
+            if (in_array($key, ['cat']))
+                $query->where('category.id', $value);
+            if (in_array($key, ['search']) && $value)
+                $query->where('products.name', 'like', '%' . $value . '%');
+        }
+        return $query->get();
     }
 
     public static function getProductStockByIdsProduct($product_ids)
@@ -86,4 +91,80 @@ class ProductRepository {
             ->where('qty', '>', 0)
             ->delete();
     }
+
+    public static function getCategories()
+    {
+        return DB::table('category')
+            ->get();
+    }
+
+    public static function getDetailProducts($user_params) {
+        $product_records = self::getProducts($user_params);
+        $product_ids = array_map(function ($item) {
+            return $item->id;
+        }, $product_records->toArray());
+        $product_stocks = self::getProductStockByIdsProduct($product_ids);
+        $product_stocks_ids = array();
+        foreach ($product_stocks as $product)
+        {
+            $product_stocks_ids[$product->product_id] = $product->total_stock;
+        }
+        $price_mapping_records = self::getProductLowestPriceByIds($product_ids);
+        $price_mapping_ids = array();
+        foreach ($price_mapping_records as $price_mapping)
+            $price_mapping_ids[$price_mapping->product_id] = $price_mapping->lowest_price;
+
+        foreach ($product_records as $index => $product_record) 
+        {
+            $stock = 0;
+            if (array_key_exists($product_record->id, $product_stocks_ids))
+                $stock = $product_stocks_ids[$product_record->id];  
+            $lowest_price = 0;
+            if (array_key_exists($product_record->id, $price_mapping_ids))
+                $lowest_price = $price_mapping_ids[$product_record->id];  
+            $product_records[$index]->image = Common::getStorage(Constant::STORAGE_PRODUCT, $product_record->image);
+            $product_records[$index]->stock = $stock;
+            $product_records[$index]->lowest_price = $lowest_price;
+        }
+        return $product_records;
+    }
+
+    public static function getProductUnitByProductIds($product_ids = [])
+    {
+        $price_mapping_records = DB::table('price_mapping')
+            ->whereIn('product_id', $product_ids)
+            ->orderBy('id', 'asc')
+            ->get();
+        $product_units = self::getProductUnit();
+        foreach ($price_mapping_records as $idx => $price_mapping) {
+            $price_mapping->unit_name = $product_units[$price_mapping->unit];
+            $price_mapping_records[$idx] = $price_mapping;
+        }
+        $group_product_units = array();
+        foreach ($price_mapping_records as $price_mapping) {
+            if (array_key_exists($price_mapping->product_id, $group_product_units)) {
+                $prev = $group_product_units[$price_mapping->product_id];
+                $prev[] = $price_mapping;
+                $group_product_units[$price_mapping->product_id] = $prev;
+                continue;
+            }
+            $group_product_units[$price_mapping->product_id] = [$price_mapping];
+        }
+        return $group_product_units;
+    }
+
+    public static function getProductById($product_id)
+    {
+        $product_record = DB::table('products')
+            ->where('id', $product_id)
+            ->first();
+
+        if ($product_record) {
+            $product_record->prices = self::getPriceMappingByProductId($product_id);
+            $product_record->image = Common::getStorage(Constant::STORAGE_PRODUCT, $product_record->image);
+        }
+
+        return $product_record;
+    }
+
 }

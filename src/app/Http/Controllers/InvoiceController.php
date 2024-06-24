@@ -134,7 +134,7 @@ class InvoiceController extends Controller
                     'qty'           => $order_item['received_qty'] * $price_mapping_record->conversion,
                     'identifier'    => $invoice_id      
                 ];
-                ProductRepository::createStockIn($create_stock_param);
+                ProductRepository::createStock($create_stock_param);
             }
             DB::commit();
             return Response::redirectWithSuccess('invoice.index', 'Invoice berhasil diterbitkan');
@@ -246,7 +246,7 @@ class InvoiceController extends Controller
                     'qty'           => $order_item['received_qty'] * $price_mapping_record->conversion,
                     'identifier'    => $invoice_id      
                 ];
-                ProductRepository::createStockIn($create_stock_param);
+                ProductRepository::createStock($create_stock_param);
             }
             DB::commit();
             return Response::redirectWithSuccess('invoice.index', 'Invoice berhasil dirubah');

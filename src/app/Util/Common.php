@@ -231,4 +231,25 @@ class Common {
 
 		return $badge[$status];
 	}
+
+	public static function generateOrderId($latest_id) {
+		// Generate a unique ID based on current time in microseconds
+		$unique_id = uniqid();
+
+		// Add characters (e.g., 'ORD') to the order ID
+		$characters = 'TRX';
+
+		// Format the current date (e.g., YYMMDD)
+		$current_date = date('ymd');
+
+		// Calculate available space for unique_id after adding characters and date
+		$max_unique_id_length = 9 - strlen($characters) - strlen($current_date);
+
+		// Truncate unique_id to fit within available space
+		$truncated_unique_id = substr($unique_id, 0, $max_unique_id_length);
+
+		// Combine all parts to form the final order ID
+		$order_id = $characters . $current_date . $truncated_unique_id . $latest_id;
+		return $order_id;
+	}
 }

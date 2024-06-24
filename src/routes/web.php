@@ -11,6 +11,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -113,6 +114,16 @@ Route::prefix('invoice')->group(function () {
 	Route::post('/create', [InvoiceController::class, 'createInvoice'])->name('invoice.create')->middleware(['auth', 'rbac:' . Permission::CREATE_PURCHASE_INVOICE]);
 	Route::get('/edit/{invoiceId}', [InvoiceController::class, 'editInvoiceForm'])->name('invoice.edit.form')->middleware(['auth', 'rbac:' . Permission::UPDATE_PURCHASE_INVOICE]);
 	Route::post('/edit', [InvoiceController::class, 'editInvoice'])->name('invoice.edit')->middleware(['auth', 'rbac:' . Permission::UPDATE_PURCHASE_INVOICE]);
+});
+
+Route::prefix('transaction')->group(function () {
+	Route::get('/create', [TransactionController::class, 'createTransactionForm'])->name('transaction.create.form')->middleware(['auth']);
+	Route::post('/create', [TransactionController::class, 'createTransaction'])->name('transaction.create')->middleware(['auth']);
+	Route::get('/customer', [TransactionController::class, 'customer'])->name('transaction.customer')->middleware(['auth']);
+	Route::post('/cart/add', [TransactionController::class, 'addProductToCart'])->name('transaction.cart.add')->middleware(['auth']);
+	Route::post('/cart/remove', [TransactionController::class, 'removeProductFromCart'])->name('transaction.cart.remove')->middleware(['auth']);
+	Route::post('/cart/account', [TransactionController::class, 'chooseAccount'])->name('transaction.account')->middleware(['auth']);
+	Route::post('/cart/action/{actionType}', [TransactionController::class, 'cartAction'])->name('transaction.cart.action')->middleware(['auth']);
 });
 
 

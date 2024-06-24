@@ -43,4 +43,10 @@ class Constant {
 
 	const OPTION_TRUE = 1;
 	const OPTION_FALSE = 0;
+
+	const OrderDataSessionKey = 'order_data';
+	const OrderSelectedAccountKey = "account";
+
+	const ActionIncrement = 'increment';
+	const ActionDecrement = 'decrement';
 }
