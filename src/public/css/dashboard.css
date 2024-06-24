@@ -57,8 +57,9 @@ table.retro tbody tr td {
 	background-color: white;
 	padding: 1rem;
 	color: black;
-	font-size: 1rem;
+	font-size: 14px;
 	border-bottom: 1px solid black;
+	font-weight: 500;
 }
 
 table.retro tfoot tr td {
@@ -70,6 +71,8 @@ table.retro tfoot tr td {
 table.retro thead tr th {
 	padding: 1rem;
 	color: #000000;
+	font-size: 14px;
+	font-weight: 500;
 }
 
 .cell-icon,

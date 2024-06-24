@@ -117,6 +117,8 @@ Route::prefix('invoice')->group(function () {
 });
 
 Route::prefix('transaction')->group(function () {
+	Route::get('/download', [TransactionController::class, 'downloadReport'])->name('transaction.download')->middleware(['auth']);
+	Route::get('/', [TransactionController::class, 'getTransactions'])->name('transaction.index')->middleware(['auth']);
 	Route::get('/create', [TransactionController::class, 'createTransactionForm'])->name('transaction.create.form')->middleware(['auth']);
 	Route::post('/create', [TransactionController::class, 'createTransaction'])->name('transaction.create')->middleware(['auth']);
 	Route::get('/customer', [TransactionController::class, 'customer'])->name('transaction.customer')->middleware(['auth']);

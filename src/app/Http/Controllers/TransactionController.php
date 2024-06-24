@@ -3,19 +3,39 @@
 namespace App\Http\Controllers;
 
 use App\Constant\Constant;
+use App\Exports\TransactionExport;
 use App\Repositories\AccountRepository;
 use App\Repositories\CustomerRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\TransactionRepository;
+use App\Repositories\UserRepository;
 use App\Util\Common;
 use App\Util\Response;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TransactionController extends Controller
 {
+    public function getTransactions(Request $request)
+    {
+        $transaction_records = TransactionRepository::getTransactions($request->all());
+        $customers = CustomerRepository::getCustomers();
+        $accounts = AccountRepository::getAccountsWithBalance();
+        $users = UserRepository::getUsers();
+        $today_transaction_summary = TransactionRepository::getTodayTransactionSummary();
+        return view('admin.transaction.index')
+            ->with('transactions', $transaction_records)
+            ->with('customers', $customers)
+            ->with('accounts', $accounts)
+            ->with('users', $users)
+            ->with('today_summary', $today_transaction_summary)
+            ->with('has_filter', $request->query->count() > 0)
+            ->with('user', parent::getUser());
+    }
+
     public function createTransactionForm(Request $request) 
     {
         $category = $request->query('cat');
@@ -252,30 +272,41 @@ class TransactionController extends Controller
                 'description'   => 'Penambahan saldo untuk transaksi ' . $order_id
             ];
             AccountRepository::createCashflow($create_cashflow_record);
-
-            $create_transaction_records = [];
+            $total_qty = 0;
             foreach ($products as $product)  {
                 $product_id = $product['detail']->id;
-                $create_transaction_record[] = [
+                $create_transaction_record = [
                     'transaction_id'    => $transaction_id,
                     'product_id'        => $product_id,
                     'unit'              => $product['unit'],
                     'qty'               => $product['quantity']];
+                TransactionRepository::createTransactionDetail($create_transaction_record);
 
                 $price_mapping_record = ProductRepository::getPriceMappingDetail($product_id, $product['unit']);
+                $product_total_qty = $product['quantity'] * $price_mapping_record->conversion;
+                $total_qty += $product_total_qty;
                 $create_stock_param = [
                     'product_id'    => $product_id,
-                    'qty'           => ($product['quantity'] * $price_mapping_record->conversion) * -1,
+                    'qty'           => ($product_total_qty) * -1,
                     'identifier'    => $transaction_id];
                 ProductRepository::createStock($create_stock_param);
             }
-            TransactionRepository::createTransactionDetail($create_transaction_records);
             session()->remove(Constant::OrderDataSessionKey);
             session()->remove(Constant::OrderSelectedAccountKey);
+            $update_transaction_record = [
+                'total_product_qty' => $total_qty
+            ];
+            TransactionRepository::updateTransaction($transaction_id, $update_transaction_record);
             DB::commit();
             return Response::redirectWithSuccess('transaction.create.form', 'Transaksi berhasil dibuat');
         } catch (Exception $error) {
             return Response::backWithError('Terjadi kesalaharan ' . $error->getMessage()); 
         }
+    }
+
+    public function downloadReport(Request $request)
+    {
+        $file_name = sprintf('Laporan-transaksi-masuk-%s.csv', date('Y-m-d', time()));
+        return Excel::download(new TransactionExport($request->all()), $file_name);
     }
 }
