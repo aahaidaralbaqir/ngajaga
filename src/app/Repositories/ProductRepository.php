@@ -166,5 +166,4 @@ class ProductRepository {
 
         return $product_record;
     }
-
 }

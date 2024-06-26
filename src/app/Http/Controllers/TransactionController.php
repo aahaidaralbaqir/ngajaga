@@ -262,13 +262,15 @@ class TransactionController extends Controller
                 'price_total'       => $price_total,
                 'created_by'        => parent::getUserId(),
                 'customer_id'       => $user_input['customer'],
+                'transaction_date'  => time(),
                 'account_id'        => $account_id];
             $transaction_id = TransactionRepository::createTransaction($create_transaction_record);
 
             $create_cashflow_record = [
-                'account_id' => $account_id,
-                'amount'     => $price_total,
-                'created_by' => parent::getUserId(),
+                'account_id'    => $account_id,
+                'amount'        => $price_total,
+                'created_by'    => parent::getUserId(),
+                'identifier'    => $transaction_id,
                 'description'   => 'Penambahan saldo untuk transaksi ' . $order_id
             ];
             AccountRepository::createCashflow($create_cashflow_record);
@@ -308,5 +310,75 @@ class TransactionController extends Controller
     {
         $file_name = sprintf('Laporan-transaksi-masuk-%s.csv', date('Y-m-d', time()));
         return Excel::download(new TransactionExport($request->all()), $file_name);
+    }
+
+    public function editTransaction(Request $request)
+    {
+        $transactionId = $request->input('transaction_id');
+        DB::beginTransaction();
+        try {
+            $transaction_record = TransactionRepository::getTransactionById($transactionId);
+            if (!$transaction_record) {
+                return Response::backWithError('Data transaksi tidak ditemukan');
+            }
+            
+            DB::commit();
+            return Response::redirectWithSuccess('transaction.index', 'Transaksi berhasil dibatalkan');
+        } catch (Exception $error) {
+            return Response::backWithError('Terjadi kesalahan ' . $error->getMessage());
+        }
+    }
+
+    public function editTransactionForm(Request $request, $transactionId)
+    {
+        $transaction_record = TransactionRepository::getTransactionById($transactionId);
+        if (!$transaction_record) {
+            return Response::backWithError('Data transaksi tidak ditemukan');
+        }
+        return view('admin.transaction.form')
+            ->with('user', parent::getUser())
+            ->with('page_title', 'Mengubah Transaksi')
+            ->with('transaction_record', $transaction_record);
+    }
+
+    public function getTransactionDetail(Request $request, $transactionId)
+    {
+        $transaction_record = TransactionRepository::getTransactionById($transactionId);
+        if (!$transaction_record) {
+            return response()
+                ->json([
+                    'status' => false,
+                    'message' => 'Data transaksi tidak ditemukan'
+                ], 404);
+        }
+
+        $transaction_detail_records = TransactionRepository::getTransactionDetail($transactionId);
+        $transaction_record->items = $transaction_detail_records;
+
+        return response()
+            ->json([
+                'status' => true,
+                'transaction' => $transaction_record
+            ]);
+    }
+
+    public function getCustomers(Request $request) 
+    {
+        $customer_records = CustomerRepository::getCustomers();
+        return response()
+            ->json([
+                'status' => true,
+                'customer' => $customer_records
+            ]);
+    }
+
+    public function getAccounts(Request $request) 
+    {
+        $account_records = AccountRepository::getAccountsWithBalance();
+        return response()
+            ->json([
+                'status' => true,
+                'account' => $account_records
+            ]);
     }
 }

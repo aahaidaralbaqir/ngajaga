@@ -126,6 +126,7 @@ Route::prefix('transaction')->group(function () {
 	Route::post('/cart/remove', [TransactionController::class, 'removeProductFromCart'])->name('transaction.cart.remove')->middleware(['auth']);
 	Route::post('/cart/account', [TransactionController::class, 'chooseAccount'])->name('transaction.account')->middleware(['auth']);
 	Route::post('/cart/action/{actionType}', [TransactionController::class, 'cartAction'])->name('transaction.cart.action')->middleware(['auth']);
+	Route::get('/edit/{transactionId}', [TransactionController::class, 'editTransactionForm'])->name('transaction.edit.form')->middleware(['auth']);
 });
 
 

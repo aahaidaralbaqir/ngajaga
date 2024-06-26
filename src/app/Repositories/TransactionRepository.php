@@ -87,4 +87,38 @@ class TransactionRepository {
             ->where('id', $transaction_id)
             ->update($user_input);
    }
+
+   public static function getTransactionById($transaction_id)
+   {
+        $transaction_record = DB::table('transactions')
+            ->where('id', $transaction_id)
+            ->first();
+
+        if ($transaction_record) {
+            $transaction_record->transaction_date = date('Y-m-d', $transaction_record->transaction_date);
+        }
+
+        return $transaction_record;
+   }
+
+   public static function cancelTransaction($transaction_id)
+   {
+        return DB::table('transactions')
+            ->where('id', $transaction_id)
+            ->delete();
+   }
+
+   public static function removeTransactionDetail($transaction_id)
+   {
+        return DB::table('transaction_details')
+            ->where('transaction_id', $transaction_id)
+            ->delete();
+   }
+
+   public static function getTransactionDetail($transaction_id)
+   {
+        return DB::table('transaction_details')
+            ->where('transaction_id', $transaction_id)
+            ->get();
+   }
 }
