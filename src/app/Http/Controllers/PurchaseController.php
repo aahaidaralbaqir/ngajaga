@@ -17,15 +17,20 @@ use Illuminate\Support\Facades\Validator;
 
 class PurchaseController extends Controller
 {
-    public function index() {
+    public function index(Request $request) {
         $user_query = [
-            'status' => [Constant::PURCHASE_ORDER_WAITING, Constant::PURCHASE_ORDER_COMPLETED]
+            'status' => [Constant::PURCHASE_ORDER_WAITING, Constant::PURCHASE_ORDER_COMPLETED],
+            'search' => $request->get('search')
         ];
         $purchase_orders = PurchaseController::transformPurchaseOrders(PurchaseRepository::getPurchaseOrders($user_query));
         $data['purchase_orders'] = $purchase_orders;
         $data['user'] = parent::getUser();
         $data['total_row'] = count($purchase_orders);
-        return view('admin.purchase.index', $data);
+        return view('admin.purchase.index')
+            ->with('purchase_orders', $purchase_orders)
+            ->with('user', parent::getUser())
+            ->with('total_row', count($purchase_orders))
+            ->with('has_filter', $request->query->count() > 0);
     }
 
     public function createPurchaseOrder(Request $request) {

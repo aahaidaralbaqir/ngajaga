@@ -711,6 +711,15 @@ video {
 .right-\[120px\] {
   right: 120px;
 }
+.right-\[130px\] {
+  right: 130px;
+}
+.right-\[140px\] {
+  right: 140px;
+}
+.right-\[150px\] {
+  right: 150px;
+}
 .-z-1 {
   z-index: -1;
 }

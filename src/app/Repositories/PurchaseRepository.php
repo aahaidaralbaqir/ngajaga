@@ -171,9 +171,16 @@ class PurchaseRepository {
             ->leftJoin('users', function ($join) {
                 $join->on('users.id', '=', 'purchase_orders.created_by');
             });
-
-        if (array_key_exists('status', $user_param))
-            $query->whereIn('purchase_orders.status', $user_param['status']);
+        
+        foreach ($user_param as $field => $value) {
+            if (in_array($field, ['status']) && $value) {
+                $query->whereIn('purchase_orders.status', $user_param['status']);
+            }
+            if (in_array($field, ['search']) && $value) {
+                $query->where('purchase_orders.purchase_number', $user_param['search']);
+            }
+        }
+     
         return $query->get();
     }
 }

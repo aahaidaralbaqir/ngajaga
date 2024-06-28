@@ -73,7 +73,7 @@
                     @endforeach
                     @if (count($debts) < 1)
                     <tr>
-                        <td colspan="5">Tidak ada data</td>
+                        <td colspan="6">Tidak ada data</td>
                     </tr>
                     @endif
                 </tbody>
