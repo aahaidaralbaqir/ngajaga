@@ -7,15 +7,6 @@
               Rak 
             </h1>
             <div class="flex items-center justify-between gap-5 relative">
-                <button class="button text-base text-black p-3 rounded border border-black relative">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                    <div class="menu top-14 left-[-1px] hidden">
-                        <div class="search flex justify-between items-center border border-black rounded-sm px-2 gap-2 m-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                            <input type="text" placeholder="cari produk" class="p-2 focus:outline-none">
-                        </div>
-                    </div>
-                </button>
                 @if (in_array(\App\Constant\Permission::CREATE_SHELF, $user['permission']))
                     <a href="{{ route('shelf.create.form') }}" class="button text-base bg-[#ff91e7] text-black p-3 rounded border border-black">Buat Rak</a>
                 @endif

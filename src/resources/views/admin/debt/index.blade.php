@@ -6,7 +6,7 @@
                 <h1>
                    Kasbon 
                 </h1>
-                <div class="flex items-center justify-between gap-5 relative">
+                <div class="flex items-center justify-between gap-5">
                     <a href="{{ route('debt.create.form') }}" class="button text-base bg-[#ff91e7] text-black p-3 rounded border border-black">Buat Kasbon Baru</a>
                 </div>
             </div>
