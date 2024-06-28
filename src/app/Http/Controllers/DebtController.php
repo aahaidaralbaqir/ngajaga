@@ -36,6 +36,7 @@ class DebtController extends Controller
         }
         return view('admin.debt.index')
             ->with('debts', $debt_records)
+            ->with('has_filter', $request->query->count() > 0)
             ->with('user', parent::getUser());
     }
 

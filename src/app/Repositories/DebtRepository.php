@@ -40,15 +40,19 @@ class DebtRepository {
    }
 
    public static function getDebts($query_params = []) {
-        $debt_records = DB::table('debt')
+        $query = DB::table('debt')
             ->addSelect('debt.id', 'debt.amount')
             ->addSelect(DB::raw('transactions.id AS transaction_id'))
             ->addSelect(DB::raw('customers.name AS customer_name'))
             ->addSelect('transactions.order_id')
             ->leftJoin('transactions', 'transactions.id', '=', 'debt.transaction_id')
-            ->leftJoin('customers', 'customers.id', '=', 'transactions.customer_id')
-            ->get();
-        return $debt_records;
+            ->leftJoin('customers', 'customers.id', '=', 'transactions.customer_id');
+        foreach ($query_params as $field => $value) {
+            if (in_array($field, ['search']) && $value) {
+                $query->where('transactions.order_id', $value);       
+            }
+        }
+        return $query->get();
    }
 
    public static function getReceivableByDebtId($debt_id)
