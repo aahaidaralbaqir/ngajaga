@@ -16,10 +16,11 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $product_records = ProductRepository::getProducts();
-        $product_ids = array_map(function ($item) {
-            return $item->id;
-        }, $product_records->toArray());
+        $product_records = ProductRepository::getProducts($request->all());
+        $product_ids = [];
+        foreach ($product_records as $product_record) {
+            $product_ids[] = $product_record->id;
+        }
         $product_stocks = ProductRepository::getProductStockByIdsProduct($product_ids);
         $product_stocks_ids = array();
         foreach ($product_stocks as $product)
@@ -45,8 +46,8 @@ class ProductController extends Controller
         }
         return view('admin.product.index')
             ->with('user', parent::getUser())
-            ->with('products', $product_records)
-            ->with('total_row', count($product_records));
+            ->with('has_filter', $request->query->count() > 0)
+            ->with('products', $product_records);
     }
 
     public function category(Request $request)

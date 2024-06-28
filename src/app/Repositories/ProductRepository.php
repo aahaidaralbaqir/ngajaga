@@ -51,7 +51,7 @@ class ProductRepository {
             if (in_array($key, ['search']) && $value)
                 $query->where('products.name', 'like', '%' . $value . '%');
         }
-        return $query->get();
+        return $query->paginate(10);
     }
 
     public static function getProductStockByIdsProduct($product_ids)
@@ -108,9 +108,10 @@ class ProductRepository {
 
     public static function getDetailProducts($user_params) {
         $product_records = self::getProducts($user_params);
-        $product_ids = array_map(function ($item) {
-            return $item->id;
-        }, $product_records->toArray());
+        $product_ids = [];
+        foreach ($product_records as $product_record) {
+            $product_ids[] = $product_record->id;
+        }
         $product_stocks = self::getProductStockByIdsProduct($product_ids);
         $product_stocks_ids = array();
         foreach ($product_stocks as $product)
