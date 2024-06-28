@@ -103,7 +103,7 @@
             </div>
             <div class="tab">
                 <a href="{{ route('transaction.index') }}" aria-selected="true" class="selected">Transaksi</a>
-                <a href="{{ route('transaction.debt.index') }}" aria-selected="true">Kasbon</a>
+                <a href="{{ route('debt.index') }}" aria-selected="true">Kasbon</a>
             </div>
         </div>
     </div>
@@ -146,7 +146,7 @@
                             <td></td>
                             <td>{{ $transaction->order_id }}</td>
                             <td>
-                                <a href="{{ route('transaction.edit.debt.form', ['debtId' => $transaction->debt_id]) }}" class="block px-1 text-center py-1 border border-black">
+                                <a href="{{ route('edit.debt.form', ['debtId' => $transaction->debt_id]) }}" class="block px-1 text-center py-1 border border-black">
                                     {{ $transaction->debt_id ? 'Hutang ': 'Cash' }}
                                 </a>
                             </td>

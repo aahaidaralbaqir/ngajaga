@@ -497,7 +497,7 @@ class TransactionController extends Controller
         $transaction_records = TransactionRepository::getPaidTransaction();
         return view('admin.debt.form')
             ->with('transactions', $transaction_records)
-            ->with('target_route', 'transaction.create.debt')
+            ->with('target_route', 'create.debt')
             ->with('page_title', 'Menambahkan kasbon baru')
             ->with('user', parent::getUser())
             ->with('item', NULL);
@@ -511,7 +511,7 @@ class TransactionController extends Controller
             return Response::backWithError('Kasbon tidak ditemukan');
         }
         return view('admin.debt.form')
-            ->with('target_route', 'transaction.edit.debt')
+            ->with('target_route', 'edit.debt')
             ->with('transactions', $transaction_records)
             ->with('page_title', 'Mengubah kasbon')
             ->with('user', parent::getUser())
@@ -542,7 +542,7 @@ class TransactionController extends Controller
 
         $user_input['created_by'] = parent::getUserId();
         TransactionRepository::createDebt($user_input);
-        return Response::redirectWithSuccess('transaction.debt.index', 'Berhasil menambahkan kasbon baru');
+        return Response::redirectWithSuccess('debt.index', 'Berhasil menambahkan kasbon baru');
     }
 
     public function editDebt(Request $request)
@@ -567,6 +567,6 @@ class TransactionController extends Controller
         }
 
         TransactionRepository::updateDebt($debt_id, $user_input);
-        return Response::redirectWithSuccess('transaction.debt.index', 'Kasbon berhasil diubah');
+        return Response::redirectWithSuccess('debt.index', 'Kasbon berhasil diubah');
     }
 }
