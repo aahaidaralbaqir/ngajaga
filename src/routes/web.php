@@ -5,6 +5,7 @@ use App\Http\Controllers\AccountController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DebtController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\InvoiceController;
@@ -131,11 +132,19 @@ Route::prefix('transaction')->group(function () {
 });
 
 Route::prefix('debt')->middleware('auth')->group(function () {
-	Route::get('/debt', [TransactionController::class, 'getDebts'])->name('debt.index')->middleware(['auth']);
-	Route::get('/debt/create', [TransactionController::class, 'createDebtForm'])->name('create.debt.form')->middleware(['auth']);
-	Route::post('/debt', [TransactionController::class, 'createDebt'])->name('create.debt')->middleware(['auth']);
-	Route::get('/debt/edit/{debtId}', [TransactionController::class, 'editDebtForm'])->name('edit.debt.form')->middleware(['auth']);
-	Route::post('/debt/edit', [TransactionController::class, 'editDebt'])->name('edit.debt')->middleware(['auth']);
+	Route::get('/', [DebtController::class, 'getDebts'])->name('debt.index')->middleware(['auth']);
+	Route::get('/create', [DebtController::class, 'createDebtForm'])->name('debt.create.form')->middleware(['auth']);
+	Route::post('/', [DebtController::class, 'createDebt'])->name('create.debt')->middleware(['auth']);
+	Route::get('/edit/{debtId}', [DebtController::class, 'editDebtForm'])->name('edit.debt.form')->middleware(['auth']);
+	Route::post('/edit', [DebtController::class, 'editDebt'])->name('edit.debt')->middleware(['auth']);
+});
+
+Route::prefix('receivable')->middleware('auth')->group(function () {
+	Route::get('/{debtId}', [DebtController::class, 'getReceivable'])->name('receivable.index');
+	Route::get('/{debtId}/create', [DebtController::class, 'createReceivableForm'])->name('receivable.create.form');
+	Route::post('/create', [DebtController::class, 'createReceivable'])->name('receivable.create');
+	Route::get('/edit/{receivableId}', [DebtController::class, 'editReceivableForm'])->name('receivable.edit.form');
+	Route::post('/edit', [DebtController::class, 'editReceiveable'])->name('receivable.edit');
 });
 
 
