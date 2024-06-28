@@ -14,6 +14,7 @@ use App\Util\Response;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -314,18 +315,98 @@ class TransactionController extends Controller
 
     public function editTransaction(Request $request)
     {
-        $transactionId = $request->input('transaction_id');
         DB::beginTransaction();
         try {
-            $transaction_record = TransactionRepository::getTransactionById($transactionId);
+            $transaction_id = $request->input('id');
+            $transaction_record = TransactionRepository::getTransactionById($transaction_id);
             if (!$transaction_record) {
-                return Response::backWithError('Data transaksi tidak ditemukan');
+                return response()
+                    ->json([
+                        'status' => false,
+                        'message' => 'Data transaksi tidak ditemukan'
+                    ], 404);
             }
-            
+
+            $user_input_field_rules = [
+                'transaction_date' => 'required|date_format:Y-m-d',
+                'account_id' => 'required|integer|exists:accounts,id',
+                'customer_id' => 'required|integer|exists:customers,id',
+                'items.*' => 'required|array|min:1',
+                'items.*.product_id' => 'required|integer|exists:products,id',
+                'items.*.qty' => 'required|integer|min:1',
+                'items.*.unit' => 'required|integer|min:1',
+            ];
+            $user_input = $request->only('transaction_date', 'account_id', 'customer_id', 'items');
+            $validator = Validator::make($user_input, $user_input_field_rules);
+            if ($validator->fails()) {
+                return response()
+                    ->json([
+                        'success' => FALSE,
+                        'errors' => $validator->errors()
+                    ], 400);
+            }
+
+            # Delete previous data
+            AccountRepository::cancelCashflowByTransaction($transaction_id);
+            ProductRepository::deleteStockByTransactionId($transaction_id);
+            TransactionRepository::removeTransactionDetail($transaction_id);
+
+            $price_total = 0;
+            $total_qty = 0;
+            foreach ($user_input['items'] as $item)  {
+                $product_id = $item['product_id'];
+                $price_mapping_record = ProductRepository::getPriceMappingDetail($product_id, $item['unit']);
+                $price_total += $price_mapping_record->price * $item['qty'];
+
+                $product_total_qty = $item['qty'] * $price_mapping_record->conversion;
+                $total_qty += $product_total_qty;
+                $create_stock_param = [
+                    'product_id'    => $product_id,
+                    'qty'           => ($product_total_qty) * -1,
+                    'identifier'    => $transaction_id];
+                ProductRepository::createStock($create_stock_param);
+
+
+                $create_transaction_record = [
+                    'transaction_id'    => $transaction_id,
+                    'product_id'        => $product_id,
+                    'unit'              => $item['unit'],
+                    'qty'               => $item['qty']];
+                TransactionRepository::createTransactionDetail($create_transaction_record);
+            }
+
+            $create_cashflow_record = [
+                'account_id'    => $user_input['account_id'],
+                'amount'        => $price_total,
+                'created_by'    => $request->input('created_by'), 
+                'identifier'    => $transaction_id,
+                'description'   => 'Penambahan saldo untuk transaksi ' . $transaction_record->order_id
+            ];
+            AccountRepository::createCashflow($create_cashflow_record);
+
+            $update_transaction_record_param = [
+                'transaction_date' => strtotime($user_input['transaction_date']),
+                'account_id' => $user_input['account_id'],
+                'customer_id' => $user_input['customer_id'],
+                'price_total' => $price_total,
+                'total_product_qty' => $total_qty
+            ];
+            TransactionRepository::updateTransaction($transaction_id, $update_transaction_record_param);
+            Session::flash('success', 'Transaksi berhasil dirubah'); 
             DB::commit();
-            return Response::redirectWithSuccess('transaction.index', 'Transaksi berhasil dibatalkan');
+            return response()
+                ->json([
+                    'status' => TRUE,
+                    'message' => 'Transaksi berhasil dirubah'
+                ], 200);
         } catch (Exception $error) {
-            return Response::backWithError('Terjadi kesalahan ' . $error->getMessage());
+            DB::rollBack();
+            Session::flash('error', sprintf('Gagal merubah transaksi (%s)', $error->getMessage())); 
+            return response()
+                ->json([
+                    'status' => false,
+                    'message' => 'Transaksi gagal dirubah'
+                ], 400);
         }
     }
 
@@ -380,5 +461,112 @@ class TransactionController extends Controller
                 'status' => true,
                 'account' => $account_records
             ]);
+    }
+
+    public function getDebts(Request $request)
+    {
+        $debt_records = TransactionRepository::getDebts($request->all());
+        $debt_ids = array_map(function ($item) {
+            return $item->id;
+        }, $debt_records->toArray());
+        $receivable_records = TransactionRepository::getReceivableByDebtIds($debt_ids);
+        $receivable_amount_by_debt_ids = [];
+        foreach ($receivable_records as $record) {
+            if (array_key_exists($record->debt_id, $receivable_amount_by_debt_ids)) {
+                continue;
+            }
+            $receivable_amount_by_debt_ids[$record->debt_id] = $record->receivable_amount;
+        }
+
+        foreach ($debt_records as $index => $debt) {
+            $receivable_amount = 0;
+            if (array_key_exists($debt->id, $receivable_amount_by_debt_ids)) {
+                $receivable_amount = $receivable_amount_by_debt_ids[$debt->id];
+            }
+
+            $debt->receivable_amount = $receivable_amount;
+            $debt_records[$index] = $debt;
+        }
+        return view('admin.debt.index')
+            ->with('debts', $debt_records)
+            ->with('user', parent::getUser());
+    }
+
+    public function createDebtForm(Request $request)
+    {
+        $transaction_records = TransactionRepository::getPaidTransaction();
+        return view('admin.debt.form')
+            ->with('transactions', $transaction_records)
+            ->with('target_route', 'transaction.create.debt')
+            ->with('page_title', 'Menambahkan kasbon baru')
+            ->with('user', parent::getUser())
+            ->with('item', NULL);
+    }
+
+    public function editDebtForm(Request $request, $debtId)
+    {
+        $debt_record = TransactionRepository::getDebtById($debtId);
+        $transaction_records = TransactionRepository::getPaidTransaction();
+        if (!$debt_record) {
+            return Response::backWithError('Kasbon tidak ditemukan');
+        }
+        return view('admin.debt.form')
+            ->with('target_route', 'transaction.edit.debt')
+            ->with('transactions', $transaction_records)
+            ->with('page_title', 'Mengubah kasbon')
+            ->with('user', parent::getUser())
+            ->with('item', $debt_record);
+    }
+
+    public function createDebt(Request $request)
+    {
+        $user_input = $request->only('transaction_id', 'amount');
+        $user_input_field_rules = [
+            'transaction_id' => 'required|exists:transactions,id',
+            'amount'         => 'required|min:1'];
+        
+        $validator = Validator::make($user_input, $user_input_field_rules);
+        if ($validator->fails()) {
+            return Response::backWithErrors($validator);
+        }
+        
+        $debt_transaction_record = TransactionRepository::getDebtByTransasction($user_input['transaction_id']);
+        if ($debt_transaction_record) {
+            return Response::backWithError('Tidak bisa menambahkan hutang terhadap transaksi tersebut');
+        }
+
+        $transaction_record = TransactionRepository::getTransactionById($user_input['transaction_id']);
+        if ($user_input['amount'] > $transaction_record->price_total) {
+            return Response::backWithError('Nominal hutang tidak boleh lebih dari nilai transaksi');
+        }
+
+        $user_input['created_by'] = parent::getUserId();
+        TransactionRepository::createDebt($user_input);
+        return Response::redirectWithSuccess('transaction.debt.index', 'Berhasil menambahkan kasbon baru');
+    }
+
+    public function editDebt(Request $request)
+    {
+        $debt_id = $request->input('id');
+        $debt_record = TransactionRepository::getDebtById($debt_id);
+        if (!$debt_record) {
+            return Response::backWithError('Kasbon tidak ditemukan');
+        }
+
+        $user_input = $request->only('transaction_id', 'amount');
+        if ($debt_record->transaction_id != $user_input['transaction_id']) {
+            $transaction_record = TransactionRepository::getDebtByTransasction($user_input['transaction_id']);
+            if ($transaction_record) {
+                return Response::backWithError('Tidak bisa menambahkan hutang karena transaksi sudah digunakan');
+            } 
+        }
+
+        $transaction_record = TransactionRepository::getTransactionById($user_input['transaction_id']);
+        if ($user_input['amount'] > $transaction_record->price_total) {
+            return Response::backWithError('Nominal hutang tidak boleh lebih dari nilai transaksi');
+        }
+
+        TransactionRepository::updateDebt($debt_id, $user_input);
+        return Response::redirectWithSuccess('transaction.debt.index', 'Kasbon berhasil diubah');
     }
 }

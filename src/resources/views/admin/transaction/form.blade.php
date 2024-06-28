@@ -7,7 +7,7 @@
                 {{ $page_title }}
             </h1>
             <div class="flex items-center justify-between gap-5 relative">
-                <a href="{{ route('purchase.index') }}" class="button text-base text-black p-3 rounded border border-black relative flex gap-2">
+                <a href="{{ route('transaction.index') }}" class="button text-base text-black p-3 rounded border border-black relative flex gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-x"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
                     Kembali
                 </a>
@@ -97,7 +97,7 @@
                         </select>
                         <span 
                             class="text-sm text-danger"
-                            v-for="(error) in getErrors('account')"
+                            v-for="(error) in getErrors('account_id')"
                         >
                             @{{ error }}
                         </span>
@@ -227,6 +227,7 @@
             ],
             products: [],
             customers: [],
+            accounts: [],
             form: {
                 customer_id: 0,
                 transaction_date: 0,
@@ -323,62 +324,29 @@
             buildOrderItemPayload() {
                 let orderItems  = []
                 for (let seq = 0; seq < this.order_items.length; seq++) {
-                    const {product_id, qty, unit, price, notes, id} = this.order_items[seq]
+                    const {product_id, qty, unit} = this.order_items[seq]
                     const orderItem = {
                         product_id,
                         qty,
                         unit,
-                        price,
-                        notes
-                    }
-                    if (id) {
-                        orderItem.id = id
                     }
                     orderItems.push(orderItem)
                 }
                 return orderItems;
             },
             buildPayload() {
-                const {supplier_id, purchase_number, purchase_date} = this.form
+                const {customer_id, account_id, transaction_date} = this.form
                 const userInput = {
-                    supplier_id,
-                    purchase_number,
-                    purchase_date,
+                    id: '{{ $transaction_record->id }}',
+                    customer_id,
+                    account_id,
+                    transaction_date,
                     created_by: '{{ $user["id"] }}',
                     items: this.buildOrderItemPayload()
                 }
                 return userInput
             },
             handleSubmit() {
-                const orderId = document.querySelector('input[name="latest_order_id"]')
-                if (orderId.value == '') {
-                    const payload = this.buildPayload();
-                    payload.purchase_order_id = '{{ empty($item) ? 0 : $item->id }}'
-                    const httpOptions = {
-                        method: 'POST',
-                        body: JSON.stringify(payload),
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json',
-                            'Authorization': 'Bearer {{ $user["token"] }}'
-                        }
-                    }
-                    this.is_loading = true
-                    return fetch('/api/purchase/edit', httpOptions)
-                        .then((response) => response.json())
-                        .then((result) => {
-                            const { status, errors } = result
-                            if (!status && errors) {
-                                this.errors = errors
-                                return
-                            } 
-                            window.location = '{{ route("purchase.index") }}'
-                        })
-                        .finally(() => {
-                            this.is_loading = false
-                        })
-                    return;
-                }; 
                 const payload = this.buildPayload();
                 const httpOptions = {
                     method: 'POST',
@@ -390,15 +358,21 @@
                     }
                 }
                 this.is_loading = true
-                return fetch('/api/purchase', httpOptions)
+                return fetch('/api/transaction/edit', httpOptions)
                     .then((response) => response.json())
                     .then((result) => {
+                        console.log(result)
                         const { status, errors } = result
                         if (!status && errors) {
                             this.errors = errors
                             return
+                        } 
+
+                        if (!status) {
+                            window.location.reload()
+                            return
                         }
-                        window.location = '{{ route("purchase.index") }}'
+                        window.location = '{{ route("transaction.index") }}'
                     })
                     .finally(() => {
                         this.is_loading = false

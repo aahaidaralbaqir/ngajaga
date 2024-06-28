@@ -35,6 +35,7 @@ Route::prefix('purchase')->group(function () {
 
 Route::prefix('transaction')->group(function () {
 	Route::get('/account', [TransactionController::class, 'getAccounts'])->name('api.transaction.account');
+	Route::post('/edit', [TransactionController::class, 'editTransaction'])->name('api.transaction.account');
 	Route::get('/customer', [TransactionController::class, 'getCustomers'])->name('api.transaction.customers');
 	Route::get('/{transactionId}', [TransactionController::class, 'getTransactionDetail'])->name('api.transaction.detail');
 });

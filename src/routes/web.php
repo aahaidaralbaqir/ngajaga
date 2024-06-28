@@ -127,6 +127,11 @@ Route::prefix('transaction')->group(function () {
 	Route::post('/cart/account', [TransactionController::class, 'chooseAccount'])->name('transaction.account')->middleware(['auth']);
 	Route::post('/cart/action/{actionType}', [TransactionController::class, 'cartAction'])->name('transaction.cart.action')->middleware(['auth']);
 	Route::get('/edit/{transactionId}', [TransactionController::class, 'editTransactionForm'])->name('transaction.edit.form')->middleware(['auth']);
+	Route::get('/debt', [TransactionController::class, 'getDebts'])->name('transaction.debt.index')->middleware(['auth']);
+	Route::get('/debt/create', [TransactionController::class, 'createDebtForm'])->name('transaction.create.debt.form')->middleware(['auth']);
+	Route::post('/debt', [TransactionController::class, 'createDebt'])->name('transaction.create.debt')->middleware(['auth']);
+	Route::get('/debt/edit/{debtId}', [TransactionController::class, 'editDebtForm'])->name('transaction.edit.debt.form')->middleware(['auth']);
+	Route::post('/debt/edit', [TransactionController::class, 'editDebt'])->name('transaction.edit.debt')->middleware(['auth']);
 });
 
 

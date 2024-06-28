@@ -92,6 +92,14 @@ class ProductRepository {
             ->delete();
     }
 
+    public static function deleteStockByTransactionId($transaction_id)
+    {
+        return DB::table('stock')
+            ->where('identifier', $transaction_id)
+            ->where('qty', '<', 0)
+            ->delete();
+    }
+
     public static function getCategories()
     {
         return DB::table('category')

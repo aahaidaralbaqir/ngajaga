@@ -1,6 +1,6 @@
 @extends('layout.dashboard')
 @section('content')
-    <div class="second-nav py-[2.7rem] px-14 w-full">
+    <div class="second-nav py-8 px-14 w-full">
         <div class="w-4/5">
             <div class="flex justify-between items-center">
                 <h1>
@@ -101,6 +101,10 @@
                     <a href="{{ route('transaction.create.form') }}" class="button text-base bg-[#ff91e7] text-black p-3 rounded border border-black">Buat Transaksi Baru</a>
                 </div>
             </div>
+            <div class="tab">
+                <a href="{{ route('transaction.index') }}" aria-selected="true" class="selected">Transaksi</a>
+                <a href="{{ route('transaction.debt.index') }}" aria-selected="true">Kasbon</a>
+            </div>
         </div>
     </div>
     <main class="w-full py-14 px-14">
@@ -127,8 +131,10 @@
                     <tr>
                         <th class="w-[5%]"></th>
                         <th class="text-left">No.Transaksi</th>
+                        <th class="text-left">Metode Pembayaran</th>
                         <th class="text-left">Di Buat Oleh</th>
                         <th class="text-left">Total Pembayaran</th>
+                        <th class="text-left">Nominal Hutang</th>
                         <th class="text-left">Nama Pelanggan</th>
                         <th class="text-left">Akun</th>
                         <th class="w-[5%]"></th>
@@ -139,8 +145,16 @@
                         <tr>
                             <td></td>
                             <td>{{ $transaction->order_id }}</td>
+                            <td>
+                                <a href="{{ route('transaction.edit.debt.form', ['debtId' => $transaction->debt_id]) }}" class="block px-1 text-center py-1 border border-black">
+                                    {{ $transaction->debt_id ? 'Hutang ': 'Cash' }}
+                                </a>
+                            </td>
                             <td>{{ $transaction->created_by_name }}</td>
                             <td>{{ \App\Util\Common::formatAmount(\App\Constant\Constant::UNIT_NAME_RUPIAH, $transaction->price_total) }}</td>
+                            <td>
+                                {{ \App\Util\Common::formatAmount(\App\Constant\Constant::UNIT_NAME_RUPIAH, $transaction->debt_amount) }}
+                            </td>
                             <td>{{ $transaction->customer_name }}</td>
                             <td>{{ $transaction->account_name }}</td>
                             <td>
@@ -160,7 +174,7 @@
                     @endforeach
                     @if (count($transactions) < 1)
                     <tr>
-                        <td colspan="7">Tidak ada data</td>
+                        <td colspan="8">Tidak ada data</td>
                     </tr>
                     @endif
                 </tbody>
