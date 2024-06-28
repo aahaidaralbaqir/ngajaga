@@ -17,18 +17,22 @@ class InvoiceRepository {
             ->update($user_input);
     }
 
-    public static function getInvoices()
+    public static function getInvoices($user_params = array ())
     {
-        $invoice_records = DB::table('purchase_invoices AS pi')
+        $query = DB::table('purchase_invoices AS pi')
             ->addSelect('pi.id', 'pi.invoice_code')
             ->addSelect('pi.received_date', 'pi.description', 'pi.created_at')
             ->addSelect('po.purchase_number')
             ->addSelect('pi.payment_total')
             ->addSelect(DB::raw('ac.name AS account_name'))
             ->leftJoin('purchase_orders AS po', 'po.id', '=', 'pi.purchase_order_id')
-            ->join('accounts AS ac', 'ac.id', '=', 'pi.account_id')
-            ->get();
-
+            ->join('accounts AS ac', 'ac.id', '=', 'pi.account_id');
+    
+        foreach ($user_params as $field => $value) {
+            if (in_array($field, ['search']) && $value)
+                $query->where('pi.invoice_code', $value);
+        }
+        $invoice_records = $query->get();
         foreach ($invoice_records as $index => $invoice)
         {
             $invoice->received_date = date('Y m d', $invoice->received_date); 

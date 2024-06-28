@@ -18,10 +18,11 @@ class InvoiceController extends Controller
 
     public function getInvoices(Request $request)
     {
-        $invoice_records = InvoiceRepository::getInvoices();
+        $invoice_records = InvoiceRepository::getInvoices($request->all());
         return view('admin.invoice.index')
             ->with('total_row', count($invoice_records))
             ->with('invoices', $invoice_records)
+            ->with('has_filter', $request->query->count() > 0)
             ->with('user', parent::getUser());
     }
 
