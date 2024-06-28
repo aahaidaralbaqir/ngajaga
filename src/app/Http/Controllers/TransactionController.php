@@ -43,9 +43,10 @@ class TransactionController extends Controller
         $user_input_params = $request->all();
         $category_records = ProductRepository::getCategories();
         $product_records = ProductRepository::getDetailProducts($user_input_params);
-        $product_ids = array_map(function ($item) {
-            return $item->id;
-        }, $product_records->toArray());
+        $product_ids = [];
+        foreach ($product_records as $product_record) {
+            $product_ids[] = $product_record->id;
+        }
         $product_unit_records = ProductRepository::getProductUnitByProductIds($product_ids);
         foreach ($product_records as $idx => $product_record) {
             $product_record->units = $product_unit_records[$product_record->id];
@@ -73,9 +74,10 @@ class TransactionController extends Controller
         $user_input_params = $request->all();
         $category_records = ProductRepository::getCategories();
         $product_records = ProductRepository::getDetailProducts($user_input_params);
-        $product_ids = array_map(function ($item) {
-            return $item->id;
-        }, $product_records->toArray());
+        $product_ids = [];
+        foreach ($product_records as $product_record) {
+            $product_ids[] = $product_record->id;
+        }
         $product_unit_records = ProductRepository::getProductUnitByProductIds($product_ids);
         foreach ($product_records as $idx => $product_record) {
             $product_record->units = $product_unit_records[$product_record->id];
