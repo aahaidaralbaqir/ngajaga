@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\CustomerRepository;
+use App\Util\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends Controller
 {
@@ -60,21 +62,61 @@ class CustomerController extends Controller
 
     public function createCustomerForm(Request $request)
     {
-
+        return view('admin.customer.form')
+            ->with('item', NULL)
+            ->with('target_route', 'customer.create')
+            ->with('page_title', 'Menambahkan pelanggan baru')
+            ->with('user', parent::getUser());
     }
 
     public function createCustomer(Request $request)
     {
+        $user_input = $request->only('name', 'address', 'phone_number');
+        $user_input_field_rules = [
+            'name'          => 'required',
+            'address'       => 'required',
+            'phone_number'  => 'required'];
+        $validator = Validator::make($user_input, $user_input_field_rules);
+        if ($validator->fails()) {
+            return Response::backWithErrors($validator);
+        }
 
+        CustomerRepository::createCustomer($user_input);
+        return Response::redirectWithSuccess('customer.index', 'Pelanggan baru berhasil ditambahkan');
     }
 
     public function editCustomerForm(Request $request, $customerId)
     {
-
+        $customer_record = CustomerRepository::getCustomerById($customerId);
+        if (!$customer_record) {
+            return Response::backWithError('Pelanggan tidak ditemukan');
+        }
+        return view('admin.customer.form')
+            ->with('item', $customer_record)
+            ->with('target_route', 'customer.edit')
+            ->with('page_title', 'Menambahkan pelanggan baru')
+            ->with('user', parent::getUser()); 
     }
 
     public function editCustomer(Request $request)
     {
+        $customer_id = $request->input('id');
+        $customer_record = CustomerRepository::getCustomerById($customer_id);
+        if (!$customer_record) {
+            return Response::backWithError('Pelanggan tidak ditemukan');
+        }
 
+        $user_input = $request->only('name', 'address', 'phone_number');
+        $user_input_field_rules = [
+            'name'          => 'required',
+            'address'       => 'required',
+            'phone_number'  => 'required'];
+        $validator = Validator::make($user_input, $user_input_field_rules);
+        if ($validator->fails()) {
+            return Response::backWithErrors($validator);
+        }
+
+        CustomerRepository::updateCustomer($customer_id, $user_input);
+        return Response::redirectWithSuccess('customer.index', 'Pelanggan berhasil dirubah');
     }
 }

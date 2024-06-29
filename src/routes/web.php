@@ -150,6 +150,10 @@ Route::prefix('receivable')->middleware('auth')->group(function () {
 
 Route::prefix('customer')->middleware('auth')->group(function () {
 	Route::get('/', [CustomerController::class, 'index'])->name('customer.index');
+	Route::get('/create', [CustomerController::class, 'createCustomerForm'])->name('customer.create.form');
+	Route::post('/create', [CustomerController::class, 'createCustomer'])->name('customer.create');
+	Route::get('/edit/{customerId}', [CustomerController::class, 'editCustomerForm'])->name('customer.edit.form');
+	Route::post('/edit', [CustomerController::class, 'editCustomer'])->name('customer.edit');
 });
 
 
