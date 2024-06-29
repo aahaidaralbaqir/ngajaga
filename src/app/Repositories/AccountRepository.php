@@ -1,6 +1,7 @@
 <?php
 namespace App\Repositories;
 
+use App\Constant\Constant;
 use App\Util\Common;
 use Illuminate\Support\Facades\DB;
 
@@ -66,7 +67,7 @@ class AccountRepository {
     {
         return DB::table('cashflows')
             ->where('identifier', $invoice_id)
-            ->where('amount', '<=', 0)
+            ->where('cashflow_type', Constant::CashflowPurchase)
             ->delete();
     }
 
@@ -74,7 +75,15 @@ class AccountRepository {
     {
         return DB::table('cashflows')
             ->where('identifier', $transaction_id)
-            ->where('amount', '>', 0)
+            ->where('cashflow_type', Constant::CashflowTransaction)
             ->delete();
+    }
+
+    public static function deleteCashflowByDebtId($debt_id)
+    {
+        return DB::table('cashflows')
+            ->where('identifier', $debt_id)
+            ->where('cashflow_type', Constant::CashflowDebt)
+            ->delete();    
     }
 }

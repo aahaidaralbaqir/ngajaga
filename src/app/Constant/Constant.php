@@ -49,4 +49,8 @@ class Constant {
 
 	const ActionIncrement = 'increment';
 	const ActionDecrement = 'decrement';
+
+	const CashflowTransaction 	= 'transaction';
+	const CashflowPurchase  	= 'purchase';
+	const CashflowDebt 			= 'debt';
 }

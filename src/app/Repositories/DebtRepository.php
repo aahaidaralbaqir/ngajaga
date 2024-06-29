@@ -15,7 +15,7 @@ class DebtRepository {
    public static function createDebt($user_input)
    {
         return DB::table('debt')
-            ->insert($user_input);
+            ->insertGetId($user_input);
    }
 
    public static function getDebtById($debt_id)

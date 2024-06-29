@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Constant\Constant;
+use App\Repositories\AccountRepository;
 use App\Repositories\DebtRepository;
 use App\Repositories\TransactionRepository;
 use App\Util\Response;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class DebtController extends Controller
@@ -68,54 +72,90 @@ class DebtController extends Controller
 
     public function createDebt(Request $request)
     {
-        $user_input = $request->only('transaction_id', 'amount');
-        $user_input_field_rules = [
-            'transaction_id' => 'required|exists:transactions,id',
-            'amount'         => 'required|min:1'];
-        
-        $validator = Validator::make($user_input, $user_input_field_rules);
-        if ($validator->fails()) {
-            return Response::backWithErrors($validator);
-        }
-        
-        $debt_transaction_record = DebtRepository::getDebtByTransasction($user_input['transaction_id']);
-        if ($debt_transaction_record) {
-            return Response::backWithError('Tidak bisa menambahkan hutang terhadap transaksi tersebut');
-        }
+        DB::beginTransaction();
+        try {
+            $user_input = $request->only('transaction_id', 'amount');
+            $user_input_field_rules = [
+                'transaction_id' => 'required|exists:transactions,id',
+                'amount'         => 'required|min:1'];
+            
+            $validator = Validator::make($user_input, $user_input_field_rules);
+            if ($validator->fails()) {
+                return Response::backWithErrors($validator);
+            }
+            $debt_transaction_record = DebtRepository::getDebtByTransasction($user_input['transaction_id']);
+            if ($debt_transaction_record) {
+                return Response::backWithError('Tidak bisa menambahkan hutang terhadap transaksi tersebut');
+            }
+            $transaction_record = TransactionRepository::getTransactionById($user_input['transaction_id']);
+            if ($user_input['amount'] > $transaction_record->price_total) {
+                return Response::backWithError('Nominal hutang tidak boleh lebih dari nilai transaksi');
+            }
 
-        $transaction_record = TransactionRepository::getTransactionById($user_input['transaction_id']);
-        if ($user_input['amount'] > $transaction_record->price_total) {
-            return Response::backWithError('Nominal hutang tidak boleh lebih dari nilai transaksi');
-        }
+            $user_input['created_by'] = parent::getUserId();
+            $debt_id = DebtRepository::createDebt($user_input);
 
-        $user_input['created_by'] = parent::getUserId();
-        DebtRepository::createDebt($user_input);
-        return Response::redirectWithSuccess('debt.index', 'Berhasil menambahkan kasbon baru');
+            $create_cashflow_record = [
+                'account_id'    => $transaction_record->account_id,
+                'amount'        => $user_input['amount'] * -1,
+                'created_by'    => parent::getUserId(),
+                'cashflow_type' => Constant::CashflowDebt,
+                'identifier'    => $debt_id,
+                'description'   => 'Pengurangan saldo karena transaksi '. $transaction_record->order_id .' menggunakan kasbon ' . $debt_id
+            ];
+            AccountRepository::createCashflow($create_cashflow_record);
+            DB::commit();
+            return Response::redirectWithSuccess('debt.index', 'Berhasil menambahkan kasbon baru');
+        } catch (Exception $error) {
+            DB::rollBack();
+            return Response::backWithError('Gagal menambahkan kasbon baru ' . $error->getMessage()); 
+        }
+        
     }
 
     public function editDebt(Request $request)
     {
-        $debt_id = $request->input('id');
-        $debt_record = DebtRepository::getDebtById($debt_id);
-        if (!$debt_record) {
-            return Response::backWithError('Kasbon tidak ditemukan');
-        }
+        DB::beginTransaction();
+        try {
+            $debt_id = $request->input('id');
+            $debt_record = DebtRepository::getDebtById($debt_id);
+            if (!$debt_record) {
+                return Response::backWithError('Kasbon tidak ditemukan');
+            }
 
-        $user_input = $request->only('transaction_id', 'amount');
-        if ($debt_record->transaction_id != $user_input['transaction_id']) {
-            $transaction_record = DebtRepository::getDebtByTransasction($user_input['transaction_id']);
-            if ($transaction_record) {
-                return Response::backWithError('Tidak bisa menambahkan hutang karena transaksi sudah digunakan');
-            } 
-        }
+            $user_input = $request->only('transaction_id', 'amount');
+            if ($debt_record->transaction_id != $user_input['transaction_id']) {
+                $transaction_record = DebtRepository::getDebtByTransasction($user_input['transaction_id']);
+                if ($transaction_record) {
+                    return Response::backWithError('Tidak bisa menambahkan hutang karena transaksi sudah digunakan');
+                } 
+            }
 
-        $transaction_record = TransactionRepository::getTransactionById($user_input['transaction_id']);
-        if ($user_input['amount'] > $transaction_record->price_total) {
-            return Response::backWithError('Nominal hutang tidak boleh lebih dari nilai transaksi');
-        }
+            $transaction_record = TransactionRepository::getTransactionById($user_input['transaction_id']);
+            if ($user_input['amount'] > $transaction_record->price_total) {
+                return Response::backWithError('Nominal hutang tidak boleh lebih dari nilai transaksi');
+            }
 
-        DebtRepository::updateDebt($debt_id, $user_input);
-        return Response::redirectWithSuccess('debt.index', 'Kasbon berhasil diubah');
+            AccountRepository::deleteCashflowByDebtId($debt_id);
+
+            $create_cashflow_record = [
+                'account_id'    => $transaction_record->account_id,
+                'amount'        => $user_input['amount'] * -1,
+                'created_by'    => parent::getUserId(),
+                'cashflow_type' => Constant::CashflowDebt,
+                'identifier'    => $debt_id,
+                'description'   => 'Pengurangan saldo karena transaksi '. $transaction_record->order_id .' menggunakan kasbon ' . $debt_id
+            ];
+            AccountRepository::createCashflow($create_cashflow_record);
+
+            DebtRepository::updateDebt($debt_id, $user_input);
+            DB::commit();
+            return Response::redirectWithSuccess('debt.index', 'Kasbon berhasil diubah');
+        } catch (Exception $error) {
+            DB::rollBack();
+            return Response::backWithError('Gagal mengubah kasbon ' . $error->getMessage());  
+        }
+        
     }
 
     public function getReceivable(Request $request, $debtId)

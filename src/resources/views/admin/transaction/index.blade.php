@@ -174,7 +174,7 @@
                     @endforeach
                     @if (count($transactions) < 1)
                     <tr>
-                        <td colspan="8">Tidak ada data</td>
+                        <td colspan="9">Tidak ada data</td>
                     </tr>
                     @endif
                 </tbody>

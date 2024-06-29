@@ -274,6 +274,7 @@ class TransactionController extends Controller
                 'amount'        => $price_total,
                 'created_by'    => parent::getUserId(),
                 'identifier'    => $transaction_id,
+                'cashflow_type' => Constant::CashflowTransaction,
                 'description'   => 'Penambahan saldo untuk transaksi ' . $order_id
             ];
             AccountRepository::createCashflow($create_cashflow_record);
@@ -382,6 +383,7 @@ class TransactionController extends Controller
                 'amount'        => $price_total,
                 'created_by'    => $request->input('created_by'), 
                 'identifier'    => $transaction_id,
+                'cashflow_type' => Constant::CashflowTransaction,
                 'description'   => 'Penambahan saldo untuk transaksi ' . $transaction_record->order_id
             ];
             AccountRepository::createCashflow($create_cashflow_record);
