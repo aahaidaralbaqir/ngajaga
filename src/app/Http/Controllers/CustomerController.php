@@ -54,6 +54,7 @@ class CustomerController extends Controller
 
         return view('admin.customer.index')
             ->with('user', parent::getUser())
+            ->with('has_filter', $request->query->count() > 0)
             ->with('customers', $customer_records);
     }
 

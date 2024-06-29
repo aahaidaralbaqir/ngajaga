@@ -14,7 +14,7 @@ class CustomerRepository {
                 ->orWhere('customers.phone_number', 'like', '%' . $value . '%');
             }
         }
-        return $query->get();
+        return $query->paginate(10);
     }
 
     public static function createCustomer($user_input)
