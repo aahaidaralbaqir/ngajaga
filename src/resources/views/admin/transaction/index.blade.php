@@ -146,7 +146,7 @@
                             <td></td>
                             <td>{{ $transaction->order_id }}</td>
                             <td>
-                                <a href="{{ route('edit.debt.form', ['debtId' => $transaction->debt_id]) }}" class="block px-1 text-center py-1 border border-black">
+                                <a  class="block px-1 text-center py-1 border border-black">
                                     {{ $transaction->debt_id ? 'Hutang ': 'Cash' }}
                                 </a>
                             </td>

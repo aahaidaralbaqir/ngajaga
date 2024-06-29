@@ -13,6 +13,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -145,6 +146,10 @@ Route::prefix('receivable')->middleware('auth')->group(function () {
 	Route::post('/create', [DebtController::class, 'createReceivable'])->name('receivable.create');
 	Route::get('/edit/{receivableId}', [DebtController::class, 'editReceivableForm'])->name('receivable.edit.form');
 	Route::post('/edit', [DebtController::class, 'editReceiveable'])->name('receivable.edit');
+});
+
+Route::prefix('customer')->middleware('auth')->group(function () {
+	Route::get('/', [CustomerController::class, 'index'])->name('customer.index');
 });
 
 

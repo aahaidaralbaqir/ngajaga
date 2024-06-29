@@ -100,7 +100,7 @@
                     @endif
                     @if (in_array(\App\Constant\Permission::VIEW_CUSTOMER, $user['permission']))
                     <li class="border-t border-[#808080] px-5 py-4">
-                        <a class="hover:text-[#ff91e7] group relative flex items-center gap-2.5 rounded-sm   text-sm text-bodydark1 duration-300 ease-in-out   dark:hover:bg-meta-4" href="{{ route('user.index') }}">
+                        <a class="hover:text-[#ff91e7] group relative flex items-center gap-2.5 rounded-sm text-sm duration-300 ease-in-out   dark:hover:bg-meta-4 {{ in_array(route_name(), ['customer.index']) ? 'text-[#ff91e7]' : 'text-bodydark1' }}" href="{{ route('customer.index') }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-contact-round"><path d="M16 18a4 4 0 0 0-8 0"/><circle cx="12" cy="11" r="3"/><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="8" x2="8" y1="2" y2="4"/><line x1="16" x2="16" y1="2" y2="4"/></svg>
                             Pelanggan 
                         </a>
