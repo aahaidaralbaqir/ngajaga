@@ -84,7 +84,7 @@ class TransactionRepository {
    {
         $today = Carbon::now()->toDateString();
         return DB::table('transactions')
-            ->select(DB::raw('COUNT(*) as total_transaction, SUM(price_total - debt.amount) as total_amount, COALESCE(sum(total_product_qty), 0) AS total_product_qty'))
+            ->select(DB::raw('COUNT(*) as total_transaction, SUM(price_total - COALESCE(debt.amount, 0)) as total_amount, COALESCE(sum(total_product_qty), 0) AS total_product_qty'))
             ->leftJoin('debt', 'debt.transaction_id', '=', 'transactions.id')
             ->whereDate('transactions.created_at', $today)
             ->first();
