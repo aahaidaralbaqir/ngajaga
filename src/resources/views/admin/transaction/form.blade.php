@@ -269,7 +269,7 @@
                 return fetch('/api/transaction/customer')
                     .then((response) => response.json())
                     .then((result) => {
-                        this.customers = result.customer 
+                        this.customers = result.customer.data 
                 })
             },
             handleAddNewProduct() {
