@@ -24,6 +24,7 @@
             <section class="flex gap-2 justify-between border-b pb-15">
                 <header class="text-[#000000] font-light flex-1">
                     <h1 class="text-2xl mb-2 font-lighter">Informasi Pembelian Stok</h1>
+                    <p>Detailkan pembelian produk yang akan kamu lakukan, pilih pemasok produk sampai dengan tanggal pembelian produk</p>
                 </header>
                 <fieldset class="w-3/5">
                     <input type="hidden" name="latest_order_id" value="{{ $latest_purchase_order_id }}">
@@ -107,6 +108,7 @@
             <section class="flex gap-2 justify-between pt-15 items-start">
                 <header class="text-[#000000] font-light flex-1">
                     <h1 class="text-2xl mb-2 font-lighter">Stok dan Produk</h1>
+                    <p>Pilih produk - produk yang akan kamu beli, sesuaikan produk yang akan kamu beli dan tentukan harga pembelian</p>
                 </header>
                 <fieldset class="w-3/5 flex flex-col">
                     <div class="box-w">

@@ -21,12 +21,7 @@
         <section class="w-4/5">
                 <section class="flex gap-2 justify-between border-b py-5">
                     <header class="text-[#000000] font-light flex-1">
-                        <p>
-                            Kategorikan wewenang setiap pengguna aplikasi dengan menggunakan peran 
-                            <br>
-                            Pembuatan peran disesuaikan dengan wewenang yang dimiliki oleh setiap individu
-                        </p>
-                        <br>
+                        <h1 class="text-2xl mb-2 font-normal">Detail Pengguna</h1>
                     </header>
                     <fieldset class="w-3/5">
                         <div>
@@ -55,6 +50,9 @@
                 <section class="flex gap-2 justify-between py-20 border-b   ">
                     <header class="text-[#000000] font-light flex-1">
                         <h1 class="text-2xl mb-2 font-normal">Keamanan</h1>
+                        <p>
+                            Minimal 8 karakter, termasuk huruf besar, huruf kecil, angka, dan simbol.
+                        </p>
                     </header>
                     <fieldset class="w-3/5">
                         @if (!empty($item))
@@ -103,6 +101,9 @@
                 <section class="flex gap-2 justify-between py-20">
                     <header class="text-[#000000] font-light flex-1">
                         <h1 class="text-2xl mb-2 font-normal">Peran</h1>
+                        <p>
+                            Berikan peran sesuai dengan wewenang yang dimiliki
+                        </p>
                     </header>
                     <fieldset class="w-3/5">
                         <div>

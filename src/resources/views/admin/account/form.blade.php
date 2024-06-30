@@ -21,8 +21,9 @@
         <section class="w-4/5">
                 <section class="flex gap-2 justify-between">
                     <header class="text-[#000000] font-light flex-1">
+                        <h1 class="text-2xl mb-2 font-normal">Informasi Akun</h1>
                         <p>
-                            Penambahan akun membantu kamu mengatur 
+                            Akun membantu kamu mengatur 
                             <br>
                             sumber -sumber keuangan
                             <br>

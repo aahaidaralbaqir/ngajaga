@@ -24,6 +24,9 @@
             <section class="flex gap-2 justify-between pb-15">
                 <header class="text-[#000000] font-light flex-1">
                     <h1 class="text-2xl mb-2 font-lighter">Informasi Penerimaan Stok</h1>
+                    <p>Detailkan penerimaan produk yang akan kamu terima, pilih tanggal penerimaan dan akun yang akan digunakan dalam pembayaran.</p>
+                    <br>
+                    <p>Pastikan saldo dari akunmu sesuai dengan jumlah pembelian produk yang dilakukan</p>
                 </header>
                 <fieldset class="w-3/5">
                     @if (!empty($purchase_order))
@@ -131,6 +134,7 @@
                 <section class="flex gap-2 justify-between pt-15 items-start border-t">
                     <header class="text-[#000000] font-light flex-1">
                         <h1 class="text-2xl mb-2 font-lighter">Stok dan Produk</h1>
+                        <p>Detailkan produk yang kamu terima mulai dari jumlah produk sampai dengan harga beli yang diberikan oleh pemasok</p>
                     </header>
                     <fieldset class="w-3/5 flex flex-col">
                             <div class="box-w">

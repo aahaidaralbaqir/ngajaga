@@ -131,11 +131,15 @@
                 <section class="flex gap-2 justify-between pt-10 pb-20">
                     <header class="text-[#000000] font-light flex-1">
                         <h1 class="text-2xl mb-2 font-normal">Notifikasi</h1>
+                        <p>
+                            Notifikasi akan membantu kamu mengetahui secara lebih <br> cepat mengenai ketersediaan stok produk yang akan menipis
+                        </p>
                     </header>
                     <fieldset class="w-3/5">
                         <div>
                             <legend class="mb-2">
                                 <label class="text-[#000000] font-light">Notifikasi</label>
+                                
                             </legend>
                             <label class="switch">
                                 <input 
