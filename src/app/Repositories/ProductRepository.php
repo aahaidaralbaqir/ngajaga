@@ -200,4 +200,32 @@ class ProductRepository {
             return $query->paginate($user_param['per_page']);
         return $query->paginate(10);
     }
+
+    public static function getProductStockActivityByProductId($product_id, $user_params = array())
+    {
+        $query = DB::table('stock AS st')
+            ->addSelect('st.id', 'st.product_id', 'st.qty')
+            ->addSelect(DB::raw('tr.id AS transaction_id'))
+            ->addSelect(DB::raw('pi.id AS purchase_invoice_id'))
+            ->addSelect('tr.order_id', 'tr.transaction_date')
+            ->addSelect('pi.invoice_code')
+            ->where('st.product_id', $product_id)
+            ->leftJoin('transactions AS tr', 'st.identifier', '=', 'tr.id')
+            ->leftJoin('purchase_invoices AS pi', 'st.identifier', '=', 'pi.id');
+
+        foreach ($user_params as $field => $value) {
+            if (in_array($field, ['start_date']) && $value) {
+                $start = sprintf('%s 00:00:00', $value);
+                $query->where('st.created_at', '>=', $start);
+            }
+            if (in_array($field, ['end_date']) && $value) {
+                $end = sprintf('%s 23:59:50', $value);
+                $query->where('st.created_at', '<=', $end);
+            }
+        }
+
+        if (array_key_exists('per_page', $user_params))
+            return $query->paginate($user_params['per_page']); 
+        return $query->paginate(10);
+    }
 }

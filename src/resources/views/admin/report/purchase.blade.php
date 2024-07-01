@@ -47,7 +47,7 @@
 <main class="w-full py-14 px-14">
     <section class="w-4/5">
         <table class="w-full retro">
-            <caption class="text-2xl text-black [text-align:unset]">Stok Produk</caption>
+            <caption class="text-2xl text-black [text-align:unset]">Aktifitas </caption>
             <thead>
                 <tr>
                     <th class="w-[5%]"></th>
@@ -72,7 +72,7 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
                                 </a>
                                 <div class="menu hidden w-[250px] left-[-12px]" data-id="{{ $product->product_id }}" data-name="action" role="dropdown-content">
-                                    <a href="{{ route('product.activity.report', ['productId' => $product->product_id]) }}" class="menu-item">
+                                    <a href="" class="menu-item">
                                         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-view"><path d="M5 12s2.545-5 7-5c4.454 0 7 5 7 5s-2.546 5-7 5c-4.455 0-7-5-7-5z"/><path d="M12 13a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/><path d="M21 17v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2"/><path d="M21 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2"/></svg>
                                         Lihat Keluar Masuk Barang
                                     </a>
