@@ -3,9 +3,12 @@
 <div class="second-nav py-8 px-14 w-full">
     <div class="w-4/5">
         <div class="flex justify-between items-center">
-            <h1>
-                Laporan
-            </h1>
+            <div class="flex gap-4 items-center">
+                <a href="{{ route('product.report') }}" class="button text-base bg-white text-black p-3 rounded border border-black relative flex gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>
+                </a>
+                <h3 class="text-2xl text-black">Laporan</h3>
+            </div>
             <div class="flex items-center justify-between gap-5 relative">
                 <a href="{{ route('product.activity.download', ['productId' => $item->id]) }}" class="button text-base text-black p-3 rounded border border-black relative">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-to-line"><path d="M12 17V3"/><path d="m6 11 6 6 6-6"/><path d="M19 21H5"/></svg>
@@ -37,9 +40,8 @@
             </div>
         </div>
         <div class="tab">
-            <a href="{{ route('permission.index') }}" aria-selected="true" class="selected">Stok Produk</a>
-            <a href="{{ route('roles.index') }}" aria-selected="true">Pembelian Stok</a>
-            <a href="{{ route('user.index') }}" aria-selected="true">Akun</a>
+            <a href="{{ route('product.report') }}" aria-selected="true" class="selected">Stok Produk</a>
+            <a href="{{ route('account.report') }}" aria-selected="true">Akun</a>
         </div>
     </div>
 </div>
