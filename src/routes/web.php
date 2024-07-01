@@ -158,9 +158,11 @@ Route::prefix('customer')->middleware('auth')->group(function () {
 });
 
 Route::prefix('report')->middleware('auth')->group(function () {
+	Route::get('/account', [ReportController::class, 'getAccountReport'])->name('account.report');
 	Route::get('/product', [ReportController::class, 'getProductReport'])->name('product.report');
 	Route::get('/product/{productId}', [ReportController::class, 'getProductActivity'])->name('product.activity.report');
 	Route::get('/product/download', [ReportController::class, 'downloadProductReport'])->name('product.report.download');
+	Route::get('/account/download', [ReportController::class, 'downloadAccountReport'])->name('account.report.download');
 	Route::get('/product/download/{productId}', [ReportController::class, 'downloadProductActivity'])->name('product.activity.download');
 });
 

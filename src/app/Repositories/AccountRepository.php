@@ -86,4 +86,29 @@ class AccountRepository {
             ->where('cashflow_type', Constant::CashflowDebt)
             ->delete();    
     }
+
+    public static function getAccountReport($user_params = array ())
+    {
+        $query = DB::table('cashflows AS ca')
+            ->addSelect(
+                DB::raw('SUM(CASE WHEN ca.amount >= 0 THEN ca.amount ELSE 0 END) AS amount_in'),
+                DB::raw('SUM(CASE WHEN ca.amount < 0 THEN ca.amount ELSE 0 END) AS amount_out')
+            )
+            ->addSelect('ac.id', 'ac.name')
+            ->join('accounts AS ac', 'ac.id', '=', 'ca.account_id')
+            ->groupBy('ac.id', 'ac.name');
+        foreach ($user_params as $field => $value) {
+            if (in_array($field, ['start_date']) && $value) {
+                $start = sprintf('%s 00:00:00', $value);
+                $query->where('ca.created_at', '>=', $start);
+            }
+            if (in_array($field, ['end_date']) && $value) {
+                $end = sprintf('%s 23:59:50', $value);
+                $query->where('ca.created_at', '<=', $end);
+            }
+        }
+        return $query->get();
+    }
+
+
 }

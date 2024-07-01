@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AccountExport;
 use App\Exports\ProductHistoryExport;
 use App\Exports\ProductStockExport;
+use App\Repositories\AccountRepository;
 use App\Repositories\ProductRepository;
 use App\Util\Response;
 use Illuminate\Http\Request;
@@ -49,5 +51,20 @@ class ReportController extends Controller
         }
         $file_name = sprintf('Laporan-aktifitas-produk-%s.csv', $product_record->name);
         return Excel::download(new ProductHistoryExport($productId, $request->all(),), $file_name); 
+    }
+
+    public function getAccountReport(Request $request)
+    {
+        $account_reports = AccountRepository::getAccountReport($request->all());
+        return view('admin.report.account')
+            ->with('user', parent::getUser())
+            ->with('has_filter', $request->query->count() > 0)
+            ->with('accounts', $account_reports);  
+    }
+
+    public function downloadAccountReport(Request $request)
+    {
+        $file_name = sprintf('Laporan-akun-%s.csv', date('Y-m-d', time()));
+        return Excel::download(new AccountExport($request->all()), $file_name); 
     }
 }
