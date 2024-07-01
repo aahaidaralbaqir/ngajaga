@@ -562,4 +562,5 @@ class ProductController extends Controller
             ->orderBy('id', 'asc')
             ->first();
     }
+      
 }

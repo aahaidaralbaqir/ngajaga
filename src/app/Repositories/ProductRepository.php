@@ -175,4 +175,29 @@ class ProductRepository {
 
         return $product_record;
     }
+
+    public static function getProductStock($user_param = array())
+    {
+        $query = DB::table('stock AS st')
+            ->select('st.product_id', 'products.name',
+                DB::raw('SUM(CASE WHEN st.qty >= 0 THEN st.qty ELSE 0 END) AS stock_in'),
+                DB::raw('SUM(CASE WHEN st.qty < 0 THEN st.qty ELSE 0 END) AS stock_out'))
+            ->join('products', 'st.product_id', '=', 'products.id')
+            ->groupBy('st.product_id', 'products.name');
+        
+        foreach ($user_param as $field => $value) {
+            if (in_array($field, ['start_date'])) {
+                $start = sprintf('%s 00:00:00', $value);
+                $query->where('st.created_at', '>=', $start);
+            }
+            if (in_array($field, ['end_date'])) {
+                $end = sprintf('%s 23:59:50', $value);
+                $query->where('st.created_at', '=<', $end);
+            }
+        }
+
+        if (array_key_exists('per_page', $user_param))
+            return $query->paginate($user_param['per_page']);
+        return $query->paginate(10);
+    }
 }

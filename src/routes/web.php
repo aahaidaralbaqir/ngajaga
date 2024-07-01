@@ -14,6 +14,7 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -154,6 +155,11 @@ Route::prefix('customer')->middleware('auth')->group(function () {
 	Route::post('/create', [CustomerController::class, 'createCustomer'])->name('customer.create');
 	Route::get('/edit/{customerId}', [CustomerController::class, 'editCustomerForm'])->name('customer.edit.form');
 	Route::post('/edit', [CustomerController::class, 'editCustomer'])->name('customer.edit');
+});
+
+Route::prefix('report')->middleware('auth')->group(function () {
+	Route::get('/product', [ReportController::class, 'getProductReport'])->name('product.report');
+	Route::get('/product/download', [ReportController::class, 'downloadProductReport'])->name('product.report.download');
 });
 
 
