@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Constant\Constant;
+use App\Constant\Permission;
 use App\Repositories\ProductRepository;
 use App\Util\Common;
 use App\Util\Response;
@@ -358,6 +359,7 @@ class ProductController extends Controller
     }
     
     public function editProduct(Request $request) {
+        $user = parent::getUser();
         $current_record = DB::table('products')
                             ->where('id', $request->id)
                             ->first();
@@ -406,8 +408,15 @@ class ProductController extends Controller
             ->where('id', $current_record->id)
             ->update($user_input);
 
+        if (in_array(Permission::CONFIGURE_PRICE, $user['permission'])) { 
+            return redirect()
+                ->route('product.price.form', ['productId' => $current_record->id]); 
+        }
         return redirect()
-                ->route('product.price.form', ['productId' => $current_record->id]);
+            ->route('product.index')
+            ->with(array (
+                'success' => 'Produk berhasil dirubah'
+            )); ;
     }
 
     public function editPriceForm(Request $request, $productId) {

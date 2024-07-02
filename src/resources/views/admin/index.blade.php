@@ -23,33 +23,34 @@
 		@if (in_array(\App\Constant\Permission::VIEW_REPORT_SALE_SUMMARY, $user['permission']))
 			<div class="flex justify-between items-center relative">
 				<h2 class="text-black font-normal text-2xl">Laporan Penjualan</h2>
-				<div class="flex gap-5">
-					@if ($has_filter)
-                        <a href="{{ route('dashboard') }}" class="button text-base text-black p-3 rounded border border-black relative">
-                            Hapus Filter
-                        </a>
-                    @endif
-					<button class="button text-base text-black p-3 rounded border border-black relative" role="dropdown" data-id="89" data-name="action">
-                        <svg xmlns="http://www.w3.org/2000/svg"  width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-filter"><path d="M3 6h18"/><path d="M7 12h10"/><path d="M10 18h4"/></svg>
-					</button>
-                    <div class="menu top-14 right-1 mt-2 hidden" id="cmenu" data-id="89" data-name="action" role="dropdown-content">
-                        <form action="{{ route('dashboard') }}" method="GET">
-                            <div class="flex gap-5 p-4 border-b border-black">
-                                <fieldset>
-                                    <label for="start" class="text-black">Dari Tanggal</label>
-                                    <div class="flex gap-4 mt-2">
-                                        <input type="date" name="start_date" id="" value="{{ request('start_date') }}">
-                                        <input type="date" name="end_date" id="" value="{{ request('end_date') }}">
-                                    </div>
-                                </fieldset>
-                            </div>
-                            <div class="mt-4 flex px-4">
-                                <button type="submit" class="w-full button text-base bg-[#ff91e7] text-black p-3 rounded border border-black">Saring</a>
-                            </div>
-                        </form>
-                    </div>
-				</div>
-				
+				@if (in_array(\App\Constant\Permission::FILTER_DASHBOARD_SUMMARY, $user['permission']))	
+					<div class="flex gap-5">
+						@if ($has_filter)
+							<a href="{{ route('dashboard') }}" class="button text-base text-black p-3 rounded border border-black relative">
+								Hapus Filter
+							</a>
+						@endif
+						<button class="button text-base text-black p-3 rounded border border-black relative" role="dropdown" data-id="89" data-name="action">
+							<svg xmlns="http://www.w3.org/2000/svg"  width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-filter"><path d="M3 6h18"/><path d="M7 12h10"/><path d="M10 18h4"/></svg>
+						</button>
+						<div class="menu top-14 right-1 mt-2 hidden" id="cmenu" data-id="89" data-name="action" role="dropdown-content">
+							<form action="{{ route('dashboard') }}" method="GET">
+								<div class="flex gap-5 p-4 border-b border-black">
+									<fieldset>
+										<label for="start" class="text-black">Dari Tanggal</label>
+										<div class="flex gap-4 mt-2">
+											<input type="date" name="start_date" id="" value="{{ request('start_date') }}">
+											<input type="date" name="end_date" id="" value="{{ request('end_date') }}">
+										</div>
+									</fieldset>
+								</div>
+								<div class="mt-4 flex px-4">
+									<button type="submit" class="w-full button text-base bg-[#ff91e7] text-black p-3 rounded border border-black">Saring</a>
+								</div>
+							</form>
+						</div>
+					</div>
+				@endif
 			</div>
 			<div class="box border-black mt-4">
 				<table class="w-full mt-10 text-black">
@@ -92,62 +93,66 @@
 		@endif
 
 		<div class="flex gap-7 mt-10">
-			<div class="flex-1">
-				<table class="w-full retro">
-					<caption class="text-2xl text-black [text-align:unset]">Produk Terfavorit</caption>
-					<thead>
-						<tr>
-							<th class="w-[15%]"></th>
-							<th class="text-left">Nama Produk</th>
-							<th class="text-left">Jumlah Penjualan</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach ($most_purchased_products as $product)
+			@if (in_array(\App\Constant\Permission::VIEW_TOP_PRODUCT, $user['permission']))
+				<div class="flex-1">
+					<table class="w-full retro">
+						<caption class="text-2xl text-black [text-align:unset]">Produk Terfavorit</caption>
+						<thead>
 							<tr>
-								<td class="cell-image">
-									<img src="{{ \App\Util\Common::getStorage(\App\Constant\Constant::STORAGE_PRODUCT, $product->product_image) }}" alt="">
-								</td>
-								<td>{{ $product->product_name }}</td>
-								<td>{{ $product->total_qty }}</td>
+								<th class="w-[15%]"></th>
+								<th class="text-left">Nama Produk</th>
+								<th class="text-left">Jumlah Penjualan</th>
 							</tr>
-						@endforeach
-						@if (count($most_purchased_products) < 1)
+						</thead>
+						<tbody>
+							@foreach ($most_purchased_products as $product)
+								<tr>
+									<td class="cell-image">
+										<img src="{{ \App\Util\Common::getStorage(\App\Constant\Constant::STORAGE_PRODUCT, $product->product_image) }}" alt="">
+									</td>
+									<td>{{ $product->product_name }}</td>
+									<td>{{ $product->total_qty }}</td>
+								</tr>
+							@endforeach
+							@if (count($most_purchased_products) < 1)
+								<tr>
+									<td colspan="3">Tidak ada data</td>
+								</tr>
+							@endif
+						</tbody>
+					</table>
+				</div>
+			@endif
+			@if (in_array(\App\Constant\Permission::VIEW_LOWEST_PRODUCT, $user['permission']))
+				<div class="flex-1">
+					<table class="w-full retro">
+						<caption class="text-2xl text-black [text-align:unset]">Stok Menipis</caption>
+						<thead>
 							<tr>
-								<td colspan="3">Tidak ada data</td>
+								<th class="w-[15%]"></th>
+								<th class="text-left">Nama Produk</th>
+								<th class="text-left">Jumlah Stok  Saat Ini</th>
 							</tr>
-						@endif
-					</tbody>
-				</table>
-			</div>
-			<div class="flex-1">
-				<table class="w-full retro">
-					<caption class="text-2xl text-black [text-align:unset]">Stok Menipis</caption>
-					<thead>
-						<tr>
-							<th class="w-[15%]"></th>
-							<th class="text-left">Nama Produk</th>
-							<th class="text-left">Jumlah Stok  Saat Ini</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach ($lowest_product as $lp)
-							<tr>
-								<td class="cell-image">
-									<img src="{{ \App\Util\Common::getStorage(\App\Constant\Constant::STORAGE_PRODUCT, $product->product_image) }}" alt="">
-								</td>
-								<td>{{ $lp->name }}</td>
-								<td>{{ $lp->total_qty }}</td>
-							</tr>
-						@endforeach
-						@if (count($lowest_product) < 1)
-							<tr>
-								<td colspan="3">Tidak ada data</td>
-							</tr>
-						@endif
-					</tbody>
-				</table>	
-			</div>
+						</thead>
+						<tbody>
+							@foreach ($lowest_product as $lp)
+								<tr>
+									<td class="cell-image">
+										<img src="{{ \App\Util\Common::getStorage(\App\Constant\Constant::STORAGE_PRODUCT, $product->product_image) }}" alt="">
+									</td>
+									<td>{{ $lp->name }}</td>
+									<td>{{ $lp->total_qty }}</td>
+								</tr>
+							@endforeach
+							@if (count($lowest_product) < 1)
+								<tr>
+									<td colspan="3">Tidak ada data</td>
+								</tr>
+							@endif
+						</tbody>
+					</table>	
+				</div>
+			@endif
     </section>
 </main>
 @endsection

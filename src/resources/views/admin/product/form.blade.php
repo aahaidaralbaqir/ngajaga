@@ -14,14 +14,30 @@
                         Kembali
                     </a>
                     <button class="button text-base bg-[#ff91e7] text-black p-3 rounded border border-black">
-                        {{ empty($item) ? 'Lanjut' : 'Simpan dan Lanjutkan' }}
+                        @php
+                            if (empty($item)) {
+                                if (in_array(\App\Constant\Permission::CONFIGURE_PRICE, $user['permission'])) {
+                                    echo 'Lanjut';
+                                } else {
+                                    echo 'Simpan';
+                                }
+                            } else {
+                                if (in_array(\App\Constant\Permission::CONFIGURE_PRICE, $user['permission'])) {
+                                    echo 'Simpan dan Lanjutkan';
+                                } else {
+                                    echo 'Simpan';
+                                }
+                            }
+                        @endphp
                     </button>
                 </div>
             </div>
             @if (!empty($item))
             <div class="tab">
                 <a href="{{ route('product.edit.form', ['productId' => $item->id]) }}" aria-selected="true" class="selected">Informasi Produk</a>
-                <a href="{{ route('product.price.form', ['productId' => $item->id]) }}" aria-selected="true" >Konfigurasi Harga</a>
+                @if (in_array(\App\Constant\Permission::CONFIGURE_PRICE, $user['permission']))
+                    <a href="{{ route('product.price.form', ['productId' => $item->id]) }}" aria-selected="true" >Konfigurasi Harga</a>
+                @endif
             </div>
             @endif
         </div>

@@ -84,6 +84,10 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Laporan',
                 'childs' => ['Lihat Laporan Stok Produk', 'Filter Laporan Stok Produk', 'Download Laporan Stok Produk', 'Lihat Aktifitas Stok Produk', 'Download Laporan Aktifitas Stok Produk', 'Filter Laporan Aktifitas Stok Produk',  'Lihat Laporan Akun', 'Filter Laporan Akun', 'Download Laporan Akun', 'Lihat Aktifitas Akun', 'Filter Aktifitas Akun', 'Download Aktifitas Akun']
+            ],
+            [
+                'name' => 'Pembayaran Kasbon',
+                'childs' => ['Lihat Pembayaran Kasbon', 'Tambah Pembayaran Kasbon', 'Ubah Pembayaran Kasbon']
             ]
         ];
         

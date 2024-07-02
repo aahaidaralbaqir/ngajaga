@@ -7,17 +7,21 @@
                     Transaksi
                 </h1>
                 <div class="flex items-center justify-between gap-5 relative">
-                    @if ($has_filter)
-                        <a href="{{ route('transaction.index') }}" class="button text-base text-black p-3 rounded border border-black relative">
-                            Hapus Filter
+                    @if (in_array(\App\Constant\Permission::DOWNLOAD_TRANSACTION_REPORT, $user['permission']))  
+                        <a href="{{ route('transaction.download') }}" class="button text-base text-black p-3 rounded border border-black relative">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-to-line"><path d="M12 17V3"/><path d="m6 11 6 6 6-6"/><path d="M19 21H5"/></svg>
                         </a>
                     @endif
-                    <a href="{{ route('transaction.download') }}" class="button text-base text-black p-3 rounded border border-black relative">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-to-line"><path d="M12 17V3"/><path d="m6 11 6 6 6-6"/><path d="M19 21H5"/></svg>
-                    </a>
-                    <button class="button text-base text-black p-3 rounded border border-black relative" role="dropdown" data-id="89" data-name="action">
-                        <svg xmlns="http://www.w3.org/2000/svg"  width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-filter"><path d="M3 6h18"/><path d="M7 12h10"/><path d="M10 18h4"/></svg>
-					</button>
+                    @if (in_array(\App\Constant\Permission::FILTER_TRANSACTION, $user['permission'])) 
+                        @if ($has_filter)
+                            <a href="{{ route('transaction.index') }}" class="button text-base text-black p-3 rounded border border-black relative">
+                                Hapus Filter
+                            </a>
+                        @endif
+                        <button class="button text-base text-black p-3 rounded border border-black relative" role="dropdown" data-id="89" data-name="action">
+                            <svg xmlns="http://www.w3.org/2000/svg"  width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-filter"><path d="M3 6h18"/><path d="M7 12h10"/><path d="M10 18h4"/></svg>
+                        </button>
+                    @endif
                     <div class="menu top-14 right-1 mt-2 hidden" id="cmenu" data-id="89" data-name="action" role="dropdown-content">
                         <form action="{{ route('transaction.index') }}" method="GET">
                             <div class="flex gap-5 border-b p-4">
@@ -98,32 +102,39 @@
                             </div>
                         </form>
                     </div>
-                    <a href="{{ route('transaction.create.form') }}" class="button text-base bg-[#ff91e7] text-black p-3 rounded border border-black">Buat Transaksi Baru</a>
+                    @if (in_array(\App\Constant\Permission::CREATE_TRANSACTION, $user['permission'])) 
+                        <a href="{{ route('transaction.create.form') }}" class="button text-base bg-[#ff91e7] text-black p-3 rounded border border-black">Buat Transaksi Baru</a>
+                    @endif
                 </div>
             </div>
             <div class="tab">
-                <a href="{{ route('transaction.index') }}" aria-selected="true" class="selected">Transaksi</a>
-                <a href="{{ route('debt.index') }}" aria-selected="true">Kasbon</a>
+                @if (in_array(\App\Constant\Permission::VIEW_TRANSACTION, $user['permission'])) 
+                    <a href="{{ route('transaction.index') }}" aria-selected="true" class="selected">Transaksi</a>
+                @endif
+                @if (in_array(\App\Constant\Permission::VIEW_DEBT, $user['permission'])) 
+                    <a href="{{ route('debt.index') }}" aria-selected="true">Kasbon</a>
+                @endif
             </div>
         </div>
     </div>
     <main class="w-full py-14 px-14">
         <section class="w-4/5">
-            <div class="flex gap-5">
-                
-                <div class="box w-[350px] border-black text-black" style="border-radius: 0.25rem;">
-                    <h4 class="text-base">Total Transaksi Hari Ini</h4>
-                    <span class="text-2xl block mt-5" style="font-size: 40px">{{ $today_summary->total_transaction }}</span>
+            @if (in_array(\App\Constant\Permission::VIEW_TODAY_TRANSACTION_SUMMARY, $user['permission'])) 
+                <div class="flex gap-5">
+                    <div class="box w-[350px] border-black text-black" style="border-radius: 0.25rem;">
+                        <h4 class="text-base">Total Transaksi Hari Ini</h4>
+                        <span class="text-2xl block mt-5" style="font-size: 40px">{{ $today_summary->total_transaction }}</span>
+                    </div>
+                    <div class="box w-[350px] border-black text-black" style="border-radius: 0.25rem;">
+                        <h4 class="text-base">Produk Terjual</h4>
+                        <span class="text-2xl block mt-5" style="font-size: 40px">{{ $today_summary->total_product_qty }}</span>
+                    </div>
+                    <div class="box w-[350px] border-black text-black" style="border-radius: 0.25rem;">
+                        <h4 class="text-base">Keuntungan Hari Ini</h4>
+                        <span class="text-2xl block mt-5" style="font-size: 40px">{{ \App\Util\Common::formatAmount(\App\Constant\Constant::UNIT_NAME_RUPIAH, $today_summary->total_amount) }}</span>
+                    </div>
                 </div>
-                <div class="box w-[350px] border-black text-black" style="border-radius: 0.25rem;">
-                    <h4 class="text-base">Produk Terjual</h4>
-                    <span class="text-2xl block mt-5" style="font-size: 40px">{{ $today_summary->total_product_qty }}</span>
-                </div>
-                <div class="box w-[350px] border-black text-black" style="border-radius: 0.25rem;">
-                    <h4 class="text-base">Keuntungan Hari Ini</h4>
-                    <span class="text-2xl block mt-5" style="font-size: 40px">{{ \App\Util\Common::formatAmount(\App\Constant\Constant::UNIT_NAME_RUPIAH, $today_summary->total_amount) }}</span>
-                </div>
-            </div>
+            @endif
             
             <table class="w-full retro mt-10">
                 <caption class="text-2xl text-black [text-align:unset]">Transaksi</caption>
@@ -158,17 +169,19 @@
                             <td>{{ $transaction->customer_name }}</td>
                             <td>{{ $transaction->account_name }}</td>
                             <td>
-                                <div class="relative">
-                                    <a href="" data-id="{{ $transaction->id }}" data-name="action"  class="dropdown" role="dropdown">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
-                                    </a>
-                                    <div class="menu hidden" data-id="{{ $transaction->id }}" data-name="action" role="dropdown-content">
-                                        <a href="{{ route('transaction.edit.form', ['transactionId' => $transaction->id]) }}" class="menu-item">
-                                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-pen"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z"/></svg>
-                                            Ubah
+                                @if (in_array(\App\Constant\Permission::UPDATE_TRANSACTION, $user['permission'])) 
+                                    <div class="relative">
+                                        <a href="" data-id="{{ $transaction->id }}" data-name="action"  class="dropdown" role="dropdown">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
                                         </a>
+                                        <div class="menu hidden" data-id="{{ $transaction->id }}" data-name="action" role="dropdown-content">
+                                            <a href="{{ route('transaction.edit.form', ['transactionId' => $transaction->id]) }}" class="menu-item">
+                                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-pen"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z"/></svg>
+                                                Ubah
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

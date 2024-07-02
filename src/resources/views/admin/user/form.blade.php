@@ -47,6 +47,7 @@
                         </div>
                     </fieldset>
                 </section>
+                @if (!empty($item) && in_array(\App\Constant\Permission::CHANGE_PASSWORD, $user['permission']))
                 <section class="flex gap-2 justify-between py-20 border-b   ">
                     <header class="text-[#000000] font-light flex-1">
                         <h1 class="text-2xl mb-2 font-normal">Keamanan</h1>
@@ -97,6 +98,7 @@
                         </div>
                     </fieldset>
                 </section>
+                @endif
 
                 <section class="flex gap-2 justify-between py-20">
                     <header class="text-[#000000] font-light flex-1">

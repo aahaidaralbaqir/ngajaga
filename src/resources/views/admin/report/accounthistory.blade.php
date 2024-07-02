@@ -10,33 +10,37 @@
                 <h3 class="text-2xl text-black">Laporan</h3>
             </div>
             <div class="flex items-center justify-between gap-5 relative">
-                <a href="{{ route('account.activity.download', ['accountId' => $item->id]) }}" class="button text-base text-black p-3 rounded border border-black relative">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-to-line"><path d="M12 17V3"/><path d="m6 11 6 6 6-6"/><path d="M19 21H5"/></svg>
-                </a>
-                @if ($has_filter)
-                    <a href="{{ route('account.activity.report', ['accountId' => $item->id]) }}" class="button text-base text-black p-3 rounded border border-black relative">
-                        Hapus Filter
+                @if (in_array(\App\Constant\Permission::DOWNLOAD_ACCOUNT_ACTIVITY, $user['permission']))
+                    <a href="{{ route('account.activity.download', ['accountId' => $item->id]) }}" class="button text-base text-black p-3 rounded border border-black relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-to-line"><path d="M12 17V3"/><path d="m6 11 6 6 6-6"/><path d="M19 21H5"/></svg>
                     </a>
                 @endif
-                <button class="button text-base text-black p-3 rounded border border-black relative" role="dropdown" data-id="89" data-name="action">
-                    <svg xmlns="http://www.w3.org/2000/svg"  width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-filter"><path d="M3 6h18"/><path d="M7 12h10"/><path d="M10 18h4"/></svg>
-                </button>
-                <div class="menu top-14 right-1 mt-2 hidden" id="cmenu" data-id="89" data-name="action" role="dropdown-content">
-                    <form action="{{ route('account.activity.report', ['accountId' => $item->id]) }}" method="GET">
-                        <div class="flex gap-5 border-b p-4">
-                            <fieldset>
-                                <label for="start" class="text-black">Dari Tanggal</label>
-                                <div class="flex gap-4 mt-2">
-                                    <input type="date" name="start_date" id="" value="{{ request('start_date') }}">
-                                    <input type="date" name="end_date" id="" value="{{ request('end_date') }}">
-                                </div>
-                            </fieldset>
-                        </div>
-                        <div class="mt-4 flex gap-5 p-4">
-                            <button type="submit" class="w-full button text-base bg-[#ff91e7] text-black p-3 rounded border border-black">Filter</a>
-                        </div>
-                    </form>
-                </div>
+                @if (in_array(\App\Constant\Permission::FILTER_ACCOUNT_ACTIVITY, $user['permission']))
+                    @if ($has_filter)
+                        <a href="{{ route('account.activity.report', ['accountId' => $item->id]) }}" class="button text-base text-black p-3 rounded border border-black relative">
+                            Hapus Filter
+                        </a>
+                    @endif
+                    <button class="button text-base text-black p-3 rounded border border-black relative" role="dropdown" data-id="89" data-name="action">
+                        <svg xmlns="http://www.w3.org/2000/svg"  width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-filter"><path d="M3 6h18"/><path d="M7 12h10"/><path d="M10 18h4"/></svg>
+                    </button>
+                    <div class="menu top-14 right-1 mt-2 hidden" id="cmenu" data-id="89" data-name="action" role="dropdown-content">
+                        <form action="{{ route('account.activity.report', ['accountId' => $item->id]) }}" method="GET">
+                            <div class="flex gap-5 border-b p-4">
+                                <fieldset>
+                                    <label for="start" class="text-black">Dari Tanggal</label>
+                                    <div class="flex gap-4 mt-2">
+                                        <input type="date" name="start_date" id="" value="{{ request('start_date') }}">
+                                        <input type="date" name="end_date" id="" value="{{ request('end_date') }}">
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="mt-4 flex gap-5 p-4">
+                                <button type="submit" class="w-full button text-base bg-[#ff91e7] text-black p-3 rounded border border-black">Filter</a>
+                            </div>
+                        </form>
+                    </div>
+                @endif
             </div>
         </div>
         <div class="tab">

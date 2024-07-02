@@ -76,28 +76,40 @@
                             <span>{{ $purchase->supplier_name }}</span>
                         </td>
                         <td class="relative">
-                            @if(in_array(\App\Constant\Permission::UPDATE_ORDER_INVOICE, $user['permission']) || in_array(\App\Constant\Permission::DELETE_ORDER_INVOICE, $user['permission']))
+                            @php
+                                $condition = in_array(\App\Constant\Permission::UPDATE_ORDER_INVOICE, $user['permission']) || in_array(\App\Constant\Permission::CANCEL_ORDER_INVOICE, $user['permission']) || in_array(\App\Constant\Permission::CREATE_PURCHASE_INVOICE, $user['permission']) || in_array(\App\Constant\Permission::VIEW_PURCHASE_INVOICE, $user['permission']);
+                                if ($purchase->status == \App\Constant\Constant::PURCHASE_ORDER_COMPLETED) {
+                                    $condition = in_array(\App\Constant\Permission::VIEW_PURCHASE_INVOICE, $user['permission']);
+                                }
+                            @endphp
+                            @if($condition)
                                 <a href="" data-id="{{ $purchase->id }}" data-name="action" class="dropdown" role="dropdown">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
                                 </a>
                                 <div class="menu hidden w-[250px] ml-[-20px]" data-id="{{ $purchase->id }}" data-name="action" role="dropdown-content">
                                     @if ($purchase->status == \App\Constant\Constant::PURCHASE_ORDER_COMPLETED)
-                                        <a href="{{ route('invoice.edit.form', ['invoiceId' => $purchase->purchase_invoice_id, 'purchaseNumber' => $purchase->purchase_number]) }}" class="menu-item">
-                                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-plus"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M9 15h6"/><path d="M12 18v-6"/></svg>
-                                            Lihat penerimaan stok
-                                        </a>
+                                        @if(in_array(\App\Constant\Permission::VIEW_PURCHASE_INVOICE, $user['permission'])) 
+                                            <a href="{{ route('invoice.edit.form', ['invoiceId' => $purchase->purchase_invoice_id, 'purchaseNumber' => $purchase->purchase_number]) }}" class="menu-item">
+                                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-plus"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M9 15h6"/><path d="M12 18v-6"/></svg>
+                                                Lihat penerimaan stok
+                                            </a>
+                                        @endif
                                     @endif
                                     @if ($purchase->status == \App\Constant\Constant::PURCHASE_ORDER_WAITING)
-                                        <a href="{{ route('invoice.create.form', ['purchaseNumber' => $purchase->purchase_number]) }}" class="menu-item">
-                                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-plus"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M9 15h6"/><path d="M12 18v-6"/></svg>
-                                            Buat penerimaan stok
-                                        </a>
+                                        @if(in_array(\App\Constant\Permission::CREATE_PURCHASE_INVOICE, $user['permission'])) 
+                                            <a href="{{ route('invoice.create.form', ['purchaseNumber' => $purchase->purchase_number]) }}" class="menu-item">
+                                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-plus"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M9 15h6"/><path d="M12 18v-6"/></svg>
+                                                Buat penerimaan stok
+                                            </a>
+                                        @endif
                                     @endif
                                     @if ($purchase->status == \App\Constant\Constant::PURCHASE_ORDER_WAITING)
-                                    <a href="{{ route('purchase.print', ['purchaseOrderId' => $purchase->id]) }}" class="menu-item">
-                                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-printer"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>
-                                        Cetak Pemesanan Stok
-                                    </a>
+                                        @if(in_array(\App\Constant\Permission::PRINT_ORDER_INVOICE, $user['permission'])) 
+                                            <a href="{{ route('purchase.print', ['purchaseOrderId' => $purchase->id]) }}" class="menu-item">
+                                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-printer"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>
+                                                Cetak Pemesanan Stok
+                                            </a>
+                                        @endif
                                     @endif
                                     @if ($purchase->status == \App\Constant\Constant::PURCHASE_ORDER_WAITING)
                                         @if(in_array(\App\Constant\Permission::UPDATE_ORDER_INVOICE, $user['permission']))
@@ -108,7 +120,7 @@
                                         @endif
                                     @endif
                                     @if ($purchase->status == \App\Constant\Constant::PURCHASE_ORDER_WAITING)
-                                        @if(in_array(\App\Constant\Permission::DELETE_ORDER_INVOICE, $user['permission'])) 
+                                        @if(in_array(\App\Constant\Permission::CANCEL_ORDER_INVOICE, $user['permission'])) 
                                             <a href="{{ route('purchase.cancel', ['purchaseOrderId' => $purchase->id]) }}" class="menu-item">
                                                 <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ban"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg>
                                                 Batalkan Pemesanan

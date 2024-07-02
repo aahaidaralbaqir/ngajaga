@@ -7,20 +7,22 @@
                Produk
             </h1>
             <div class="flex items-center justify-between gap-5 relative">
-                @if ($has_filter)
-                    <a href="{{ route('product.index') }}" class="button text-base text-black p-3 rounded border border-black relative">
-                        Hapus Filter
-                    </a>
+                @if (in_array(\App\Constant\Permission::SEARCH_PRODUCT, $user['permission']))
+                    @if ($has_filter)
+                        <a href="{{ route('product.index') }}" class="button text-base text-black p-3 rounded border border-black relative">
+                            Hapus Filter
+                        </a>
+                    @endif
+                    <button class="button text-base text-black p-3 rounded border border-black relative" data-id="xyz" data-name="action" class="dropdown" role="dropdown">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    </button>
+                    <div class="menu top-16 w-96 px-5 right-[83px] hidden" id="overide_menu" data-id="xyz" data-name="action" role="dropdown-content">
+                        <form action="{{ route('product.index') }}" method="get">
+                            <svg class="absolute mt-3 ml-2" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                            <input  value="{{ request('search') }}" type="text" name="search" placeholder="cari produk" class="focus:outline-none" style="padding-left: 2.5rem">
+                        </form>
+                    </div>
                 @endif
-                <button class="button text-base text-black p-3 rounded border border-black relative" data-id="xyz" data-name="action" class="dropdown" role="dropdown">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                </button>
-                <div class="menu top-16 w-96 px-5 right-[83px] hidden" id="overide_menu" data-id="xyz" data-name="action" role="dropdown-content">
-                    <form action="{{ route('product.index') }}" method="get">
-                        <svg class="absolute mt-3 ml-2" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                        <input  value="{{ request('search') }}" type="text" name="search" placeholder="cari produk" class="focus:outline-none" style="padding-left: 2.5rem">
-                    </form>
-                </div>
                 @if (in_array(\App\Constant\Permission::CREATE_PRODUCT, $user['permission']))
                     <a href="{{ route('product.create.form') }}" class="button text-base bg-[#ff91e7] text-black p-3 rounded border border-black">Buat Produk</a>
                 @endif
