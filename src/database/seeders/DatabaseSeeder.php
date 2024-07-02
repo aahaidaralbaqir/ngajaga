@@ -27,11 +27,11 @@ class DatabaseSeeder extends Seeder
         $permission = [
             [
                 'name' => 'Dashboard',
-                'childs' => ['Lihat Rangkuman Penjualan', 'Lihat Grafik Penjualan'],
+                'childs' => ['Lihat Rangkuman Penjualan', 'Lihat Produk Favorit', 'Lihat Stok Menipis', 'Filter Laporan'],
             ],
             [
                 'name' => 'Buku Kas',
-                'childs' => ['Lihat Kas', 'Tambah Kas', 'Ubah Kas', 'Lihat Cashflow Account'],
+                'childs' => ['Lihat Kas', 'Tambah Kas', 'Ubah Kas'],
             ],
             [
                 'name' => 'Hak Akses',
@@ -43,11 +43,11 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Pengguna',
-                'childs' => ['Lihat Pengguna', 'Tambah Pengguna', 'Ubah Pengguna']
+                'childs' => ['Lihat Pengguna', 'Tambah Pengguna', 'Ubah Pengguna', 'Ganti Password']
             ],
             [
                 'name' => 'Produk',
-                'childs' => ['Lihat Produk', 'Tambah Produk', 'Ubah Produk']
+                'childs' => ['Lihat Produk', 'Cari Produk', 'Tambah Produk', 'Ubah Produk', 'Konfigurasi Harga']
             ],
             [
                 'name' => 'Kategori',
@@ -59,27 +59,31 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Pemasok',
-                'childs' => ['Lihat Pemasok', 'Tambab Pemasok', 'Ubah Pemasok']
+                'childs' => ['Lihat Pemasok', 'Tambah Pemasok', 'Ubah Pemasok']
             ],
             [
                 'name' => 'Pemesanan Stok',
-                'childs' => ['Lihat Pemesanan Stok', 'Tambah Pemesanan Stok', 'Ubah Pemesanan Stok', 'Hapus Pemesanan Stok']
+                'childs' => ['Lihat Pemesanan Stok', 'Tambah Pemesanan Stok', 'Ubah Pemesanan Stok', 'Batalkan Pemesanan', 'Cetak Pemesanan']
             ],
             [
                 'name' => 'Penerimaan Stok',
-                'childs' => ['Lihat Penerimaan Stok', 'Tambah Penerimaan Stok', 'Ubah Penerimaan Stok', 'Hapus Penerimaan Stok']
+                'childs' => ['Lihat Penerimaan Stok', 'Tambah Penerimaan Stok', 'Ubah Penerimaan Stok']
             ],
             [
                 'name' => 'Pelanggan',
-                'childs' => ['Lihat Pelanggaran', 'Tambah Pelanggan', 'Ubah Pelanggan'] 
+                'childs' => ['Lihat Pelanggaran', 'Tambah Pelanggan', 'Ubah Pelanggan', 'Cari Pelanggan'] 
             ],
             [
                 'name' => 'Transaksi',
-                'childs' => ['Lihat Transaksi', 'Tambah Transaksi', 'Ubah Transaksi']
+                'childs' => ['Lihat Transaksi', 'Tambah Transaksi', 'Ubah Transaksi', 'Lihat Rangkuman Transaksi Hari Ini', 'Filter Transaksi', 'Download Laporan']
+            ],
+            [
+                'name' => 'Kasbon',
+                'childs' => ['Tambah Kasbon', 'Lihat Kasbon', 'Ubah Kasbon', 'Cari Kasbon']
             ],
             [
                 'name' => 'Laporan',
-                'childs' => ['Lihat Laporan Transaksi', 'Lihat Laporan Keuangan']
+                'childs' => ['Lihat Laporan Stok Produk', 'Filter Laporan Stok Produk', 'Download Laporan Stok Produk', 'Lihat Aktifitas Stok Produk', 'Download Laporan Aktifitas Stok Produk', 'Filter Laporan Aktifitas Stok Produk',  'Lihat Laporan Akun', 'Filter Laporan Akun', 'Download Laporan Akun', 'Lihat Aktifitas Akun', 'Filter Aktifitas Akun', 'Download Aktifitas Akun']
             ]
         ];
         
