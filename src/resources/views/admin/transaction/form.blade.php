@@ -236,22 +236,31 @@
             transaction_record: null
         },
         methods: {
+            getHttpOption () {
+                return {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                };
+            },
             async fetchProducts() {
-                return fetch('/api/purchase/product')
+                return fetch('/api/purchase/product', this.getHttpOption())
                     .then((response) => response.json())
                     .then((result) => {
                         this.products = result.products 
                     })
             },
             async fetchAccount() {
-                return fetch('/api/transaction/account')
+                return fetch('/api/transaction/account', this.getHttpOption())
                     .then((response) => response.json())
                     .then((result) => {
                         this.accounts = result.account 
                     })
             },
             async fetchTransactionDetail() {
-                return fetch('/api/transaction/{{ $transaction_record->id }}')
+                return fetch('/api/transaction/{{ $transaction_record->id }}', this.getHttpOption())
                     .then((response) => response.json())
                     .then(({transaction}) => {
                         this.form = {
@@ -266,7 +275,7 @@
                     })
             },
             async fetchCustomer() {
-                return fetch('/api/transaction/customer')
+                return fetch('/api/transaction/customer', this.getHttpOption())
                     .then((response) => response.json())
                     .then((result) => {
                         this.customers = result.customer.data 

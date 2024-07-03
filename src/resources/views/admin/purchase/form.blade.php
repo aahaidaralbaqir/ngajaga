@@ -238,15 +238,24 @@
             },
         },
         methods: {
+            getHttpOption () {
+                return {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                };
+            },
             async fetchProducts() {
-                return fetch('/api/purchase/product')
+                return fetch('/api/purchase/product', this.getHttpOption())
                     .then((response) => response.json())
                     .then((result) => {
                         this.products = result.products 
                     })
             },
             async fetchSuppliers() {
-                return fetch('/api/purchase/supplier')
+                return fetch('/api/purchase/supplier', this.getHttpOption())
                     .then((response) => response.json())
                     .then((result) => {
                         this.suppliers = result.suppliers 
@@ -255,7 +264,7 @@
             async fetchPurchaseDetail() {
                 const orderId = document.querySelector('input[name="latest_order_id"]')
                 if (orderId.value != '') return false;
-                return fetch('/api/purchase/{{ empty($item) ? 0 : $item->id }}')
+                return fetch('/api/purchase/{{ empty($item) ? 0 : $item->id }}', this.getHttpOption())
                     .then((response) => response.json())
                     .then((result) => {
                         const {purchase_date, purchase_number, supplier_id, items} = result.purchase_order
