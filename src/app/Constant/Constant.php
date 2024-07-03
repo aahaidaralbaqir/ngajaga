@@ -7,6 +7,7 @@ class Constant {
 	const MAX_PAGINATION = 10;
 
 	const STORAGE_PRODUCT = 'products';
+	const STORAGE_AVATAR = 'avatar';
 
 	const STATUS_ACTIVE = 3;
 	const STATUS_INACTIVE = 4;

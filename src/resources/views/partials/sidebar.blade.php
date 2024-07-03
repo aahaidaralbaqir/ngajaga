@@ -144,5 +144,47 @@
             </div>
         </nav>
         <!-- Sidebar Menu -->
+        <ul class="flex flex-col">
+                <li class="px-5 py-4 relative">
+                    <div id="czs" class="menu hidden  w-full left-0 bottom-15" style="margin-bottom: 8px;" data-name="action" role="dropdown-content" data-id="dbz" data-name="action" role="dropdown-content">
+                        <a href="{{ route('profile') }}" class="menu-item text-black">
+                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-user-round"><path d="M18 21a6 6 0 0 0-12 0"/><circle cx="12" cy="11" r="4"/><rect width="18" height="18" x="3" y="3" rx="2"/></svg>
+                            Profile 
+                        </a>
+                        <a href="{{ route('logout') }}" class="menu-item text-black">
+                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+                            Keluar 
+                        </a>
+                    </div>
+                    <a data-id="dbz" data-name="action" role="dropdown" href="#" class="flex justify-between hover:text-[#ff91e7] group relative flex items-center gap-2.5 rounded-sm text-sm duration-300 ease-in-out   dark:hover:bg-meta-4 {{ in_array(route_name(), ['product.report', 'account.activity.report', 'product.activity.report', 'account.report']) ? 'text-[#ff91e7]' : 'text-bodydark1' }}">
+                        <div class="flex gap-2 items-center">
+                            @if (empty($user['avatar']))
+                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-user"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></svg>
+                            @else
+                                <img src="{{ $user['avatar'] }}" class="w-7 h-7 rounded-full" alt=""> 
+                            @endif
+                            {{ \App\Util\Common::shortentText($user['name'], 11) }}
+                        </div>
+                        <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
+                    </a>
+                </li>
+            </ul>
     </div>
 </aside>
+
+    <style type="text/css">
+        #czs {
+            box-shadow: none;
+        }
+        #czs::after {
+            content: "";
+            border-left: solid .5rem rgba(0, 0, 0, 0);
+            border-right: solid .5rem rgba(0, 0, 0, 0);
+            border-bottom: solid .5rem white;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, 0) rotate(180deg);
+            z-index: 30;
+        }
+    </style>

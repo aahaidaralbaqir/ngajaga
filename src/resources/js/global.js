@@ -9,8 +9,12 @@ window.addEventListener('DOMContentLoaded', function () {
             dropdownContents.forEach(function (dc) {
                 const id = dc.getAttribute('data-id')
                 const name = dc.getAttribute('data-name')
+                const chevron = document.querySelector('.chevron')
                 if (targetId == id && targetName == name) {
                     dc.classList.toggle('hidden')
+                    if (chevron) {
+                        chevron.classList.toggle('rotate-180')
+                    }
                     if (targetName !== 'table') dc.classList.toggle('flex')
                 }
             })

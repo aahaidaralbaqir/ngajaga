@@ -252,4 +252,23 @@ class Common {
 		$order_id = $characters . $current_date . $truncated_unique_id . $latest_id;
 		return $order_id;
 	}
+
+	public static function shortentText($text, $num_characters = 7) {
+		// Check if text length exceeds specified number of characters
+		if (strlen($text) <= $num_characters) {
+			return $text; // Return the text as is if it's already shorter or equal to the specified length
+		} else {
+			// Trim the text to the specified number of characters
+			$shortened_text = substr($text, 0, $num_characters);
+	
+			// Trim any incomplete word at the end
+			$shortened_text = substr($shortened_text, 0, strrpos($shortened_text, ' '));
+	
+			// Append "...."
+			$shortened_text .= '....';
+	
+			return $shortened_text;
+		}
+	}
+	
 }

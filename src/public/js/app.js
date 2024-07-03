@@ -2122,8 +2122,12 @@ window.addEventListener('DOMContentLoaded', function () {
       dropdownContents.forEach(function (dc) {
         var id = dc.getAttribute('data-id');
         var name = dc.getAttribute('data-name');
+        var chevron = document.querySelector('.chevron');
         if (targetId == id && targetName == name) {
           dc.classList.toggle('hidden');
+          if (chevron) {
+            chevron.classList.toggle('rotate-180');
+          }
           if (targetName !== 'table') dc.classList.toggle('flex');
         }
       });

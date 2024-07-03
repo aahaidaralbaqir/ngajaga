@@ -174,6 +174,9 @@ Route::get('/unauthorized', function () {
 	return view('admin.unauthorized');
 })->name('unauthorized');
 
+Route::get('/profile', [UserController::class, 'getProfile'])->name('profile')->middleware('auth');
+Route::post('/profile', [UserController::class, 'updateProfile'])->name('profile.update')->middleware('auth');
+
 Route::get('/login', function () {
 	return view('login');
 })->name('login')->middleware('guest');
