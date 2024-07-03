@@ -17,6 +17,10 @@ class RoleBasedAccessControl
      */
     public function handle(Request $request, Closure $next, $permission_id)
     {
+        if ($request->isJson()) {
+            return $this->handleAjax($request, $next, $permission_id);
+        }
+
         $user_record = $request->user();
         $role_record = DB::table('roles')
                             ->where('id', $user_record->role_id)
@@ -28,6 +32,33 @@ class RoleBasedAccessControl
         $has_access = in_array($permission_id, $permission_ids);
         if (!$has_access) {
             return redirect()->route('unauthorized'); 
+        } else {
+            return $next($request);
+        }
+    }
+
+
+    public function handleAjax(Request $request, $next, $permission_id) {
+        $user_record = $request->user();
+        $role_record = DB::table('roles')
+                            ->where('id', $user_record->role_id)
+                            ->first();
+        
+        if (!$role_record) {
+            return response()
+                ->json([
+                    'status' => FALSE,
+                    'message' => 'Akses tidak valid'
+                ]);
+        }
+        $permission_ids = explode(',', $role_record->permission);
+        $has_access = in_array($permission_id, $permission_ids);
+        if (!$has_access) {
+            return response()
+                ->json([
+                    'status' => FALSE,
+                    'message' => 'Tidak mempunyai hak akses'
+                ]);
         } else {
             return $next($request);
         }

@@ -48,7 +48,7 @@ Route::prefix('product')->group(function () {
 	Route::post('/edit', [ProductController::class, 'editProduct'])->name('product.edit')->middleware(['auth', 'rbac:' . Permission::UPDATE_PRODUCT]);
 	Route::get('/{productId}/edit', [ProductController::class, 'editProductForm'])->name('product.edit.form')->middleware(['auth', 'rbac:' . Permission::UPDATE_PRODUCT]);
 	Route::get('/{productId}/price', [ProductController::class, 'editPriceForm'])->name('product.price.form')->middleware(['auth', 'rbac:' . Permission::UPDATE_PRODUCT]);
-	Route::post('/price', [ProductController::class, 'editPrice'])->name('product.price')->middleware(['auth', 'rbac:' . Permission::UPDATE_PRODUCT]);
+	Route::post('/price', [ProductController::class, 'editPrice'])->name('product.price')->middleware(['auth', 'rbac:' . Permission::CONFIGURE_PRICE]);
 });
 
 Route::prefix('supplier')->group(function () {
@@ -65,9 +65,9 @@ Route::prefix('purchase')->group(function () {
 	Route::get('/create', [PurchaseController::class, 'createPurchaseForm'])->name('purchase.create.form')->middleware(['auth', 'rbac:' . Permission::CREATE_ORDER_INVOICE]);
 	Route::post('/create', [PurchaseController::class, 'createPurchaseOrder'])->name('purchase.create')->middleware(['auth', 'rbac:' . Permission::CREATE_ORDER_INVOICE]);
 	Route::get('/{purchaseOrderId}/edit', [PurchaseController::class, 'editPurchaseForm'])->name('purchase.edit.form')->middleware(['auth', 'rbac:' . Permission::UPDATE_ORDER_INVOICE]);
-	Route::get('/{purchaseOrderId}/print', [PurchaseController::class, 'printPurchase'])->name('purchase.print')->middleware(['auth']);
+	Route::get('/{purchaseOrderId}/print', [PurchaseController::class, 'printPurchase'])->name('purchase.print')->middleware(['auth', 'rbac:' . Permission::PRINT_ORDER_INVOICE]);
 	Route::post('/edit', [PurchaseController::class, 'editPurchaseOrder'])->name('purchase.edit')->middleware(['auth', 'rbac:' . Permission::UPDATE_ORDER_INVOICE]);
-	Route::get('/{purchaseOrderId}/cancel', [PurchaseController::class, 'cancelPurchaseOrder'])->name('purchase.cancel')->middleware(['auth', 'rbac:' . Permission::UPDATE_ORDER_INVOICE]);
+	Route::get('/{purchaseOrderId}/cancel', [PurchaseController::class, 'cancelPurchaseOrder'])->name('purchase.cancel')->middleware(['auth', 'rbac:' . Permission::CANCEL_ORDER_INVOICE]);
 });
 
 Route::prefix('category')->group(function () {
@@ -120,52 +120,52 @@ Route::prefix('invoice')->group(function () {
 });
 
 Route::prefix('transaction')->group(function () {
-	Route::get('/download', [TransactionController::class, 'downloadReport'])->name('transaction.download')->middleware(['auth']);
-	Route::get('/', [TransactionController::class, 'getTransactions'])->name('transaction.index')->middleware(['auth']);
-	Route::get('/create', [TransactionController::class, 'createTransactionForm'])->name('transaction.create.form')->middleware(['auth']);
-	Route::post('/create', [TransactionController::class, 'createTransaction'])->name('transaction.create')->middleware(['auth']);
-	Route::get('/customer', [TransactionController::class, 'customer'])->name('transaction.customer')->middleware(['auth']);
-	Route::post('/cart/add', [TransactionController::class, 'addProductToCart'])->name('transaction.cart.add')->middleware(['auth']);
-	Route::post('/cart/remove', [TransactionController::class, 'removeProductFromCart'])->name('transaction.cart.remove')->middleware(['auth']);
-	Route::post('/cart/account', [TransactionController::class, 'chooseAccount'])->name('transaction.account')->middleware(['auth']);
-	Route::post('/cart/action/{actionType}', [TransactionController::class, 'cartAction'])->name('transaction.cart.action')->middleware(['auth']);
-	Route::get('/edit/{transactionId}', [TransactionController::class, 'editTransactionForm'])->name('transaction.edit.form')->middleware(['auth']);
+	Route::get('/download', [TransactionController::class, 'downloadReport'])->name('transaction.download')->middleware(['auth', 'rbac:' . Permission::DOWNLOAD_TRANSACTION_REPORT]);
+	Route::get('/', [TransactionController::class, 'getTransactions'])->name('transaction.index')->middleware(['auth', 'rbac:' . Permission::VIEW_TRANSACTION]);
+	Route::get('/create', [TransactionController::class, 'createTransactionForm'])->name('transaction.create.form')->middleware(['auth' , 'rbac:' . Permission::CREATE_TRANSACTION]);
+	Route::post('/create', [TransactionController::class, 'createTransaction'])->name('transaction.create')->middleware(['auth', 'rbac:' . Permission::CREATE_TRANSACTION]);
+	Route::get('/customer', [TransactionController::class, 'customer'])->name('transaction.customer')->middleware(['auth', 'rbac:' . Permission::CREATE_TRANSACTION]);
+	Route::post('/cart/add', [TransactionController::class, 'addProductToCart'])->name('transaction.cart.add')->middleware(['auth', 'rbac:' . Permission::CREATE_TRANSACTION]);
+	Route::post('/cart/remove', [TransactionController::class, 'removeProductFromCart'])->name('transaction.cart.remove')->middleware(['auth', 'rbac:' . Permission::CREATE_TRANSACTION]);
+	Route::post('/cart/account', [TransactionController::class, 'chooseAccount'])->name('transaction.account')->middleware(['auth', 'rbac:' . Permission::CREATE_TRANSACTION]);
+	Route::post('/cart/action/{actionType}', [TransactionController::class, 'cartAction'])->name('transaction.cart.action')->middleware(['auth', 'rbac:' . Permission::CREATE_TRANSACTION]);
+	Route::get('/edit/{transactionId}', [TransactionController::class, 'editTransactionForm'])->name('transaction.edit.form')->middleware(['auth', 'rbac:' . Permission::UPDATE_TRANSACTION]);
 	
 });
 
 Route::prefix('debt')->middleware('auth')->group(function () {
-	Route::get('/', [DebtController::class, 'getDebts'])->name('debt.index')->middleware(['auth']);
-	Route::get('/create', [DebtController::class, 'createDebtForm'])->name('debt.create.form')->middleware(['auth']);
-	Route::post('/', [DebtController::class, 'createDebt'])->name('create.debt')->middleware(['auth']);
-	Route::get('/edit/{debtId}', [DebtController::class, 'editDebtForm'])->name('edit.debt.form')->middleware(['auth']);
-	Route::post('/edit', [DebtController::class, 'editDebt'])->name('edit.debt')->middleware(['auth']);
+	Route::get('/', [DebtController::class, 'getDebts'])->name('debt.index')->middleware(['auth', 'rbac:' . Permission::VIEW_DEBT]);
+	Route::get('/create', [DebtController::class, 'createDebtForm'])->name('debt.create.form')->middleware(['auth', 'rbac:' . Permission::CREATE_DEBT]);
+	Route::post('/', [DebtController::class, 'createDebt'])->name('create.debt')->middleware(['auth', 'rbac:' . Permission::CREATE_DEBT]);
+	Route::get('/edit/{debtId}', [DebtController::class, 'editDebtForm'])->name('edit.debt.form')->middleware(['auth', 'rbac:' . Permission::UPDATE_DEBT]);
+	Route::post('/edit', [DebtController::class, 'editDebt'])->name('edit.debt')->middleware(['auth', 'rbac:' . Permission::UPDATE_DEBT]);
 });
 
 Route::prefix('receivable')->middleware('auth')->group(function () {
-	Route::get('/{debtId}', [DebtController::class, 'getReceivable'])->name('receivable.index');
-	Route::get('/{debtId}/create', [DebtController::class, 'createReceivableForm'])->name('receivable.create.form');
-	Route::post('/create', [DebtController::class, 'createReceivable'])->name('receivable.create');
-	Route::get('/edit/{receivableId}', [DebtController::class, 'editReceivableForm'])->name('receivable.edit.form');
-	Route::post('/edit', [DebtController::class, 'editReceiveable'])->name('receivable.edit');
+	Route::get('/{debtId}', [DebtController::class, 'getReceivable'])->name('receivable.index')->middleware(['rbac:' . Permission::VIEW_RECEIVABLE]);
+	Route::get('/{debtId}/create', [DebtController::class, 'createReceivableForm'])->name('receivable.create.form')->middleware(['rbac:' . Permission::CREATE_RECEIVABLE]);
+	Route::post('/create', [DebtController::class, 'createReceivable'])->name('receivable.create')->middleware(['rbac:' . Permission::CREATE_RECEIVABLE]);
+	Route::get('/edit/{receivableId}', [DebtController::class, 'editReceivableForm'])->name('receivable.edit.form')->middleware(['rbac:' . Permission::UPDATE_RECEIVABLE]);
+	Route::post('/edit', [DebtController::class, 'editReceiveable'])->name('receivable.edit')->middleware(['rbac:' . Permission::UPDATE_RECEIVABLE]);
 });
 
 Route::prefix('customer')->middleware('auth')->group(function () {
-	Route::get('/', [CustomerController::class, 'index'])->name('customer.index');
-	Route::get('/create', [CustomerController::class, 'createCustomerForm'])->name('customer.create.form');
-	Route::post('/create', [CustomerController::class, 'createCustomer'])->name('customer.create');
-	Route::get('/edit/{customerId}', [CustomerController::class, 'editCustomerForm'])->name('customer.edit.form');
-	Route::post('/edit', [CustomerController::class, 'editCustomer'])->name('customer.edit');
+	Route::get('/', [CustomerController::class, 'index'])->name('customer.index')->middleware(['rbac:' . Permission::VIEW_CUSTOMER]);
+	Route::get('/create', [CustomerController::class, 'createCustomerForm'])->name('customer.create.form')->middleware(['rbac:' . Permission::CREATE_CUSTOMER]);
+	Route::post('/create', [CustomerController::class, 'createCustomer'])->name('customer.create')->middleware(['rbac:' . Permission::CREATE_CUSTOMER]);
+	Route::get('/edit/{customerId}', [CustomerController::class, 'editCustomerForm'])->name('customer.edit.form')->middleware(['rbac:' . Permission::UPDATE_CUSTOMER]);
+	Route::post('/edit', [CustomerController::class, 'editCustomer'])->name('customer.edit')->middleware(['rbac:' . Permission::UPDATE_CUSTOMER]);
 });
 
 Route::prefix('report')->middleware('auth')->group(function () {
-	Route::get('/account', [ReportController::class, 'getAccountReport'])->name('account.report');
-	Route::get('/product', [ReportController::class, 'getProductReport'])->name('product.report');
-	Route::get('/product/{productId}', [ReportController::class, 'getProductActivity'])->name('product.activity.report');
-	Route::get('/account/{accountId}', [ReportController::class, 'getAccountActivity'])->name('account.activity.report');
-	Route::get('/product/download', [ReportController::class, 'downloadProductReport'])->name('product.report.download');
-	Route::get('/account/download', [ReportController::class, 'downloadAccountReport'])->name('account.report.download');
-	Route::get('/product/download/{productId}', [ReportController::class, 'downloadProductActivity'])->name('product.activity.download');
-	Route::get('/account/download/{accountId}', [ReportController::class, 'downloadAccountActivity'])->name('account.activity.download');
+	Route::get('/account', [ReportController::class, 'getAccountReport'])->name('account.report')->middleware(['rbac:' . Permission::VIEW_ACCOUNT_REPORT]);;
+	Route::get('/product', [ReportController::class, 'getProductReport'])->name('product.report')->middleware(['rbac:' . Permission::VIEW_STOCK_PRODUCT]);;
+	Route::get('/product/{productId}', [ReportController::class, 'getProductActivity'])->name('product.activity.report')->middleware(['rbac:' . Permission::VIEW_STOCK_PRODUCT_ACTIVITY]);;
+	Route::get('/account/{accountId}', [ReportController::class, 'getAccountActivity'])->name('account.activity.report')->middleware(['rbac:' . Permission::VIEW_ACCOUNT_ACTIVITY]);;
+	Route::get('/product/download', [ReportController::class, 'downloadProductReport'])->name('product.report.download')->middleware(['rbac:' . Permission::DOWNLOAD_STOCK_PRODUCT]);
+	Route::get('/account/download', [ReportController::class, 'downloadAccountReport'])->name('account.report.download')->middleware(['rbac:' . Permission::DOWNLOAD_ACCOUNT_REPORT]);;
+	Route::get('/product/download/{productId}', [ReportController::class, 'downloadProductActivity'])->name('product.activity.download')->middleware(['rbac:' . Permission::DOWNLOAD_STOCK_PRODUCT_ACTIVITY]);
+	Route::get('/account/download/{accountId}', [ReportController::class, 'downloadAccountActivity'])->name('account.activity.download')->middleware(['rbac:' . Permission::DOWNLOAD_ACCOUNT_ACTIVITY]);
 });
 
 
