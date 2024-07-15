@@ -370,6 +370,7 @@ class ProductController extends Controller
             'category_id' => 'required',
             'shelf_id' => 'required',
         );
+        $user_input = $request->only('name', 'category_id', 'shelf_id', 'description');
         $validator = Validator::make($user_input, $user_input_field_rules);
 		if ($validator->fails())
         {
