@@ -18,12 +18,7 @@ class CreateProductTable extends Migration
             $table->string('name', 100);
             $table->string('sku', 10);
             $table->text('description')->nullable();
-            $table->integer('selling_price');
-            $table->integer('buy_price');
             $table->unsignedBigInteger('barcode_id')->nullable();
-            $table->tinyInteger('unit');
-            $table->tinyInteger('min_qty')->nullable();
-            $table->tinyInteger('notify_when_low_quota')->default(0);
             $table->unsignedBigInteger('shelf_id')->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('updated_by');
@@ -42,6 +37,6 @@ class CreateProductTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product');
+        Schema::dropIfExists('products');
     }
 }

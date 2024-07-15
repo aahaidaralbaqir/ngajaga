@@ -33,6 +33,6 @@ class CreateTablePriceMapping extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_price_mapping');
+        Schema::dropIfExists('price_mapping');
     }
 }

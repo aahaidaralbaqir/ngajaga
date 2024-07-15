@@ -28,6 +28,8 @@ class AlterTableInvoiceAddFieldAccountId extends Migration
     public function down()
     {
         Schema::table('purchase_invoices', function (Blueprint $table) {
+            $table->dropForeign('purchase_invoices_account_id_foreign');
+            $table->dropIndex('purchase_invoices_account_id_foreign');
             $table->dropColumn('account_id');
         }); 
     }

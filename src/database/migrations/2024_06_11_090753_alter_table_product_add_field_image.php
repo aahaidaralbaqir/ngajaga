@@ -25,7 +25,7 @@ class AlterTableProductAddFieldImage extends Migration
      */
     public function down()
     {
-        Schema::table('product', function (Blueprint $table) {
+        Schema::table('products', function (Blueprint $table) {
             $table->dropColumn('image');
         });
     }

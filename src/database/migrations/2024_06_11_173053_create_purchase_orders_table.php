@@ -16,7 +16,7 @@ class CreatePurchaseOrdersTable extends Migration
     {
         Schema::create('purchase_orders', function (Blueprint $table) {
             $table->id();
-            $table->string('purchase_number', 50)->unique();
+            $table->string('purchase_number', 50);
             $table->integer('purchase_date'); // Consider using a proper date type if appropriate
             $table->unsignedBigInteger('supplier_id');
             $table->timestamps();
@@ -35,6 +35,10 @@ class CreatePurchaseOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('purchase_orders');
+        Schema::table('purchase_orders', function (Blueprint $table) {
+            $table->dropForeign('purchase_orders_supplier_id_foreign');
+            $table->dropIndex('purchase_orders_supplier_id_foreign');
+            $table->dropIfExists('purchase_orders');
+        });
     }
 }

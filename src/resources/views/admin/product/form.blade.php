@@ -144,45 +144,6 @@
                     </fieldset>
                 </section>
 
-                <section class="flex gap-2 justify-between pt-10 pb-20">
-                    <header class="text-[#000000] font-light flex-1">
-                        <h1 class="text-2xl mb-2 font-normal">Notifikasi</h1>
-                        <p>
-                            Notifikasi akan membantu kamu mengetahui secara lebih <br> cepat mengenai ketersediaan stok produk yang akan menipis
-                        </p>
-                    </header>
-                    <fieldset class="w-3/5">
-                        <div>
-                            <legend class="mb-2">
-                                <label class="text-[#000000] font-light">Notifikasi</label>
-                                
-                            </legend>
-                            <label class="switch">
-                                <input 
-                                    type="checkbox"
-                                    name="notify_when_low_quota"
-                                    id="permission"
-                                    value="{{ \App\Constant\Constant::OPTION_ENABLE }}"
-                                    @if (old('notify_when_low_quota', empty($item) ? '' : ($item->notify_when_low_quota == 1 || $item->notify_when_low_quota == 'on' ? 1 : '')) == \App\Constant\Constant::OPTION_ENABLE)
-                                        checked
-                                    @endif
-                                />
-                                <span class="slider round"></span>
-                            </label>
-                            <label for="notify_when_low_quota" class="text-[#000] font-light ml-1">Nyalakan notifikasi ketika stok produk sudah menipis</label>
-                            <div class="notification-box box mt-3 relative {{ old('notify_when_low_quota', empty($item) ? '' : ($item->notify_when_low_quota == 1 || $item->notify_when_low_quota == 'on' ? 1 : '')) == \App\Constant\Constant::OPTION_ENABLE ? '' : 'hidden' }}">
-                                <legend class="mb-2">
-                                    <label for="min_qty" class="text-[#000000] font-light">Minimal Kuantitas</label>
-                                </legend>
-                                <input type="number" name="min_qty" id="min_qty" value="{{ old('min_qty', empty($item) ? NULL : $item->min_qty ) }}">
-                            </div>
-                            @error('min_qty')
-                                <span class="text-sm text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                    </fieldset>
-                </section>
 
         </section>
     </main>
@@ -192,12 +153,6 @@
 @push('scripts')
 <script type="text/javascript">
     window.addEventListener('DOMContentLoaded', function () {
-        const toggleNotification = document.querySelector('input[name="notify_when_low_quota"]')
-        const notificationBox = document.querySelector('.notification-box')
-        toggleNotification.addEventListener('change', function (event) {
-            notificationBox.classList.toggle('hidden')
-        })
-       
         const btnUpload = document.getElementById('btn-upload')
         const uploader = document.querySelector('input[name="image"]')
         btnUpload.addEventListener('click', function (event) {

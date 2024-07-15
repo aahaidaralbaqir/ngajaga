@@ -27,6 +27,9 @@ class AlterTableUsersAddRoleIdField extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->dropUnique('users_email_unique');
+            $table->dropForeign('users_role_id_foreign');
+            $table->dropIndex('users_role_id_foreign');
             $table->dropColumn('role_id');
         }); 
     }

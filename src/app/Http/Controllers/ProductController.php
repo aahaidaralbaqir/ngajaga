@@ -295,12 +295,6 @@ class ProductController extends Controller
             'shelf_id'      => 'required',
         );
         $user_input = $request->only('name', 'category_id', 'shelf_id', 'description');
-        $user_input['notify_when_low_quota'] = Constant::OPTION_DISABLE;
-        if ($request->has('notify_when_low_quota')) {
-            $user_input['notify_when_low_quota'] = Constant::OPTION_ENABLE;
-            $user_input['min_qty'] = $request->input('min_qty');
-            $user_input_field_rules['min_qty'] = 'required|lt:4|gt:1';
-        }
         $validator = Validator::make($user_input, $user_input_field_rules);
 
 
@@ -376,13 +370,6 @@ class ProductController extends Controller
             'category_id' => 'required',
             'shelf_id' => 'required',
         );
-        $user_input['notify_when_low_quota'] = Constant::OPTION_DISABLE;
-        $user_input = $request->only('name', 'category_id', 'shelf_id', 'description');
-        if ($request->has('notify_when_low_quota')) {
-            $user_input['notify_when_low_quota'] = Constant::OPTION_ENABLE;
-            $user_input['min_qty'] = $request->input('min_qty');
-            $user_input_field_rules['min_qty'] = 'required|lt:4|gt:1';
-        }
         $validator = Validator::make($user_input, $user_input_field_rules);
 		if ($validator->fails())
         {
