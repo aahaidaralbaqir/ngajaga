@@ -14,10 +14,10 @@ class CreateTablePermission extends Migration
     public function up()
     {
         Schema::create('permission', function (Blueprint $table) {
-            $table->id();
-            $table->string('name', 100);
-            $table->enum('method', ['GET', 'POST', 'DELETE', 'PUT', 'PATCH', 'TRACE', 'CONNECT', 'HEAD'])->nullable();
-            $table->unsignedBigInteger('id_parent')->notNull()->default(0);
+            $table->unsignedSmallInteger('id', true);
+            $table->string('name', 20);
+            $table->enum('method', ['test'])->nullable();
+            $table->unsignedSmallInteger('id_parent')->notNull()->default(0);
             $table->timestamps();
         });
     }

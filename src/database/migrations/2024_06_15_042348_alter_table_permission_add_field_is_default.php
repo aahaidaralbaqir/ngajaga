@@ -15,7 +15,7 @@ class AlterTablePermissionAddFieldIsDefault extends Migration
     public function up()
     {
         Schema::table('permission', function (Blueprint $table) {
-            $table->unsignedInteger('is_default')->nullable(false)->default(Constant::OPTION_TRUE);
+            $table->unsignedSmallInteger('is_default')->nullable(false)->default(Constant::OPTION_TRUE);
         });
     }
 

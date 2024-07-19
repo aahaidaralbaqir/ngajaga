@@ -19,9 +19,9 @@ class CreateProductTable extends Migration
             $table->string('sku', 10);
             $table->text('description')->nullable();
             $table->unsignedBigInteger('barcode_id')->nullable();
-            $table->unsignedBigInteger('shelf_id')->nullable();
-            $table->unsignedBigInteger('category_id')->nullable();
-            $table->unsignedBigInteger('updated_by');
+            $table->unsignedBigInteger('shelf_id')->nullable(false);
+            $table->unsignedSmallInteger('category_id')->nullable(false);
+            $table->unsignedSmallInteger('updated_by');
             $table->timestamps();
 
             $table->foreign('shelf_id')->references('id')->on('shelf');

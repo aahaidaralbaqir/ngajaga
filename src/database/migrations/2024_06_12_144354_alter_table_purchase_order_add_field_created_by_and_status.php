@@ -15,7 +15,7 @@ class AlterTablePurchaseOrderAddFieldCreatedByAndStatus extends Migration
     {
         Schema::table('purchase_orders', function (Blueprint $table) {
             $table->unsignedInteger('status')->nullable(false)->after('supplier_id');
-            $table->unsignedBigInteger('created_by')->after('supplier_id');
+            $table->unsignedSmallInteger('created_by')->after('supplier_id');
 
             $table->foreign('created_by')->references('id')->on('users');
         });

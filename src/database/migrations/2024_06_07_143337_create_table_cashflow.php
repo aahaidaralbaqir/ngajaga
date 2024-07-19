@@ -17,7 +17,7 @@ class CreateTableCashflow extends Migration
             $table->unsignedInteger('id', true);
             $table->unsignedSmallInteger('account_id');
             $table->mediumInteger('amount');
-            $table->unsignedBigInteger('created_by');
+            $table->unsignedSmallInteger('created_by');
             $table->string('description', 100);
             $table->timestamps();
 

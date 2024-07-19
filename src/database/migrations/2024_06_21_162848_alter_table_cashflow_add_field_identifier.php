@@ -14,7 +14,7 @@ class AlterTableCashflowAddFieldIdentifier extends Migration
     public function up()
     {
         Schema::table('cashflows', function (Blueprint $table) {
-            $table->unsignedInteger('identifier')->nullable(false)->default(0);
+            $table->unsignedMediumInteger('identifier')->nullable(false)->default(0);
         });
     }
 

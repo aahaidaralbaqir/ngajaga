@@ -10,8 +10,8 @@ class CreateReceivableTable extends Migration
     {
         Schema::create('receivable', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('debt_id');
-            $table->unsignedBigInteger('created_by');
+            $table->unsignedSmallInteger('debt_id');
+            $table->unsignedSmallInteger('created_by');
             $table->unsignedBigInteger('amount');
             $table->unsignedBigInteger('receivable_date');
             $table->timestamp('created_at')->default(now());

@@ -14,10 +14,10 @@ class CreateDebtTable extends Migration
     public function up()
     {
         Schema::create('debt', function (Blueprint $table) {
-            $table->id();
-            $table->integer('amount');
+            $table->unsignedSmallInteger('id', true);
+            $table->mediumInteger('amount');
             $table->unsignedBigInteger('transaction_id');
-            $table->unsignedBigInteger('created_by');
+            $table->unsignedSmallInteger('created_by');
             $table->foreign('transaction_id')->references('id')->on('transactions');
             $table->foreign('created_by')->references('id')->on('users');
             $table->timestamps();
