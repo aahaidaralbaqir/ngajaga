@@ -14,7 +14,7 @@ class AlterTableInvoiceAddFieldAccountId extends Migration
     public function up()
     {
         Schema::table('purchase_invoices', function (Blueprint $table) {
-            $table->unsignedBigInteger('account_id')->after('invoice_code');
+            $table->unsignedSmallInteger('account_id')->after('invoice_code');
 
             $table->foreign('account_id')->references('id')->on('accounts');
         });

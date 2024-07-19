@@ -15,7 +15,7 @@ class CreateTransactionsTable extends Migration
             $table->integer('price_total');
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('customer_id')->nullable(false);
-            $table->unsignedBigInteger('account_id')->nullable(false);
+            $table->unsignedSmallInteger('account_id')->nullable(false);
             // Foreign key constraints
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('customer_id')->references('id')->on('customers');
