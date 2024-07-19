@@ -14,11 +14,11 @@ class CreateTableCashflow extends Migration
     public function up()
     {
         Schema::create('cashflows', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedInteger('id', true);
             $table->unsignedSmallInteger('account_id');
-            $table->integer('amount');
+            $table->mediumInteger('amount');
             $table->unsignedBigInteger('created_by');
-            $table->string('description', 255);
+            $table->string('description', 100);
             $table->timestamps();
 
             $table->foreign('account_id')->references('id')->on('accounts');
