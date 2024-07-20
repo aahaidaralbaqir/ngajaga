@@ -15,7 +15,7 @@ class CreateTablePriceMapping extends Migration
     {
         Schema::create('price_mapping', function (Blueprint $table) {
             $table->mediumInteger('id', true);
-            $table->unsignedBigInteger('product_id')->nullable();
+            $table->mediumInteger('product_id')->nullable();
             $table->smallInteger('unit')->nullable(false);
             $table->smallInteger('qty')->default(0);
             $table->smallInteger('conversion')->nullable(false);

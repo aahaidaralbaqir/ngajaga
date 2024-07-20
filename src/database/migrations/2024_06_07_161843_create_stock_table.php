@@ -15,7 +15,7 @@ class CreateStockTable extends Migration
     {
         Schema::create('stock', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_id');
+            $table->mediumInteger('product_id');
             $table->integer('qty');
             $table->timestamps();
             // Foreign key constraint

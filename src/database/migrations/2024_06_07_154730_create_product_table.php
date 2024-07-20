@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateProductTable extends Migration
@@ -14,11 +15,10 @@ class CreateProductTable extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id();
-            $table->string('name', 100);
+            $table->mediumInteger('id', true);
+            $table->string('name', 50);
             $table->string('sku', 10);
             $table->text('description')->nullable();
-            $table->unsignedBigInteger('barcode_id')->nullable();
             $table->unsignedBigInteger('shelf_id')->nullable(false);
             $table->unsignedSmallInteger('category_id')->nullable(false);
             $table->unsignedSmallInteger('updated_by');
@@ -28,6 +28,9 @@ class CreateProductTable extends Migration
             $table->foreign('category_id')->references('id')->on('category');
             $table->foreign('updated_by')->references('id')->on('users');
         });
+
+        DB::statement('ALTER TABLE products MODIFY created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+        DB::statement('ALTER TABLE products MODIFY updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP');
     }
 
     /**

@@ -17,7 +17,7 @@ class CreatePurchaseOrderItems extends Migration
         Schema::create('purchase_order_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('purchase_order_id');
-            $table->unsignedBigInteger('product_id');
+            $table->mediumInteger('product_id');
             $table->integer('qty');
             $table->integer('price');
             $table->integer('received_qty');

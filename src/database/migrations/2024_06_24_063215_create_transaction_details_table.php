@@ -10,7 +10,7 @@ class CreateTransactionDetailsTable extends Migration
     {
         Schema::create('transaction_details', function (Blueprint $table) {
             $table->unsignedBigInteger('transaction_id');
-            $table->unsignedBigInteger('product_id');
+            $table->mediumInteger('product_id');
             $table->unsignedBigInteger('unit');
             $table->integer('qty');
 
