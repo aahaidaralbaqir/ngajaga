@@ -14,7 +14,7 @@ class AlterTableInvoiceAddFieldPaymentTotal extends Migration
     public function up()
     {
         Schema::table('purchase_invoices', function (Blueprint $table) {
-            $table->unsignedBigInteger('payment_total')->nullable(false)->default(0)->after('purchase_order_id');
+            $table->integer('payment_total')->nullable(false)->default(0)->after('purchase_order_id');
         });
     }
 

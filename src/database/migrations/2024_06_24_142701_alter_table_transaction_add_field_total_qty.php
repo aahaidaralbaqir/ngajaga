@@ -14,7 +14,7 @@ class AlterTableTransactionAddFieldTotalQty extends Migration
     public function up()
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->unsignedBigInteger('total_product_qty')->nullable(false)->default(0)->after('account_id');
+            $table->smallInteger('total_product_qty')->nullable(false)->default(0)->after('account_id');
         });
     }
 

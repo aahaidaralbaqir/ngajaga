@@ -14,7 +14,7 @@ class AddFieldTransactionDate extends Migration
     public function up()
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->unsignedBigInteger('transaction_date')->nullable(false)->default(0);
+            $table->integer('transaction_date')->nullable(false)->default(0);
         });
     }
 

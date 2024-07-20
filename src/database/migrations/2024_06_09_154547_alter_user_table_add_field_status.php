@@ -15,7 +15,7 @@ class AlterUserTableAddFieldStatus extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->unsignedInteger('status')->after('role_id')->default(Constant::STATUS_ACTIVE);
+            $table->tinyInteger('status')->after('role_id')->default(Constant::STATUS_ACTIVE);
         });
     }
 

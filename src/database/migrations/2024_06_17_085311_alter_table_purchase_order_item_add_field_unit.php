@@ -15,7 +15,7 @@ class AlterTablePurchaseOrderItemAddFieldUnit extends Migration
     public function up()
     {
         Schema::table('purchase_order_items', function (Blueprint $table) {
-            $table->unsignedInteger('unit')->nullable(false)->default(Constant::UNIT_PCS)->after('price');
+            $table->smallInteger('unit')->nullable(false)->default(Constant::UNIT_PCS)->after('price');
         });
     }
 

@@ -20,10 +20,10 @@ class CreatePurchaseOrderItems extends Migration
             $table->mediumInteger('product_id');
             $table->smallInteger('qty');
             $table->mediumInteger('price');
-            $table->mediumInteger('received_qty');
+            $table->smallInteger('received_qty');
             $table->mediumInteger('received_price');
             $table->mediumInteger('total_price');
-            $table->string('notes', 255)->nullable();
+            $table->string('notes', 100)->nullable();
             $table->timestamps();
 
             $table->foreign('purchase_order_id')->references('id')->on('purchase_orders')->onDelete('cascade');
