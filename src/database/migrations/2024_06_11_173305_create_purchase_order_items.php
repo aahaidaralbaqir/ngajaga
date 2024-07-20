@@ -15,17 +15,15 @@ class CreatePurchaseOrderItems extends Migration
     public function up()
     {
         Schema::create('purchase_order_items', function (Blueprint $table) {
-            $table->id();
+            $table->mediumInteger('id', true);
             $table->unsignedBigInteger('purchase_order_id');
             $table->mediumInteger('product_id');
-            $table->integer('qty');
-            $table->integer('price');
-            $table->integer('received_qty');
-            $table->integer('received_price');
-            $table->integer('total_price');
+            $table->smallInteger('qty');
+            $table->mediumInteger('price');
+            $table->mediumInteger('received_qty');
+            $table->mediumInteger('received_price');
+            $table->mediumInteger('total_price');
             $table->string('notes', 255)->nullable();
-            $table->integer('accept_stock')->default(1);
-            $table->integer('update_product_price')->default(2);
             $table->timestamps();
 
             $table->foreign('purchase_order_id')->references('id')->on('purchase_orders')->onDelete('cascade');
