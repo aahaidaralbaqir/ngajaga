@@ -19,7 +19,7 @@ class CreateProductTable extends Migration
             $table->string('name', 50);
             $table->string('sku', 10);
             $table->text('description')->nullable();
-            $table->unsignedBigInteger('shelf_id')->nullable(false);
+            $table->smallInteger('shelf_id')->nullable(false);
             $table->unsignedSmallInteger('category_id')->nullable(false);
             $table->unsignedSmallInteger('updated_by');
             $table->timestamps();

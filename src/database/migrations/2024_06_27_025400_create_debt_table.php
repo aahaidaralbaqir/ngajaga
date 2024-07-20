@@ -16,7 +16,7 @@ class CreateDebtTable extends Migration
         Schema::create('debt', function (Blueprint $table) {
             $table->unsignedSmallInteger('id', true);
             $table->mediumInteger('amount');
-            $table->unsignedBigInteger('transaction_id');
+            $table->smallInteger('transaction_id');
             $table->unsignedSmallInteger('created_by');
             $table->foreign('transaction_id')->references('id')->on('transactions');
             $table->foreign('created_by')->references('id')->on('users');

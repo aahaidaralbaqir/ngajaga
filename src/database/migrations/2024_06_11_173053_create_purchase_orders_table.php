@@ -15,10 +15,10 @@ class CreatePurchaseOrdersTable extends Migration
     public function up()
     {
         Schema::create('purchase_orders', function (Blueprint $table) {
-            $table->id();
+            $table->mediumInteger('id', true);
             $table->string('purchase_number', 50);
             $table->integer('purchase_date'); // Consider using a proper date type if appropriate
-            $table->unsignedBigInteger('supplier_id');
+            $table->mediumInteger('supplier_id');
             $table->timestamps();
             
             $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');

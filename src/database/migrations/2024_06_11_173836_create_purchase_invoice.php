@@ -18,7 +18,7 @@ class CreatePurchaseInvoice extends Migration
             $table->mediumInteger('id', true);
             $table->string('invoice_code', 50);
             $table->integer('received_date'); // Consider using a proper date type if appropriate
-            $table->unsignedBigInteger('purchase_order_id');
+            $table->mediumInteger('purchase_order_id');
             $table->text('description')->nullable();
             $table->timestamps();
 

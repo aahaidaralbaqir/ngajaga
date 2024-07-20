@@ -10,7 +10,7 @@ class CreateTransactionsTable extends Migration
     public function up()
     {
         Schema::create('transactions', function (Blueprint $table) {
-            $table->id();
+            $table->smallInteger('id', true);
             $table->string('order_id', 10);
             $table->integer('price_total');
             $table->unsignedSmallInteger('created_by');
