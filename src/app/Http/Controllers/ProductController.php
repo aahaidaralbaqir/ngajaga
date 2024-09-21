@@ -327,7 +327,7 @@ class ProductController extends Controller
         $user_input['updated_by'] = Auth::user()->id;
         $product_id = DB::table('products')->insertGetId($user_input);
         return redirect()
-			->route('product.price.form', ['productId', $product_id])
+			->route('product.price.form', ['productId' => $product_id])
 			->with(['success' => 'Produk berhasil ditambahkan']);
     }
 
@@ -446,17 +446,6 @@ class ProductController extends Controller
             '*.unit'        => 'required|in:' . implode(',', array_keys(Common::getUnits())),
         ];
 
-        if ($request->has('use_price_mapping') == FALSE) {
-            $updated_record = [
-                'use_price_mapping' => Constant::OPTION_DISABLE
-            ];
-            DB::table('products')->where('id', $product_id)->update($updated_record);
-            return redirect()
-                ->route('product.index')
-                ->with(array (
-                    'success' => 'Produk berhasil dirubah'
-                )); 
-        }
 
         $user_input = [];
         $user_input_length = count($request->input('unit'));
@@ -493,13 +482,9 @@ class ProductController extends Controller
                 ->withErrors($validator)
 				->withInput();
         }
-        $updated_record = [
-            'use_price_mapping' => Constant::OPTION_ENABLE
-        ];
         if (count($user_input) <= 0) {
             return Response::backWithError('Konfigurasi harga harus di isi minimal satu');
         }
-        DB::table('products')->where('id', $product_id)->update($updated_record);
 
         DB::table('price_mapping')->where('product_id', $product_id)->delete();
         if (count($user_input) > 0) {

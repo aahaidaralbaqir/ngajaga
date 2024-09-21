@@ -423,7 +423,11 @@
         computed: {
             selected_supplier () {
                 if (this.form.supplier_id == 0) {
-                    return null;
+                    return {
+                        address: '',
+                        phone_number: '',
+                        email: ''
+                    };
                 }
 
                 const supplier = this.suppliers.find((item) => item.id == this.form.supplier_id)

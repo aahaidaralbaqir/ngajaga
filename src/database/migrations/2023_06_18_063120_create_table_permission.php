@@ -15,7 +15,7 @@ class CreateTablePermission extends Migration
     {
         Schema::create('permission', function (Blueprint $table) {
             $table->unsignedSmallInteger('id', true);
-            $table->string('name', 20);
+            $table->string('name', 50);
             $table->enum('method', ['test'])->nullable();
             $table->unsignedSmallInteger('id_parent')->notNull()->default(0);
             $table->timestamps();

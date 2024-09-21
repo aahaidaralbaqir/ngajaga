@@ -112,9 +112,7 @@ class DatabaseSeeder extends Seeder
         $user = User::create([
             'name' => 'Administrator',
             'email' => 'testing@gmail.com',
-            'email_verified_at' => now(),
             'password' => Hash::make('password'),
-            'remember_token' => Str::random(10)
         ]);
 
         $user->createToken('API Token of ' . $user->name, ['api_access']);

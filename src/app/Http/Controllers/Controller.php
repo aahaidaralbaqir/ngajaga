@@ -27,8 +27,7 @@ class Controller extends BaseController
 				'role_name' => $user->roles->name,
 				'permission' => $user->roles->permission,
 				'avatar' => CommonUtil::getStorage(Constant::STORAGE_AVATAR, $user->avatar),
-				'id' => $user->id,
-				'token' => $current_user->tokens->first()->token
+				'id' => $user->id
 			];
 			
 		return $data;

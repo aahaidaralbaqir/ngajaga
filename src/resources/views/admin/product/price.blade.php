@@ -24,6 +24,7 @@
     </div>
     <main class="w-full py-14 px-14" id="price">
         <section class="w-5/6">
+                <input type="hidden" name="id" value="{{ $item->id }}" />
                 @if(!empty($item))
                     <section class="flex gap-2 justify-between pt-10">
                         <header class="text-[#000000] font-light flex-1">
@@ -40,22 +41,8 @@
                             </p>
                         </header>
                         <fieldset class="w-3/5">
-                            <legend class="mb-2">
-                                <label class="text-[#000000] font-light">Konfigurasi Harga</label>
-                            </legend>
-                            <label class="switch">
-                                <input type="hidden" name="id" value="{{ $item->id }}">
-                                <input 
-                                    type="checkbox"
-                                    name="use_price_mapping"
-                                    @if ($item->use_price_mapping == \App\Constant\Constant::OPTION_ENABLE)
-                                        checked
-                                    @endif
-                                />
-                                <span class="slider round"></span>
-                            </label>
-                            <label for="use_price_mapping" class="text-[#000] font-light ml-1">Jika ini dinyalakan maka harga jual akan mengikuti konfigurasi di bawah ini</label>
-                            <div class="price-mapping-box box mt-4 relative {{ $item->use_price_mapping == \App\Constant\Constant::OPTION_ENABLE ? '' : 'hidden' }}">
+                            <label for="use_price_mapping" class="text-[#000] font-light ml-1">Konfigurasi Harga</label>
+                            <div class="price-mapping-box box mt-4 relative">
                                 <table class="w-full retro">
                                     <thead>
                                         <tr>

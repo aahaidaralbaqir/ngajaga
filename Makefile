@@ -8,7 +8,7 @@ make-config:
 laravel-deps:
 			docker-compose run --rm php composer install --ignore-platform-reqs
 migrate-database:
-				docker-compose run --rm artisan migrate
+				docker-compose run --rm artisan migrate:refresh
 seed-database:
 				docker-compose run --rm artisan db:seed
 link-storage:

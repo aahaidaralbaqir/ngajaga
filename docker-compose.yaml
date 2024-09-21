@@ -16,6 +16,7 @@ services:
       - "80:80"
     volumes:
       - ./src:/var/www/html:delegated
+      - ./src/public/storage:/var/www/html/public/storage 
     depends_on:
       - php
       - mysql
