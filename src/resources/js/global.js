@@ -78,7 +78,7 @@ window.addEventListener('DOMContentLoaded', function () {
     })
 
     function removeToast(toast) {
-        toast.remove();
+        // toast.remove();
     }
 
     function createToastError(description) {

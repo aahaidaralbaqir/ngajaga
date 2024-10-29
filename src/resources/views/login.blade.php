@@ -22,7 +22,7 @@
 					<br>
 					<fieldset>
 						<legend class="mb-2">
-							<label for="email" class="text-[#000000] font-light">Nama <span class="text-danger">*</span></label>
+							<label for="email" class="text-[#000000] font-light">Email <span class="text-danger">*</span></label>
 						</legend>
 						<input type="email" name="email">
 						@error('email')

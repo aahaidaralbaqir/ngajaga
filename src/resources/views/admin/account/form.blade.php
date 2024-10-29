@@ -5,7 +5,7 @@
         <div class="w-4/5">
             <div class="flex justify-between items-center">
                 <h1>
-                    Menambahkan kas baru
+                   {{ $page_title }}
                 </h1>
                 <div class="flex items-center justify-between gap-5 relative">
                     <a href="{{ route('account.index') }}" class="button text-base text-black p-3 rounded border border-black relative flex gap-2">
@@ -21,9 +21,9 @@
         <section class="w-4/5">
                 <section class="flex gap-2 justify-between">
                     <header class="text-[#000000] font-light flex-1">
-                        <h1 class="text-2xl mb-2 font-normal">Informasi Akun</h1>
+                        <h1 class="text-2xl mb-2 font-normal">Informasi Buku Kas</h1>
                         <p>
-                            Akun membantu kamu mengatur 
+                            Buku kas membantu kamu mengatur 
                             <br>
                             sumber -sumber keuangan
                             <br>

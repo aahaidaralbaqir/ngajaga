@@ -27,6 +27,7 @@ class AccountController extends Controller
     {
         return view('admin.account.form')
             ->with('target_route', self::ACCOUNT_CREATE_ROUTE)
+            ->with('page_title', 'Menambahkan kas baru')
             ->with('user', parent::getUser());
     }
 
@@ -40,6 +41,7 @@ class AccountController extends Controller
         return view('admin.account.form')
             ->with('user', $user_profile)
             ->with('item', $account_record)
+            ->with('page_title', 'Mengubah informasi kas')
             ->with('target_route', self::ACCOUNT_UPDATE_ROUTE);
     }
 
@@ -64,7 +66,7 @@ class AccountController extends Controller
         DB::commit();
         return Response::redirectWithSuccess(
             'account.index', 
-            'Akun baru berhasil dibuat');
+            'Kas baru berhasil dibuat');
     }
 
     public function edit(Request $request)
@@ -84,6 +86,6 @@ class AccountController extends Controller
 		AccountRepository::updateAccount($account_id, $user_input);
         return Response::redirectWithSuccess(
             'account.index', 
-            'Akun berhasil dirubah');   
+            'Kas berhasil dirubah');   
     }
 }

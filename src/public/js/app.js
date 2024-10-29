@@ -2171,7 +2171,7 @@ window.addEventListener('DOMContentLoaded', function () {
     });
   });
   function removeToast(toast) {
-    toast.remove();
+    // toast.remove();
   }
   function createToastError(description) {
     var toast = document.createElement('div');
