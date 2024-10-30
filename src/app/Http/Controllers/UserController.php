@@ -61,7 +61,7 @@ class UserController extends Controller
 			$user_input_field_rules['old_password'] = ['required', 
 				function ($attribute, $value, $fail) use ($current_user) {
 					if (!Hash::check($value, $current_user->password)) {
-						return $fail(_('The current password is incorrect '));
+						return $fail('The current password is incorrect ');
 					}
 				}];
 			$user_input['old_password'] = $request->input('old_password');
@@ -125,7 +125,7 @@ class UserController extends Controller
 		// $user->createToken('API Token of ' . $user->name, ['api_access']);
 		return redirect()
 					->route('user.index')
-					->with(['success' => 'Berhasil menambahkan user baru']);
+					->with(['success' => 'Berhasil menambahkan pengguna baru']);
 	}
 
 	public function login(Request $request)
