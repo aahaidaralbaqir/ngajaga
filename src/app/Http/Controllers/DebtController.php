@@ -132,6 +132,9 @@ class DebtController extends Controller
             }
 
             $transaction_record = TransactionRepository::getTransactionById($user_input['transaction_id']);
+            if (empty($transaction_record)) {
+                return Response::backWithError('Transaksi perlu dipilih'); 
+            }
             if ($user_input['amount'] > $transaction_record->price_total) {
                 return Response::backWithError('Nominal hutang tidak boleh lebih dari nilai transaksi');
             }

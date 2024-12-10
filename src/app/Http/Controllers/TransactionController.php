@@ -257,6 +257,10 @@ class TransactionController extends Controller
                 }
                 $user_input['customer'] = CustomerRepository::createCustomer($create_customer_record);
             }
+
+            if (empty($user_input['customer'] && !$request->has('new_custuomer'))) {
+                return Response::backWithError('Informasi pelanggan dibutuhkan'); 
+            }
             
             $latest_transaction_id = TransactionRepository::getLatestTransactionId();
             $order_id = Common::generateOrderId($latest_transaction_id);

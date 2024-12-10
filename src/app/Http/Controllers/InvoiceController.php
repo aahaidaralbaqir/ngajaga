@@ -229,6 +229,7 @@ class InvoiceController extends Controller
                 'account_id'    => $update_purchase_invoice_input['account_id'],
                 'amount'        => $payment_total * -1,
                 'created_by'    => $this->getUserId(),
+                'cashflow_type' => Constant::CashflowPurchase,
                 'description'   => 'Pembelian untuk invoice ' . $invoice_record->invoice_code,
                 'identifier'    => $invoice_id
             ];

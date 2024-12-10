@@ -362,8 +362,7 @@
                     body: JSON.stringify(payload),
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer {{ $user["token"] }}'
+                        'Content-Type': 'application/json'
                     }
                 }
                 this.is_loading = true

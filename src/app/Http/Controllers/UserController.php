@@ -229,7 +229,7 @@ class UserController extends Controller
 			$user_input_field_rules['old_password'] = ['required', 
 				function ($attribute, $value, $fail) use ($current_user) {
 					if (!Hash::check($value, $current_user->password)) {
-						return $fail(_('The current password is incorrect '));
+						return $fail('The current password is incorrect ');
 					}
 				}];
 			$user_input_field_rules['password'] =  ['required', 'regex:/^(?=.*[\W])(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,50}$/'];

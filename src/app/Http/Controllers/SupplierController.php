@@ -66,7 +66,7 @@ class SupplierController extends Controller
         $validator = Validator::make($user_input, $user_input_field_rules);
         if ($validator->fails()) {
             return redirect()
-                ->route('supplier.edit.form')
+                ->back()
                 ->withErrors($validator)
                 ->withInput();
         }

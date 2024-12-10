@@ -356,9 +356,9 @@
                         headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json',
-                            'Authorization': 'Bearer {{ $user["token"] }}'
                         }
                     }
+                    console.log(payload)
                     this.is_loading = true
                     return fetch('/api/purchase/edit', httpOptions)
                         .then((response) => response.json())
@@ -382,7 +382,6 @@
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer {{ $user["token"] }}'
                     }
                 }
                 this.is_loading = true
