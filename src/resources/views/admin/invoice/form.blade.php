@@ -38,10 +38,10 @@
                     @if (empty($item))
                     <div class="mb-4">
                         <legend class="mb-2">
-                            <label for="supplier_id" class="text-[#000000] font-light">No. Pembelian <span class="text-danger">*</span></label>
+                            <label for="supplier_id" class="text-[#000000] font-light">No.Faktur Pembelian <span class="text-danger">*</span></label>
                         </legend>
                         <select name="purchase_number" id="purchase_number" class="mb-2">
-                            <option  value="0">Pilih No.Pembelian</option>
+                            <option  value="0">Pilih No.Faktur Pembelian</option>
                             @foreach ($purchase_orders as $order)
                                 <option 
                                     value="{{ $order->purchase_number }}"
@@ -63,7 +63,7 @@
                     @else
                         <div class="mb-4">
                             <legend class="mb-2">
-                                <label for="purchase_number" class="text-[#000000] font-light">No. Pembelian <span class="text-danger">*</span></label>
+                                <label for="purchase_number" class="text-[#000000] font-light">No.Faktur Pembelian<span class="text-danger">*</span></label>
                             </legend>
                             <input type="text" name="purchase_number" class="mb-2 input border rounded-sm px-4 py-2 w-full" readonly value="{{ empty($item) ? $invoice_code : $item->purchase_number }}" />
                             @error('purchase_number')
@@ -78,7 +78,7 @@
                     @endif
                     <div class="mb-4">
                         <legend class="mb-2">
-                            <label for="invoice_code" class="text-[#000000] font-light">No. Penerimaan <span class="text-danger">*</span></label>
+                            <label for="invoice_code" class="text-[#000000] font-light">No.Invoice <span class="text-danger">*</span></label>
                         </legend>
                         <input type="text" name="invoice_code" class="mb-2 input border rounded-sm px-4 py-2 w-full" readonly value="{{ empty($item) ? $invoice_code : $item->invoice_code }}" />
                         @error('invoice_code')

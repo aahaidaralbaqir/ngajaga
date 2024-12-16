@@ -4,7 +4,7 @@
     <div class="w-4/5">
         <div class="flex justify-between items-center">
             <h1>
-              Pemesanan Stok 
+                Faktur Pembelian
             </h1>
             <div class="flex items-center justify-between gap-5 relative">
                 @if ($has_filter)
@@ -22,7 +22,7 @@
                     </form>
                 </div>
                 @if(in_array(\App\Constant\Permission::CREATE_ORDER_INVOICE, $user['permission']))
-                    <a href="{{ route('purchase.create.form') }}" class="button text-base bg-[#ff91e7] text-black p-3 rounded border border-black">Buat Pemesanan Stok</a>
+                    <a href="{{ route('purchase.create.form') }}" class="button text-base bg-[#ff91e7] text-black p-3 rounded border border-black">Buat Faktur Pembelian</a>
                 @endif
             </div>
         </div>
@@ -31,10 +31,10 @@
                 <a href="{{ route('supplier.index') }}" aria-selected="true">Pemasok</a>
             @endif
             @if(in_array(\App\Constant\Permission::VIEW_ORDER_INVOICE, $user['permission']))
-                <a href="{{ route('purchase.index') }}" aria-selected="true" class="selected">Pemesanan Stok</a>
+                <a href="{{ route('purchase.index') }}" aria-selected="true" class="selected">Faktur Pembelian</a>
             @endif
             @if(in_array(\App\Constant\Permission::VIEW_PURCHASE_INVOICE, $user['permission']))
-                <a href="{{ route('invoice.index') }}" aria-selected="true">Penerimaan Stok</a>
+                <a href="{{ route('invoice.index') }}" aria-selected="true">Invoice</a>
             @endif
         </div>
     </div>
@@ -42,11 +42,11 @@
 <main class="w-full py-14 px-14">
     <section class="w-4/5">
         <table class="w-full retro">
-            <caption class="text-2xl text-black [text-align:unset]">Pemesanan Stok</caption>
+            <caption class="text-2xl text-black [text-align:unset]">Faktur Pembelian</caption>
             <thead>
                 <tr>
                     <th class="w-[5%]"></th>
-                    <th class="text-left">No. Pemesanan Stok</th>
+                    <th class="text-left">No. Faktur Pembelian</th>
                     <th class="text-left">Tanggal</th>
                     <th class="text-left">Status</th>
                     <th class="text-left">Dibuat Oleh</th>

@@ -23,34 +23,35 @@
     <section class="w-11/12">
             <section class="flex gap-2 justify-between border-b pb-15">
                 <header class="text-[#000000] font-light flex-1">
-                    <h1 class="text-2xl mb-2 font-lighter">Informasi Pembelian Stok</h1>
+                    <h1 class="text-2xl mb-2 font-lighter">Informasi Faktur Pembelian</h1>
                     <p>Detailkan pembelian produk yang akan kamu lakukan, pilih pemasok produk sampai dengan tanggal pembelian produk</p>
                 </header>
                 <fieldset class="w-3/5">
-                    <input type="hidden" name="latest_order_id" value="{{ $latest_purchase_order_id }}">
-                    <div class="mb-4">
-                        <legend class="mb-2">
-                            <label for="supplier_id" class="text-[#000000] font-light">Pemasok <span class="text-danger">*</span></label>
-                        </legend>
-                        <select name="supplier_id" id="supplier_id" class="mb-2" v-model="form.supplier_id">
-                            <option  value="0">Pilih Pemasok</option>
-                            <option 
-                                v-for="(supplier, idx) in suppliers"
-                                :key="idx"
-                                :value="supplier.id"
+                    <input type="hidden" name="latest_order_id" value="{{ $latest_order_id }}">
+                    @if (empty($item))
+                        <div class="mb-4">
+                            <legend class="mb-2">
+                                <label for="supplier_id" class="text-[#000000] font-light">Pemasok <span class="text-danger">*</span></label>
+                            </legend>
+                            <select name="supplier_id" id="supplier_id" class="mb-2" v-model="form.supplier_id">
+                                <option  value="0">Pilih Pemasok</option>
+                                <option 
+                                    v-for="(supplier, idx) in suppliers"
+                                    :key="idx"
+                                    :value="supplier.id"
+                                >
+                                    @{{ supplier.name }} 
+                                </option>
+                            </select>
+                            <span 
+                                class="text-sm text-danger"
+                                v-for="(error) in getErrors('supplier_id')"
                             >
-                                @{{ supplier.name }} 
-                            </option>
-                        </select>
-                        <span 
-                            class="text-sm text-danger"
-                            v-for="(error) in getErrors('supplier_id')"
-                        >
-                            @{{ error }}
-                        </span>
-                    </div>
+                                @{{ error }}
+                            </span>
+                        </div>
                     <div class="mb-4 w-3/4" id="supplier-information" v-if="form.supplier_id != 0">
-                        <table class="w-full">
+                        <table class="w-full" v-if="selected_supplier != undefined">
                             <tr>
                                 <td>
                                     <p class="text-[#000000] font-light text-md">Alamat</p> 
@@ -77,11 +78,12 @@
                             </tr>
                         </table>
                     </div>
+                    @endif
                     <div class="mb-4">
                         <legend class="mb-2">
-                            <label for="purchase_number" class="text-[#000000] font-light">Nomor Pemesanan Stok <span class="text-danger">*</span></label>
+                            <label for="purchase_number" class="text-[#000000] font-light">No.Faktur Pembelian<span class="text-danger">*</span></label>
                         </legend>
-                        <input type="text" name="purchase_number" v-model="form.purchase_number" class="mb-2 input border rounded-sm px-4 py-2 w-full" disabled />
+                        <input type="text" name="purchase_number" v-model="form.purchase_number" class="mb-2 input border rounded-sm px-4 py-2 w-full" readonly />
                         <span 
                             class="text-sm text-danger"
                             v-for="(error) in getErrors('purchase_number')"
@@ -89,7 +91,6 @@
                             @{{ error }}
                         </span>
                     </div>
-                    
                     <div>
                         <legend class="mb-2">
                             <label for="purchase_date" class="text-[#000000] font-light">Tanggal Pemesanan Stok <span class="text-danger">*</span></label>
@@ -262,17 +263,20 @@
                 })
             },
             async fetchPurchaseDetail() {
+                let self = this;
                 const orderId = document.querySelector('input[name="latest_order_id"]')
-                if (orderId.value != '') return false;
+                const action = '{{ $action }}'
+                if (action !== 'edit') return false;
                 return fetch('/api/purchase/{{ empty($item) ? 0 : $item->id }}', this.getHttpOption())
                     .then((response) => response.json())
                     .then((result) => {
                         const {purchase_date, purchase_number, supplier_id, items} = result.purchase_order
-                        this.form.purchase_date = purchase_date
-                        this.form.purchase_number = purchase_number
-                        this.form.supplier_id = supplier_id
-                        this.order_items = items
-                        this.opened_item_idx = 0
+                        console.log('masuk ke sini', purchase_number)
+                        self.form.purchase_date = purchase_date
+                        self.form.purchase_number = purchase_number
+                        self.form.supplier_id = supplier_id
+                        self.order_items = items
+                        self.opened_item_idx = 0
                     })
             },
             handleAddNewProduct() {
@@ -347,7 +351,8 @@
             },
             handleSubmit() {
                 const orderId = document.querySelector('input[name="latest_order_id"]')
-                if (orderId.value == '') {
+                const action = '{{ $action }}'
+                if (action == 'edit') {
                     const payload = this.buildPayload();
                     payload.purchase_order_id = '{{ empty($item) ? 0 : $item->id }}'
                     const httpOptions = {
@@ -408,6 +413,8 @@
         },
         watch: {
             ['form.supplier_id'](supplierId) {
+                let action = '{{ $action }}'
+                if (action == 'edit') return
                 const orderId = document.querySelector('input[name="latest_order_id"]')
                 let dateObj = new Date();
                 let currentDate = (dateObj.getUTCFullYear()) + "" + (dateObj.getMonth() + 1)+ "" + (dateObj.getUTCDate());

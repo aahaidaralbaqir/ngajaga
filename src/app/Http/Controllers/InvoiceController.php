@@ -162,7 +162,7 @@ class InvoiceController extends Controller
         return view('admin.invoice.form')
             ->with('item', $invoice_record)
             ->with('user', parent::getUser())
-            ->with('page_title', 'Ubah penerimaan stok')
+            ->with('page_title', 'Ubah invoice')
             ->with('purchase_order', $purchase_order_record)
             ->with('purchase_orders', $purchase_order_records)
             ->with('accounts', $account_records)

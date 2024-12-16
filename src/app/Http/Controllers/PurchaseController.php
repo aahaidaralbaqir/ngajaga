@@ -98,7 +98,8 @@ class PurchaseController extends Controller
         $data['target_route'] = 'purchase.create';
         $data['user'] = parent::getUser();
         $data['item'] = NULL;
-        $data['latest_purchase_order_id'] = PurchaseRepository::getLatestPurchaseOrder();
+        $data['action'] = 'create';
+        $data['latest_order_id'] = PurchaseRepository::getLatestPurchaseOrder();
         return view('admin.purchase.form', $data);
     }
 
@@ -180,18 +181,18 @@ class PurchaseController extends Controller
     {
         $purchase_order_record = PurchaseRepository::getPurchaseOrderById($purchaseOrderId);
         if (!$purchase_order_record) {
-            return Response::backWithError('Data pemesanan stok tidak ditemuakn');
+            return Response::backWithError('Detail faktur pembelian tidak ditemuakn');
         }
 
         if ($purchase_order_record->status == Constant::PURCHASE_ORDER_COMPLETED) {
-            return Response::backWithError('Data pemesanan yang berstatus selesai tidak bisa dibatalkan');
+            return Response::backWithError('Faktur pembelian yang berstatus selesai tidak bisa dibatalkan');
         }
 
         $updated_purchase_param = [
             'status' => Constant::PURCHASE_ORDER_VOID
         ];
         PurchaseRepository::updatePurchaseOrder($purchaseOrderId, $updated_purchase_param);
-        return Response::redirectWithSuccess('purchase.index', 'Data pemesanan berhasil dibatalkan');
+        return Response::redirectWithSuccess('purchase.index', 'Faktur pembelian berhasil dibatalkan');
     }
 
     public function editPurchaseForm(Request $request, $purchaseOrderId) {
@@ -199,10 +200,12 @@ class PurchaseController extends Controller
         if (!$purchase_order_record) {
             return Response::backWithError('Pembelian stok tidak ditemukan');
         }
+        $latest_order_id = PurchaseRepository::getLatestPurchaseOrder();
         return view('admin.purchase.form')
-            ->with('page_title', 'Informasi pembelian stok apa yang akan dirubah ?')
-            ->with('latest_purchase_order_id', NULL)
+            ->with('page_title', 'Informasi apa yang ingin kamu rubah?')
+            ->with('latest_order_id', $latest_order_id)
             ->with('user', parent::getUser())
+            ->with('action', 'edit')
             ->with('item', $purchase_order_record);
     }
 
